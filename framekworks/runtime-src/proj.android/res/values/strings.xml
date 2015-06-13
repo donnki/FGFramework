@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RunPuppyRunGoogle</string>
+    
+    <string name="signin_other_error">There was an issue with sign in.  Please try again later.</string>
+    <string name="achievement">Achievement</string>
+    <string name="achievements_not_available">achievements_not_available</string>
+    <string name="leaderboards_not_available">leaderboards_not_available</string>
+    
+    
+</resources>
