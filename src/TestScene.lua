@@ -35,7 +35,15 @@ function TestScene:init(config)
     label:setAnchorPoint(cc.p(0.5, 0.5))
     label:registerScriptTapHandler(function()
         Log.i("call nativePurchaseItem")
-        nativePurchaseItem("com.banabala.runpuppyrun.diamond40")
+        Engine.iap:payForProduct(
+            "com.banabala.runpuppyrun.diamond40", 
+            function(successResponse)
+                Log.i(successResponse)
+            end, 
+            function(failedResponse)
+                Log.i(failedResponse)
+            end
+        )
 
     end)
     menu:addChild(label)
@@ -44,7 +52,7 @@ function TestScene:init(config)
     label:setAnchorPoint(cc.p(0.5, 0.5))
     label:registerScriptTapHandler(function()
         Log.i("call nativeShowAchievements")
-        nativeShowAchievements()
+        native.showAchievements()
     end)
     menu:addChild(label)
 
@@ -52,14 +60,14 @@ function TestScene:init(config)
     label:setAnchorPoint(cc.p(0.5, 0.5))
     label:registerScriptTapHandler(function()
         Log.i("call nativeShowLeaderboards")
-        nativeShowLeaderboards()
+        native.showLeaderboards()
     end)
     menu:addChild(label)
 
     label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Native Get UDID", "Helvetica", 60))
     label:setAnchorPoint(cc.p(0.5, 0.5))
     label:registerScriptTapHandler(function()
-        Log.i(nativeGetUDID())
+        Log.i(native.getUDID())
     end)
     menu:addChild(label)
 

@@ -20,17 +20,7 @@ end
 
 function InAppPurchaseManager:payForProduct(productID, successCallback, failedCallback)
     Log.i("InAppPurchaseManager:payForProduct")
-    if Platform.isAndroid then
-        local className = "org/cocos2dx/lua/GooglePlayIABPlugin"
-        local funcName = "payForProduct"
-        local sig = "(Ljava/lang/String;II)V"
-        local argv = {productID, successCallback, failedCallback}
-
-        local luaj = require "src/cocos/cocos2d/luaj"
-        if luaj then
-            luaj.callStaticMethod(className, funcName, argv, sig)
-        end
-    end
+    native.purchaseItem(productID, successCallback, failedCallback)
 end
 
 return InAppPurchaseManager

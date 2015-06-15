@@ -1,3 +1,5 @@
+local i18n = {}
+
 local currentLanguageType = cc.Application:getInstance():getCurrentLanguage()
 local LANGUAGE = "zh_cn"
 if currentLanguageType == cc.LANGUAGE_ENGLISH then
@@ -9,7 +11,7 @@ LANGUAGE = "en"
 
 local Languages = nil
 
-function getLocalString(sid)
+function i18n.getLocalString(sid)
 
 	if not Languages then
 		Languages = require("game.data.Language")
@@ -22,3 +24,4 @@ function getLocalString(sid)
 		return sid
 	end
 end
+return i18n

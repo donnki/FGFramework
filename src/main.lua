@@ -17,7 +17,6 @@ local function main()
 
 	local TestScene = require("TestScene")
     Engine:changeScene(TestScene.createWithData())
-
 end
 
 local status, msg = xpcall(main, __G__TRACKBACK__)

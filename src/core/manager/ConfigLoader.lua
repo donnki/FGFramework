@@ -12,7 +12,7 @@ ConfigLoader.__index = ConfigLoader
 
 local function loadLocalValueByKey(key, hashCheck, forseEncode)
     local value = cc.UserDefault:getInstance():getStringForKey(key)
-    if (isNativePlatform() and hashCheck) or forseEncode then
+    if (native.platform.isMobile and hashCheck) or forseEncode then
         local validation = tostring(nativeCyptoKeyValue(key, value))
         if validation == cc.UserDefault:getInstance():getStringForKey(key.."_hash") then
             return value
@@ -31,7 +31,7 @@ end
 
 local function saveLocalValueByKey(key, value, hashCheck, forseEncode)
     cc.UserDefault:getInstance():setStringForKey(key, value)
-    if (isNativePlatform() and hashCheck) or forseEncode then
+    if (native.platform.isMobile and hashCheck) or forseEncode then
         local validation = nativeCyptoKeyValue(key, value)
         cc.UserDefault:getInstance():setStringForKey(key.."_hash", validation)
     end

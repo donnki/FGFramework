@@ -1,4 +1,4 @@
-package org.cocos2dx.lua;
+package com.luciolagames.cocos2dx.utils;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxLuaJavaBridge;
@@ -99,7 +99,7 @@ public class GooglePlayIABPlugin {
 				return;
 			}
 			Log.d(TAG, "Query inventory was successful.");
-
+			/*
 			Purchase gasPurchase = inventory
 					.getPurchase("android.test.purchased");
 			if (gasPurchase != null && verifyDeveloperPayload(gasPurchase)) {
@@ -109,6 +109,7 @@ public class GooglePlayIABPlugin {
 						mConsumeFinishedListener);
 				return;
 			}
+			*/
 		}
 	};
 	
@@ -141,7 +142,15 @@ public class GooglePlayIABPlugin {
 
 			Log.d(TAG, "Purchase successful.");
 			mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-			
+			context.runOnGLThread(new Runnable() {
+	            @Override
+	            public void run() {
+	            	if(luaSuccessCallback != -1){
+						Cocos2dxLuaJavaBridge.callLuaFunctionWithString(luaSuccessCallback, "success");
+						clearLuaCallback();
+					}
+	            }
+	          });
 		}
 	};
 
@@ -184,6 +193,10 @@ public class GooglePlayIABPlugin {
 	
 	/**
 	 * 对Lua接口
+	 * android.test.purchased
+	 * android.test.canceled
+	 * android.test.refunded
+	 * android.test.item_unavailable
 	 * */
 	public static void payForProduct(String productID, final int successCallback, final int failedCallback){
 		luaSuccessCallback = successCallback;

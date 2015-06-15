@@ -1,23 +1,24 @@
-Platform = {
-	isAndroid = cc.Application:getInstance():getTargetPlatform() == cc.PLATFORM_OS_ANDROID,
-	isIOS = cc.Application:getInstance():getTargetPlatform() == cc.PLATFORM_OS_IPHONE or cc.Application:getInstance():getTargetPlatform() == cc.PLATFORM_OS_IPAD,
-	isMac = cc.Application:getInstance():getTargetPlatform() == cc.PLATFORM_OS_MAC,
-}
+
 
 ----------系统--------------
+
 require "json"
 require "cocos.cocosdenshion.AudioEngine"
 require "common.GlobalFunctions" 
-require "common.NativeHelper"
 require "common.helper"
 require "common.deepcopy"
-Log = require "core.Logger"
-Time = require "core.Time"
 
-Toast = require("core.ui.widgets.UIToast")
-TipWindow = require("core.ui.widgets.UITipWindow")
+native 		= 		require "common.NativeHelper"
+Log 		=		require "core.Logger"
+Time 		= 		require "core.Time"
+i18n 		= 		require "core.i18n"
 
-require "core.i18n"
+
+--***********UI widgets*******
+Toast 		= 		require("core.ui.widgets.UIToast")
+TipWindow 	= 		require("core.ui.widgets.UITipWindow")
+
+
 
 require "core.GameEngine"
 

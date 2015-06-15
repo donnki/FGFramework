@@ -1,4 +1,4 @@
-package org.cocos2dx.lua;
+package com.luciolagames.cocos2dx.utils;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 
@@ -16,9 +16,7 @@ import com.google.android.gms.games.Player;
 import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
 
-public class GooglePlayGameServicePlugin implements
-	GoogleApiClient.ConnectionCallbacks,
-	GoogleApiClient.OnConnectionFailedListener{
+public class GooglePlayGameServicePlugin implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 	private static final String TAG = "GAME";
 	
 	private GoogleApiClient mGoogleApiClient;
@@ -141,4 +139,35 @@ public class GooglePlayGameServicePlugin implements
                     Toast.LENGTH_LONG).show();
         }
     }
+    
+    
+    /**
+     * 对LUA接口
+     * */
+    
+
+	/**
+	 * 显示排行榜列表
+	 * */
+	public static void showLeaderboards(){
+		Log.d(TAG, "showLeaderboards");
+		sInstance.onShowLeaderboardsRequested();
+	}
+	
+	/**
+	 * 显示成就列表
+	 * */
+	public static void showAchievements(){
+		Log.d(TAG, "showAchievements");
+		sInstance.onShowAchievementsRequested();
+	}
+	
+	/**
+	 * 解锁成就
+	 * */
+	public static void unlockAchievement(String achievementID){
+		Log.d("TAG", "unlockAchievement" + achievementID);
+		sInstance.unlockAchievement(achievementID, "");
+		
+	}
 }
