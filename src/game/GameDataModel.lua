@@ -2,6 +2,7 @@
 --游戏数据管理器
 --通过其实例可以读取所有Model的数据
 -----------------
+
 local GameDataModel = class("GameDataModel")
 
 local instance = nil

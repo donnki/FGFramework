@@ -7,6 +7,7 @@ cc.FileUtils:getInstance():addSearchPath("res/UIs/")
 require "config"
 require "cocos.init"
 require "core.init"
+require "game.GameConfig"
 require "game.GameResources"
 local DataManager = require "game.GameDataModel"
 

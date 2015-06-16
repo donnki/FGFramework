@@ -48,6 +48,17 @@ function native.showAchievements()
     end
 end
 
+function native.unlockAchievement(achievementID)
+    if luaj then
+        local className = "com/luciolagames/cocos2dx/utils/GooglePlayGameServicePlugin"
+        local funcName = "unlockAchievement"
+        local sig =  "(Ljava/lang/String;)V"
+        local argv = {achievementID}
+
+        luaj.callStaticMethod(className, funcName, argv, sig)
+    end
+end
+
 
 function native.showLeaderboards()
     if luaj then
@@ -60,12 +71,61 @@ function native.showLeaderboards()
     end
 end
 
+
+function native.showLeaderboardByID(lid, span)
+    local timeSpan = span and span or 0
+    if luaj then
+        local className = "com/luciolagames/cocos2dx/utils/GooglePlayGameServicePlugin"
+        local funcName = "showLeaderboardByID"
+        local sig =  "(Ljava/lang/String;I)V"
+        local argv = {lid, timeSpan}
+        
+        luaj.callStaticMethod(className, funcName, argv, sig)
+    end
+end
+
+function native.leaderboardSubmitScore(lid, score)
+    -- Log.i("native.leaderboardSubmitScore ", lid, score)
+    if luaj then
+        local className = "com/luciolagames/cocos2dx/utils/GooglePlayGameServicePlugin"
+        local funcName = "submitLeaderboardScore"
+        local sig =  "(Ljava/lang/String;I)V"
+        local argv = {lid, score}
+        
+        luaj.callStaticMethod(className, funcName, argv, sig)
+    end
+end
+
+function native.loadLeaderboardScore(lid, callback)
+    -- Log.i("native.leaderboardSubmitScore ", lid, score)
+    if luaj then
+        local className = "com/luciolagames/cocos2dx/utils/GooglePlayGameServicePlugin"
+        local funcName = "loadLeaderboardScore"
+        local sig =  "(Ljava/lang/String;I)V"
+        local argv = {lid, callback}
+        
+        luaj.callStaticMethod(className, funcName, argv, sig)
+    end
+end
+
 function native.purchaseItem(productID, successCallback, failedCallback)
     if luaj then
         local className = "com/luciolagames/cocos2dx/utils/GooglePlayIABPlugin"
         local funcName = "payForProduct"
         local sig = "(Ljava/lang/String;II)V"
         local argv = {productID, successCallback, failedCallback}
+
+        luaj.callStaticMethod(className, funcName, argv, sig)
+    end
+end
+
+function native.showInterstitialAD()
+    Log.i("native.showInterstitialAD")
+    if luaj then
+        local className = "com/luciolagames/cocos2dx/utils/AdmobPlugin"
+        local funcName = "showInterstitialAD"
+        local sig = "()V"
+        local argv = {}
 
         luaj.callStaticMethod(className, funcName, argv, sig)
     end

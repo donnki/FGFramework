@@ -41,6 +41,7 @@ public class AppActivity extends Cocos2dxActivity  {
 	
 	protected GooglePlayIABPlugin mIABPlugin = null;
 	protected GooglePlayGameServicePlugin mGameServicePlugin = null;
+	protected AdmobPlugin mAdmobPlugin = null;
 	protected CommonHelper mHelper = null;
 	
 	@Override
@@ -50,7 +51,7 @@ public class AppActivity extends Cocos2dxActivity  {
 		mHelper = new CommonHelper(this);
 		mIABPlugin = new GooglePlayIABPlugin(this);
 		mGameServicePlugin = new GooglePlayGameServicePlugin(this);
-		
+		mAdmobPlugin = new AdmobPlugin(this);
 	}
 
     @Override
