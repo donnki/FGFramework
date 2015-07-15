@@ -22,6 +22,6 @@ Here's the Architecture based on FasterGameEngine
 
 #Usage:
 * Create Cocos2d Projects by using command: 
- +cocos new -l lua $ProjectName+
++cocos new -l lua $ProjectName+
 * Replace "src" with FasterGameEngine src
 * Write your code
