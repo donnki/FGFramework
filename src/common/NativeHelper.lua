@@ -49,6 +49,8 @@ function native.showAchievements()
         local argv = {}
 
         luaj.callStaticMethod(className, funcName, argv, sig)
+    elseif luaoc then
+        luaoc.callStaticMethod("GameCenterServicePlugin", "showAchievements", {})
     end
 end
 
