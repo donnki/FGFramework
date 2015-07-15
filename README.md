@@ -17,4 +17,9 @@ Public Services & SDK Integrate
 * Google Play Game Services Integrate(Leaderboard, Achievement, Quest)
 * iOS GameCenter Integrate(Leaderboard, Achievement)
 
+Here's the Architecture based on FasterGameEngine
 ![](https://raw.githubusercontent.com/donnki/FasterGameEngine/master/Architecture.jpg)
+
+----
+Usage:
+----
