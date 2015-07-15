@@ -27,10 +27,15 @@ THE SOFTWARE.
 package org.cocos2dx.lua;
 
 
+import java.util.Calendar;
+
 import org.cocos2dx.lib.Cocos2dxActivity;
 
-import com.luciolagames.cocos2dx.utils.*;
+import com.luciolagames.libfgeplugins.*;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,27 +43,20 @@ import android.util.Log;
 public class AppActivity extends Cocos2dxActivity  {
 	private static String TAG = "GAME";
 	private static AppActivity context;
-	
-	protected GooglePlayIABPlugin mIABPlugin = null;
-	protected GooglePlayGameServicePlugin mGameServicePlugin = null;
-	protected AdmobPlugin mAdmobPlugin = null;
-	protected CommonHelper mHelper = null;
+	private PluginManager plugins = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = this;
-		mHelper = new CommonHelper(this);
-		mIABPlugin = new GooglePlayIABPlugin(this);
-		mGameServicePlugin = new GooglePlayGameServicePlugin(this);
-		mAdmobPlugin = new AdmobPlugin(this);
-	}
+		plugins = new PluginManager(this, AppActivity.class); 
+	} 
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(mGameServicePlugin != null){
-        	mGameServicePlugin.onStart();
+        if(plugins != null){
+        	plugins.onStart();
         }
 
     }
@@ -66,16 +64,16 @@ public class AppActivity extends Cocos2dxActivity  {
     @Override
     protected void onStop() {
         super.onStop();
-        if(mGameServicePlugin != null){
-        	mGameServicePlugin.onStop();
+        if(plugins != null){
+        	plugins.onStop();
         }
     }
     
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mIABPlugin != null){
-        	mIABPlugin.onDestroy(); 
+        if (plugins != null){
+        	plugins.onDestroy(); 
         }
     }
     
@@ -83,14 +81,25 @@ public class AppActivity extends Cocos2dxActivity  {
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if (mGameServicePlugin != null){
-        	mGameServicePlugin.onActivityResult(requestCode, resultCode, intent);
-        }
-        if (mIABPlugin != null){
-        	mIABPlugin.onActivityResult(requestCode, resultCode, intent);
+        if (plugins != null){
+        	plugins.onActivityResult(requestCode, resultCode, intent);
         }
     }
 
+	@Override
+	protected void onResume(){
+		super.onResume();
+		if(plugins != null){
+			plugins.onResume();
+		}
+	}
 	
-
+	@Override
+	protected void onPause(){
+		super.onPause();
+		if(plugins != null){
+			plugins.onPause();
+		}
+	}
+	
 }

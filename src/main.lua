@@ -18,6 +18,11 @@ local function main()
 
 	local TestScene = require("TestScene")
     Engine:changeScene(TestScene.createWithData())
+
+    -- local TestRecorderScene = require("TestRecorderScene")
+    -- Engine:changeScene(TestRecorderScene.create())
+    local gate = cc.WebSocket:create("ws://localhost:3014")
+    
 end
 
 local status, msg = xpcall(main, __G__TRACKBACK__)

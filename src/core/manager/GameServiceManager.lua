@@ -48,5 +48,9 @@ function GameServiceManager:unlockAchievement(achievementID)
     native.unlockAchievement(achievementID)
 end
 
+function GameServiceManager:showQuests()
+    native.showQuests()
+end
+
 
 return GameServiceManager

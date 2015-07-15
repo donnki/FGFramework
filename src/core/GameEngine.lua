@@ -69,7 +69,7 @@ function GameEngine:scheduleMainLoop()
         Time.onUpdate(delta)        
         local scene = cc.Director:getInstance():getRunningScene()
         if scene ~= nil and scene.update ~= nil then 
-            scene:update(Time.delta)
+            scene:update(Time.delta, delta)
         end
     end,0,false)
 end

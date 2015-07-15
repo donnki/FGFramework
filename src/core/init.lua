@@ -12,7 +12,7 @@ native 		= 		require "common.NativeHelper"
 Log 		=		require "core.Logger"
 Time 		= 		require "core.Time"
 i18n 		= 		require "core.i18n"
-
+http 		=    	require "core.manager.GameHttpClient"
 
 --***********UI widgets*******
 Toast 		= 		require("core.ui.widgets.UIToast")
