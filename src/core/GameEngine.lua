@@ -54,7 +54,6 @@ function GameEngine:init()
     self.UIManager = UIManager:getInstance()
     self.soundManager = SoundManager:getInstance()
     self.UIFactory = UIFactory:getInstance()
-    self.versionManager = VersionManager:getInstance()
     self.service = GameServiceManager:getInstance()
     self.iap = InAppPurchaseManager:getInstance()
     
@@ -107,8 +106,8 @@ end
 
 function GameEngine:changeScene(scene)
     if not scene and self.scene == scene then return end
-    Log.i("GameEngine即将切换至" ,scene:getName() ,"场景")
-    local preSceneName = self.scene and self.scene:getName() or nil
+    
+    self.preSceneName = self.scene and self.scene:getName() or nil
 
     self.scene = scene
     if DEBUG_MODE then
@@ -117,14 +116,15 @@ function GameEngine:changeScene(scene)
     end 
     
     cc.Director:getInstance():replaceScene(scene)
+    Log.i("GameEngine已切换至" ,scene:getName() ,"场景")
     --Log.d("GameEngine切换场景" ,scene:getName() ,"完毕")
-    self.resourceManager:removeSceneRes(preSceneName)
+    -- self:removeSceneRes(self.preSceneName)
 end
 
 function GameEngine:pushScene(scene)
     if not scene and self.scene == scene then return end
     Log.i("GameEngine即将切换至" ,scene:getName() ,"场景")
-    local preSceneName = self.scene and self.scene:getName() or nil
+    self.preSceneName = self.scene and self.scene:getName() or nil
     self.preScene = self.scene
     self.scene = scene
     if DEBUG_MODE then
@@ -133,14 +133,14 @@ function GameEngine:pushScene(scene)
     end 
 
     cc.Director:getInstance():pushScene(scene)
-    self.resourceManager:removeSceneRes(preSceneName)
+    -- self:removeSceneRes(self.preSceneName)
 end
 
 function GameEngine:popScene()
     if DEBUG_MODE then
         LoggerWindow:getInstance():removeFromParent()
     end 
-    local preSceneName = self.scene and self.scene:getName() or nil
+    self.preSceneName = self.scene and self.scene:getName() or nil
     Log.i("GameEngine即将Pop至前一场景")
     cc.Director:getInstance():popScene()
     self.scene = self.preScene
@@ -148,7 +148,11 @@ function GameEngine:popScene()
     if DEBUG_MODE then
         self.scene:addChild(LoggerWindow:getInstance(), 99999)
     end
-    self.resourceManager:removeSceneRes(preSceneName)
+    -- self:removeSceneRes(self.preSceneName)
+end
+
+function GameEngine:removeSceneRes(sceneName)
+    self.resourceManager:removeSceneRes(sceneName)
 end
 
 function GameEngine:changeSceneById(sceneId)
@@ -156,6 +160,9 @@ function GameEngine:changeSceneById(sceneId)
 end
 
 function GameEngine:getVersionManager()
+    if not self.versionManager then
+        self.versionManager = VersionManager:getInstance()
+    end
     return self.versionManager
 end
 function GameEngine:getEventManager()

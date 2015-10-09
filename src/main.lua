@@ -16,12 +16,17 @@ local function main()
 
     Engine.dataManager = DataManager:getInstance()
 
+    -- local DemoScene = require("game.demo.DemoScene")
+    -- Engine:changeScene(DemoScene.create())
+
 	local TestScene = require("TestScene")
     Engine:changeScene(TestScene.createWithData())
 
     -- local TestRecorderScene = require("TestRecorderScene")
     -- Engine:changeScene(TestRecorderScene.create())
-    local gate = cc.WebSocket:create("ws://localhost:3014")
+
+
+    -- local gate = cc.WebSocket:create("ws://localhost:3014")
     
 end
 

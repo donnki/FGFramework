@@ -9,6 +9,7 @@ function TestScene:init(config)
 
     Log.d("TestScene初始化临时测试场景")
     local layer = cc.Layer:create()
+    layer:setSwallowsTouches(true)
     layer:setTag(1024)
     self:addChild(layer)
 
@@ -149,8 +150,22 @@ function TestScene:init(config)
 
     menu:alignItemsVertically()
 
-    
+    local sprite = cc.Sprite:create()
+    sprite:setPosition(display.cx, display.cy)
+    sprite:setAnchorPoint(0, 0)
+    layer:addChild(sprite)
+    local animation = cc.Animation:create()
+    local  name
+    for i = 1, 12 do
+        name = "res/test/37758-"..i..".png"
+        animation:addSpriteFrameWithFile(name)
+    end
+    -- should last 2.8 seconds. And there are 14 frames.
+    animation:setDelayPerUnit(1 / 12.0)
+    animation:setRestoreOriginalFrame(true)
 
+    local action = cc.Animate:create(animation)
+    sprite:runAction(cc.Sequence:create(action, cc.CallFunc:create(function()Log.i("~~~")end)))
 end
 
 function TestScene:onEnter()

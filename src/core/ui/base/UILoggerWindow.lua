@@ -94,16 +94,16 @@ function LoggerWindow:init()
     -- listView:addEventListener(listViewEvent)
     -- listView:addScrollViewEventListener(scrollViewEvent)
 
-    local tmpText = ccui.Text:create()
-    tmpText:setString("~~")
-    tmpText:setFontSize(12) 
-    local custom_item = ccui.Layout:create()
-    custom_item:setContentSize(tmpText:getContentSize())
-    tmpText:setPosition(cc.p(custom_item:getContentSize().width / 2.0, custom_item:getContentSize().height / 2.0))
-    custom_item:addChild(tmpText)
-    listView:setItemModel(custom_item)
+    -- local tmpText = ccui.Text:create()
+    -- tmpText:setString("~~")
+    -- tmpText:setFontSize(12) 
+    -- local custom_item = ccui.Layout:create()
+    -- custom_item:setContentSize(tmpText:getContentSize())
+    -- tmpText:setPosition(cc.p(custom_item:getContentSize().width / 2.0, custom_item:getContentSize().height / 2.0))
+    -- custom_item:addChild(tmpText)
+    -- listView:setItemModel(custom_item)
 
-    listView:setItemsMargin(2.0)
+    listView:setItemsMargin(5.0)
     box:addChild(listView)
     self.logListView = listView
     for i=1,1 do
@@ -143,6 +143,46 @@ function LoggerWindow:init()
         end
     end)
     textButton:setPosition(loggerWidth, 20)
+    box:addChild(textButton)
+
+    textButton = ccui.Button:create()
+    textButton:setAnchorPoint(1,0.5)
+    textButton:setTouchEnabled(true)
+    textButton:setTitleFontSize(20)
+    textButton:setTitleText("打印内存信息")
+    textButton:addTouchEventListener(function(sender, eventType)
+        if eventType == ccui.TouchEventType.ended then
+            local sharedTextureCache = cc.Director:getInstance():getTextureCache()
+
+            local function showMemoryUsage()
+                print("---------------------------------------------------")
+                print(string.format("LUA VM MEMORY USED: %0.2f KB", collectgarbage("count")))
+                print(sharedTextureCache:getCachedTextureInfo(),"--------------------------------------------------------------")
+
+            end
+            showMemoryUsage()
+        end
+    end)
+    textButton:setPosition(loggerWidth-150, 20)
+    box:addChild(textButton)
+
+    textButton = ccui.Button:create()
+    textButton:setAnchorPoint(1,0.5)
+    textButton:setTouchEnabled(true)
+    textButton:setTitleFontSize(20)
+    textButton:setTitleText("显示FPS")
+    textButton:addTouchEventListener(function(sender, eventType)
+        if eventType == ccui.TouchEventType.ended then
+            if not cc.Director:getInstance():isDisplayStats() then
+                cc.Director:getInstance():setDisplayStats(true)
+                sender:setTitleText("隐藏FPS")
+            else
+                cc.Director:getInstance():setDisplayStats(false)
+                sender:setTitleText("显示FPS")
+            end
+        end
+    end)
+    textButton:setPosition(loggerWidth-300, 20)
     box:addChild(textButton)
 
     self:registerScriptHandler(function(event)

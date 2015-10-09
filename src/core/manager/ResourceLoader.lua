@@ -74,7 +74,7 @@ function ResourceLoader:prepareLoad(sceneName)
         self.totalLoadResourceCount = self.totalLoadResourceCount + #res
         
     end
-    Log.i("共需要预加载"..self.totalLoadResourceCount.."个资源，现在开始加载：")
+    Log.d(sceneName, "共需要预加载"..self.totalLoadResourceCount.."个资源，现在开始加载：")
 
     self:startLoadingProgress()
     
@@ -92,7 +92,7 @@ end
 
 function ResourceLoader:removeSceneRes(sceneName)
     if sceneName then
-        Log.i("释放", sceneName, "已加载的资源")
+        Log.d("释放", sceneName, "已加载的资源。")
         if PreloadResources[sceneName] then
             self:unloadRes(PreloadResources[sceneName])
         end
@@ -107,7 +107,7 @@ function ResourceLoader:startLoadingProgress()
         self.loadingTime = self.loadingTime + Time.delta            --异步加载资源计时
         self.loadingPercent = self.totalLoadResourceCount > 0 and self.currentLoadResourceCount/self.totalLoadResourceCount or 1
         if self.currentLoadResourceCount == self.totalLoadResourceCount and not self.loadFinished then
-            Log.i("资源加载完毕，共预加载了"..self.currentLoadResourceCount.."个资源，共耗时"..self.loadingTime.."秒。")
+            Log.d("资源加载完毕，共预加载了"..self.currentLoadResourceCount.."个资源，共耗时"..self.loadingTime.."秒。")
             self.loadFinished = true
             Engine:getEventManager():dispatchEvent("OnSceneResourceLoadFinished")
             scheduler:unscheduleScriptEntry(schedulerEntry)
