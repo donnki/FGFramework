@@ -10,6 +10,9 @@ Features:
 * Time Management
 * i18n
 * UI widgets
+* FSM 
+* Network SocketManager、Protobuf
+* Plan Scheduler
 * etc...
 
 Public Services & SDK Integrate
