@@ -1,10 +1,18 @@
 ----------------
 --场景基类
 ----------------
-SceneBase = class("SceneBase",function () --@return scene
-        local scene = cc.Scene:create()
-        -- scene = createInstance(SceneBase, scene)
-        return scene;
+SceneBase = class("SceneBase",function (usePhysics) --@return scene
+        if usePhysics then
+            local scene = cc.Scene:createWithPhysics()
+            scene:setNodeEventEnabled(true)
+            scene:setAutoCleanupEnabled()
+            scene:getPhysicsWorld():setGravity(cc.p(0, 0))
+            return scene
+        else
+            local scene = cc.Scene:create()
+            -- scene = createInstance(SceneBase, scene)
+            return scene;
+        end
 end)
 
 SceneBase.__index = SceneBase
@@ -12,7 +20,6 @@ SceneBase.lastTouchPosition = nil
 SceneBase.lastTouchEventListener = nil
 SceneBase.uiRoot = nil
 SceneBase.name = nil
-
 
 function SceneBase:init()
     self:initUI()
@@ -58,7 +65,7 @@ function SceneBase:getUIRoot()
 end
 
 function SceneBase:addUiToRoot(key,child)
-    self.uiRoot:registerWindow(key,child)
+    return self.uiRoot:registerWindow(key,child)
 end
 
 function SceneBase:update( ... )
@@ -67,6 +74,10 @@ end
 
 function SceneBase:closeCurWnd()
     self.uiRoot:closeCurUI()
+end
+
+function SceneBase:closeAllWnd()
+    self.uiRoot:closeAllUI()
 end
 
 function SceneBase:closeUIbyKey(key)
@@ -113,3 +124,6 @@ function SceneBase.createWithData(data)
     return scene
 end
 
+function SceneBase.getExtraRes()
+    Log.w("场景子类应该重写本方法，来动态加载额外的资源")
+end

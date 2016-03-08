@@ -155,10 +155,10 @@ function LoggerWindow:init()
             local sharedTextureCache = cc.Director:getInstance():getTextureCache()
 
             local function showMemoryUsage()
+                print("已加载的资源：",dump(Engine:getResourceLoader().loadedResources))
                 print("---------------------------------------------------")
                 print(string.format("LUA VM MEMORY USED: %0.2f KB", collectgarbage("count")))
                 print(sharedTextureCache:getCachedTextureInfo(),"--------------------------------------------------------------")
-
             end
             showMemoryUsage()
         end

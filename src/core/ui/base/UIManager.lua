@@ -30,26 +30,25 @@ function UIManager:open(key,...)
 		return
 	end
 	local className = classTable.className	
-	
 	if classTable.classPath then
 		className = require(classTable.classPath)
 	end
 
 	if not className then
         Log.i(string.format("className(%s) is nil", key))
-	   return;
+	   return
 	end
 	Log.d("创建"..key.."窗口对象")
 	obj = className:new()
 	obj:init(...)
 	local templatePath = classTable.templatePath
 	if classTable.templatePath then
-		obj:loadTemplate(templatePath) 
+		obj:loadTemplate(templatePath, classTable.subviews) 
 	end
 	local tag = classTable.tag
-	local curScene = gDirector:getRunningScene()
-	curScene:addUiToRoot(tag,obj)
-	return obj
+	local curScene = Engine.scene
+	local ret = curScene:addUiToRoot(tag,obj)
+	return obj, ret
 end
 
 function UIManager:openSingleton(key,...)
@@ -58,7 +57,7 @@ function UIManager:openSingleton(key,...)
 	if obj then
 		local classTable = AllRegisterWnd[key]
 		local tag = classTable.tag
-		local curScene = gDirector:getRunningScene()
+		local curScene = Engine.scene
 		if curScene:getUIRoot():getChildByTag(tag) then
 			obj:show()
 		else
@@ -72,6 +71,14 @@ function UIManager:openSingleton(key,...)
 		self.SingletonPool[key] = obj
 	end
 	return obj
+end
+
+function UIManager:openModal(key, ...)
+	local wnd, ret = self:open(key, ...)
+	local layer = require("core.ui.widgets.UIShadowLayer").create():scale(1.5)
+    wnd:addChild(layer,-1,999)
+    wnd:show()
+	return wnd
 end
 
 function UIManager:createWnd(className,templatePath,isSingleton,...)
@@ -96,6 +103,10 @@ end
 
 function UIManager:closeCurUI()
 	Engine:getCurScene():closeCurWnd()
+end
+
+function UIManager:closeAllUI()
+	Engine:getCurScene():closeAllWnd()
 end
 
 function UIManager:closeUIByKey(key)

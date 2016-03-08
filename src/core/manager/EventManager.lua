@@ -32,7 +32,7 @@ function EventManager:registerEventHandler(eventType, handler, sender)
         local param = event.userdata
 
         Log.d("EventManager捕获["..eventType.."]事件")
-        handler(param)
+        handler(param,sender)
     end)
     local key = tostring(eventType)
     if sender then

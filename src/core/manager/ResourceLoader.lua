@@ -13,7 +13,7 @@ ResourceLoader.currentLoadResourceCount = 0
 ResourceLoader.loadFinished = false
 ResourceLoader.loadingTime = 0
 ResourceLoader.loadedResources = nil
-
+ResourceLoader.dynamicRes = nil
 local _globalResLoaded = false
 
 function ResourceLoader:getInstance()
@@ -35,7 +35,8 @@ function ResourceLoader:init()
     }
 end
 
-function ResourceLoader:prepareLoad(sceneName)
+function ResourceLoader:prepareLoad(sceneName, dynamicRes)
+    self.dynamicRes = dynamicRes
     self.loadingTime = 0
     self.totalLoadResourceCount = 0
     self.currentLoadResourceCount = 0
@@ -69,6 +70,18 @@ function ResourceLoader:prepareLoad(sceneName)
             end
         end
     end
+
+    if dynamicRes then
+        for k,allRes in pairs(dynamicRes) do
+            for k2,res in pairs(allRes) do
+                if not table.arrayContains(self.loadedResources[k], res) then
+                    table.insert(loadResources[k], res)
+                else
+                    Log.d("已存在资源: "..res)
+                end
+            end
+        end
+    end
     
     for k,res in pairs(loadResources) do --统计需要加载的资源数目
         self.totalLoadResourceCount = self.totalLoadResourceCount + #res
@@ -92,10 +105,15 @@ end
 
 function ResourceLoader:removeSceneRes(sceneName)
     if sceneName then
-        Log.d("释放", sceneName, "已加载的资源。")
+        Log.i("释放", sceneName, "已加载的资源。")
+        if self.dynamicRes then
+            self:unloadRes(self.dynamicRes)
+            self.dynamicRes = nil
+        end
         if PreloadResources[sceneName] then
             self:unloadRes(PreloadResources[sceneName])
         end
+        cc.Director:getInstance():getTextureCache():removeUnusedTextures()
     end
     
 end
@@ -196,14 +214,14 @@ function ResourceLoader:unloadRes(res)
                 cc.SpriteFrameCache:getInstance():removeSpriteFramesFromFile(v)
                 table.remove(self.loadedResources.spriteFrames, table.arrayContains(self.loadedResources.spriteFrames,v))
             end
-            Log.d("Remove: ", v)
+            Log.d("Remove: ", dump(v))
         end
     end
 
     if res.textures then
         for k,texturePath in pairs(res.textures) do
             cc.Director:getInstance():getTextureCache():removeTextureForKey(texturePath)
-            table.remove(self.loadedResources.textures, table.arrayContains(self.loadedResources.spriteFrames,texturePath))
+            table.remove(self.loadedResources.textures, table.arrayContains(self.loadedResources.textures,texturePath))
             Log.d("Remove: ", texturePath)
         end
     end
@@ -211,8 +229,8 @@ function ResourceLoader:unloadRes(res)
     if res.armatures then
         for k,path in pairs(res.armatures) do
             ccs.ArmatureDataManager:getInstance():removeArmatureFileInfo(path)
-            table.remove(self.loadedResources.armatures, table.arrayContains(self.loadedResources.spriteFrames,path))
-            Log.d("Remove: ", path)
+            table.remove(self.loadedResources.armatures, table.arrayContains(self.loadedResources.armatures,path))
+            Log.d("Remove armatures: ", path)
         end
     end
 
@@ -236,6 +254,16 @@ function ResourceLoader:loadJsonConfig(path)
         return json.decode(cc.FileUtils:getInstance():getStringFromFile(path))
     else
         Log.e("File: "..path.." not Found!")
+    end
+end
+
+function ResourceLoader:saveTextToFile(filename, text)
+    local path = cc.FileUtils:getInstance():getWritablePath()..filename
+    local file, err = io.open(path, "wb")
+    if file then
+        file:write(text)
+        file:flush()
+        -- file.close()
     end
 end
 

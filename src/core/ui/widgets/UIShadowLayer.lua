@@ -10,12 +10,12 @@ end
 
 
 function ShadowLayer:init()
-
     local coverLayer = cc.LayerColor:create(cc.c4b(0,0,0,130))
     coverLayer:setContentSize(cc.size(display.width, display.height))
     self:addChild(coverLayer)
 
     local function onTouchBegan(touch, event)
+        self:setLocalZOrder(self:getLocalZOrder()-1)
         return true
     end
 
@@ -32,7 +32,6 @@ function ShadowLayer:init()
     listener1:registerScriptHandler(onTouchEnded,cc.Handler.EVENT_TOUCH_ENDED )
     local eventDispatcher = self:getEventDispatcher()
     eventDispatcher:addEventListenerWithSceneGraphPriority(listener1, coverLayer)
-
 end
 
 
