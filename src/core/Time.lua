@@ -16,7 +16,6 @@ function Time.onUpdate(delta)
 	Time.realtimeSinceStartup = Time.realtimeSinceStartup + delta
 	Time.frameCount = Time.frameCount + 1
     Time.delta = delta
-
 end
 
 function Time.async()

@@ -98,9 +98,11 @@ function ResourceLoader:prepareLoad(sceneName, dynamicRes)
 end
 
 function ResourceLoader:removeAllUnusedRes()
-    Log.w("释放所有未使用资源，需慎用，可能导致一些显示异常")
+    Log.d("释放所有未使用资源，需慎用，可能导致一些显示异常")
     cc.Director:getInstance():getTextureCache():removeUnusedTextures()
-    cc.SpriteFrameCache:getInstance():removeUnusedSpriteFrames()
+    -- cc.SpriteFrameCache:getInstance():removeUnusedSpriteFrames()
+    collectgarbage("collect")
+    collectgarbage("collect")
 end
 
 function ResourceLoader:removeSceneRes(sceneName)
@@ -113,7 +115,8 @@ function ResourceLoader:removeSceneRes(sceneName)
         if PreloadResources[sceneName] then
             self:unloadRes(PreloadResources[sceneName])
         end
-        cc.Director:getInstance():getTextureCache():removeUnusedTextures()
+        -- cc.Director:getInstance():getTextureCache():removeUnusedTextures()
+        self:removeAllUnusedRes()
     end
     
 end
@@ -134,46 +137,80 @@ function ResourceLoader:startLoadingProgress()
     end,0,false)
 end
 
-function ResourceLoader:loadRes(res)
+function ResourceLoader:loadExtra(res)
+    if self.dynamicRes then
+        for k,v in pairs(res) do
+            if not self.dynamicRes[k] then self.dynamicRes[k] = {} end
+            for k2,v2 in pairs(v) do
+                table.insert(self.dynamicRes[k], v2)
+            end
+        end
+    else
+        self.dynamicRes = res
+    end
+    self:loadRes(res, true)
+end
+
+function ResourceLoader:loadRes(res, sync)
     if res.spriteFrames then
         for k,v in pairs(res.spriteFrames) do
-            if type(v) == "table" then
-                cc.Director:getInstance():getTextureCache():addImageAsync(v[2],function(texture)
-                    cc.SpriteFrameCache:getInstance():addSpriteFrames(v[1]) 
-                    self.currentLoadResourceCount = self.currentLoadResourceCount + 1
-                    self.loadingStateString = "Loading SpriteFrame: "..v[1]..", Texture: "..v[2]
-                    Log.d(self.loadingStateString)
-                    table.insert(self.loadedResources.spriteFrames, v[1])
-                end)
-            elseif type(v) == "string" then
-                self.loadingStateString = "Loading SpriteFrame: "..v
-                cc.SpriteFrameCache:getInstance():addSpriteFrames(v) 
+            if sync then
+                cc.Director:getInstance():getTextureCache():addImage(v[2])
+                cc.SpriteFrameCache:getInstance():addSpriteFrames(v[1]) 
                 self.currentLoadResourceCount = self.currentLoadResourceCount + 1
-                Log.d(self.loadingStateString)
-                table.insert(self.loadedResources.spriteFrames, v)
+                table.insert(self.loadedResources.spriteFrames, v[1])
+            else
+                if type(v) == "table" then
+                    cc.Director:getInstance():getTextureCache():addImageAsync(v[2],function(texture)
+                        cc.SpriteFrameCache:getInstance():addSpriteFrames(v[1]) 
+                        self.currentLoadResourceCount = self.currentLoadResourceCount + 1
+                        self.loadingStateString = "Loading SpriteFrame: "..v[1]..", Texture: "..v[2]
+                        Log.d(self.loadingStateString)
+                        table.insert(self.loadedResources.spriteFrames, v[1])
+                    end)
+                elseif type(v) == "string" then
+                    self.loadingStateString = "Loading SpriteFrame: "..v
+                    cc.SpriteFrameCache:getInstance():addSpriteFrames(v) 
+                    self.currentLoadResourceCount = self.currentLoadResourceCount + 1
+                    Log.d(self.loadingStateString)
+                    table.insert(self.loadedResources.spriteFrames, v)
+                end
             end
         end
     end
 
     if res.textures then
         for k,texturePath in pairs(res.textures) do
-            cc.Director:getInstance():getTextureCache():addImageAsync(texturePath,function()
+            if sync then
+                cc.Director:getInstance():getTextureCache():addImage(texturePath)
                 self.currentLoadResourceCount = self.currentLoadResourceCount + 1
-                self.loadingStateString = "Loading Texture: "..texturePath
                 table.insert(self.loadedResources.textures, texturePath)
-                Log.d(self.loadingStateString)
-            end)
+            else
+                cc.Director:getInstance():getTextureCache():addImageAsync(texturePath,function()
+                    self.currentLoadResourceCount = self.currentLoadResourceCount + 1
+                    self.loadingStateString = "Loading Texture: "..texturePath
+                    table.insert(self.loadedResources.textures, texturePath)
+                    Log.d(self.loadingStateString)
+                end)
+            end
         end
     end
 
     if res.armatures then
         for k,path in pairs(res.armatures) do
-            ccs.ArmatureDataManager:getInstance():addArmatureFileInfoAsync(path, function()
+            if sync then
+                ccs.ArmatureDataManager:getInstance():addArmatureFileInfo(path)
                 self.currentLoadResourceCount = self.currentLoadResourceCount + 1
-                self.loadingStateString = "Loading Armature:  "..path
                 table.insert(self.loadedResources.armatures, path)
-                Log.d(self.loadingStateString)
-            end)
+            else
+                ccs.ArmatureDataManager:getInstance():addArmatureFileInfoAsync(path, function()
+                    self.currentLoadResourceCount = self.currentLoadResourceCount + 1
+                    self.loadingStateString = "Loading Armature:  "..path
+                    table.insert(self.loadedResources.armatures, path)
+                    Log.d(self.loadingStateString)
+                end)
+            end
+            
         end
     end
 

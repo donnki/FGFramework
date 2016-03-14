@@ -90,7 +90,7 @@ function DBManager:findByID(tableName, id)
     if self.cache[tableName] and self.cache[tableName][id] then
         return self.cache[tableName][id]
     else
-        local results, count = self:query("select * from "..tableName.." where id="..id)
+        local results, count = self:query("select * from "..tableName.." where id='"..id.."'")
         if count == 0 then 
             Log.w("ID:"..id.."在数据库表"..tableName.."中不存在！")
         elseif count > 1 then

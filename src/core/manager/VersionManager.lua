@@ -29,7 +29,7 @@ function VersionManager:init()
 
 
     if not self.assetsManager:getLocalManifest():isLoaded() then
-            Log.w("本地manifest文件加载失败，停止更新")
+            Log.i("本地manifest文件加载失败，停止更新")
             Engine:getEventManager():dispatchEvent("OnVersionUpdateFailed")
     else
     	local versionManifest = self.assetsManager:getLocalManifest() 
