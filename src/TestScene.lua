@@ -1,9 +1,11 @@
 local TestScene = class("TestScene" , SceneBase)
-
+require("core.bt.BTInit")
 TestScene.__index = TestScene
 TestScene.name = "TestScene"
 local tmpbox = nil
-
+function TestScene:ctor()
+    self:init()
+end
 function TestScene:init(config)
     SceneBase.init(self)
 
@@ -19,7 +21,7 @@ function TestScene:init(config)
     layer:addChild(tmpbox)
 
 
-    local box = cc.LayerColor:create(cc.c4b(100,100,150,100));
+    local box = cc.LayerColor:create(cc.c4b(100,100,255,255));
     box:setContentSize( cc.size(display.width,display.height) );
     box:setPosition(0,0)
     layer:addChild(box)
@@ -30,162 +32,110 @@ function TestScene:init(config)
     local menu = cc.Menu:create()
     layer:addChild(menu, 10)
 
-    local label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Native Show AD", "Helvetica", 60))
+    local label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("DoTest", "Helvetica", 60))
     label:setAnchorPoint(cc.p(0.5, 0.5))
     label:registerScriptTapHandler(function()
-        native.showInterstitialAD()
+        local scene = require("TestScene").new()
+        display.replaceScene(scene)
     end)
     menu:addChild(label)
 
 
+    local a, b = 3, 2
+    self.btRoot = BTPrioritySelector.new("test")
+    
 
-    label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Native Buy Item", "Helvetica", 60))
-    label:setAnchorPoint(cc.p(0.5, 0.5))
-    label:registerScriptTapHandler(function()
-        Log.i("11call nativePurchaseItem")
-        Engine.iap:payForProduct(
-            "com.banabala.runpuppyrun.diamond40", 
-            function(successResponse)
-                Log.t(successResponse)
-            end, 
-            function(failedResponse)
-                Log.t(failedResponse)
-            end
-        )
+    local precondition = BTPrecondition.new("check")
+    precondition.func = function() return a > b end
 
-    end)
-    menu:addChild(label)
+    local a1 = BTAction.new("a1", precondition)
+    -- self.btRoot:addChild(a1)
 
-    label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Native Show Achievement", "Helvetica", 60))
-    label:setAnchorPoint(cc.p(0.5, 0.5))
-    label:registerScriptTapHandler(function()
-        Log.i("11call nativeShowAchievements")
-        Engine.service:showAchievements()
-    end)
-    menu:addChild(label)
+    local a2 = BTAction.new("a2")
 
-    label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Unlock Achievement", "Helvetica", 60))
-    label:setAnchorPoint(cc.p(0.5, 0.5))
-    label:registerScriptTapHandler(function()
+    local seq = BTSequence.new("seq")
+    seq:addChild(a1)
+    seq:addChild(a2)
 
-        Log.i("unlock achievement: achievement_prime")
-        Engine.service:unlockAchievement(Achievements.achievement_prime)
-    end)
-    menu:addChild(label)
+    local a3 = BTAction.new("a3")
+    local a4 = BTAction.new("a4")
+    local par = BTParallel.new("par", nil, true)
+    par:addChild(a3)
+    par:addChild(a4)
+    seq:addChild(par)
 
-    label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Native Show Leaderboard", "Helvetica", 60))
-    label:setAnchorPoint(cc.p(0.5, 0.5))
-    label:registerScriptTapHandler(function()
-        Log.i("call nativeShowLeaderboards")
-        Engine.service:showLeaderboards()
-    end)
-    menu:addChild(label)
+    local par2 = BTParallelFlexible.new(par2)
+    local a5 = BTAction.new("a5")
+    local a6 = BTAction.new("a6")
+    par2:addChild(a5)
+    par2:addChild(a6)
+    seq:addChild(par2)
 
-    label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Native Show Quest", "Helvetica", 60))
-    label:setAnchorPoint(cc.p(0.5, 0.5))
-    label:registerScriptTapHandler(function()
-        Log.i("call showQuests")
-        Engine.service:showQuests()
-    end)
-    menu:addChild(label)
+    self.btRoot:addChild(seq)
 
-    label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("HTTP doGet", "Helvetica", 60))
-    label:setAnchorPoint(cc.p(0.5, 0.5))
-    label:registerScriptTapHandler(function()
-        http.doGet("http://img3.douban.com/icon/ul3811658-63.jpg", function(response)
-            local fileData = response
-            local fullFileName = cc.FileUtils:getInstance():getWritablePath() .. "/ul3811658-63.jpg"
-            local file = io.open(fullFileName,"wb")
-            file:write(fileData)
-            file:close()
-            local texture2d = cc.Director:getInstance():getTextureCache():addImage(fullFileName)
-            local sprite = cc.Sprite:createWithTexture(texture2d)
-            sprite:setPosition(display.cx,display.cy)
-            self:addChild(sprite)
-        end, 0)
-    end)
-    menu:addChild(label)
-
-
-    label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Native addNotification", "Helvetica", 60))
-    label:setAnchorPoint(cc.p(0.5, 0.5))
-    label:registerScriptTapHandler(function()
-        Log.i("call addNotification")
-        native.addNotification("Hello", "Hi there", 3)
-    end)
-    menu:addChild(label)
-
-    label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Native statisticEvent", "Helvetica", 60))
-    label:setAnchorPoint(cc.p(0.5, 0.5))
-    label:registerScriptTapHandler(function()
-       
-        native.onStatisticEvent("TestEvent", {a=1234})
-    end)
-    menu:addChild(label)
-
-    label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Native showLeaderboardByID", "Helvetica", 60))
-    label:setAnchorPoint(cc.p(0.5, 0.5))
-    label:registerScriptTapHandler(function()
-        Log.i("call showLeaderboardByID")
-        Engine.service:showLeaderboardByID(Leaderboards.leaderboard_hard)
-    end)
-    menu:addChild(label)
-
-    label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Native submitScore", "Helvetica", 60))
-    label:setAnchorPoint(cc.p(0.5, 0.5))
-    label:registerScriptTapHandler(function()
-        Log.i("call submitScore")
-        Engine.service:submitScore(Leaderboards.leaderboard_hard, 2501)
-    end)
-    menu:addChild(label)
-
-    label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Native loadLeaderboardScore", "Helvetica", 60))
-    label:setAnchorPoint(cc.p(0.5, 0.5))
-    label:registerScriptTapHandler(function()
-        native.loadLeaderboardScore(Leaderboards.leaderboard_hard, function(response)
-            Log.i(response)
-        end)
-    end)
-    menu:addChild(label)
+    self.btRoot:activate()
 
     menu:alignItemsVertically()
 
-    local sprite = cc.Sprite:create()
-    sprite:setPosition(display.cx, display.cy)
-    sprite:setAnchorPoint(0, 0)
-    layer:addChild(sprite)
-    local animation = cc.Animation:create()
-    local  name
-    for i = 1, 12 do
-        name = "res/test/37758-"..i..".png"
-        animation:addSpriteFrameWithFile(name)
-    end
-    -- should last 2.8 seconds. And there are 14 frames.
-    animation:setDelayPerUnit(1 / 12.0)
-    animation:setRestoreOriginalFrame(true)
+    display.newScale9Sprite("BG.png",51,60, cc.size(720,720)):pos(display.cx, display.cy):addTo(self)
 
-    local action = cc.Animate:create(animation)
-    sprite:runAction(cc.Sequence:create(action, cc.CallFunc:create(function()Log.i("~~~")end)))
+
+    
 end
 
+function TestScene:update(dt)
+    if self.btRoot:evaluate() then
+        self.btRoot:tick()
+    end
+end
 function TestScene:onEnter()
+    Engine:getEventManager():on(EventConstants.AppEnterForegroundEvent, function()
+        Log.i("~~~~on ", EventConstants.AppEnterForegroundEvent)
+    end)
+
+    Engine:getEventManager():on(EventConstants.AppEnterBackgroundEvent, function()
+        Log.i("~~~~on ", EventConstants.AppEnterBackgroundEvent)
+    end)
+
+
+    -- self:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
+    --     if event.name == "began" then
+    --         print("began")
+    --     elseif event.name == "moved" then
+    --         print("moved")
+    --     elseif event.name == "ended" then
+    --         print("end")
+    --     end
+    --     return true
+    -- end)
+
+    -- local listener = cc.EventListenerTouchOneByOne:create()
+    -- listener:registerScriptHandler(function(touch,event) print("on touch began") return true end,cc.Handler.EVENT_TOUCH_BEGAN )
+    -- listener:registerScriptHandler(function(touch)  print("on touch moved")  end,cc.Handler.EVENT_TOUCH_MOVED )
+    -- listener:registerScriptHandler(function(touch)  print("on touch end")   end,cc.Handler.EVENT_TOUCH_ENDED )
+    -- local eventDispatcher = self:getEventDispatcher()
+    -- eventDispatcher:addEventListenerWithFixedPriority(listener, -1)
+    -- self.lastTouchEventListener = listener
 end
 
 function TestScene:onExit()
+    Engine:getEventManager():clear(EventConstants.AppEnterForegroundEvent)
+    Engine:getEventManager():clear(EventConstants.AppEnterBackgroundEvent)
+    print("~~~onExit")
 end
 
-local t = 0
-function TestScene:update(delta)
-    -- Log.i(delta)
-    t = t + delta*2
-    if t > 2 * math.pi then
-        t = 0 
-    end
-    local x, y = tmpbox:getPosition()
-    x = 150 * math.cos(t)
-    y = 150 * math.sin(t)
-    tmpbox:setPosition(display.cx + x, display.cy + y)
-end
+-- local t = 0
+-- function TestScene:update(delta)
+--     -- Log.i(delta)
+--     t = t + delta*2
+--     if t > 2 * math.pi then
+--         t = 0 
+--     end
+--     local x, y = tmpbox:getPosition()
+--     x = 150 * math.cos(t)
+--     y = 150 * math.sin(t)
+--     tmpbox:setPosition(display.cx + x, display.cy + y)
+-- end
 
 function TestScene:test()
     -- local LoadingScene = require("game.scenes.LoadingScene")
