@@ -170,7 +170,9 @@ function ResourceLoader:loadRes(res, sync)
                     end)
                 elseif type(v) == "string" then
                     self.loadingStateString = "Loading SpriteFrame: "..v
+                    local t = os.clock()
                     cc.SpriteFrameCache:getInstance():addSpriteFrames(v) 
+                    print(v..": ", os.clock()-t)
                     self.currentLoadResourceCount = self.currentLoadResourceCount + 1
                     Log.d(self.loadingStateString)
                     table.insert(self.loadedResources.spriteFrames, v)

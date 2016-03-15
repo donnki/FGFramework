@@ -3,7 +3,6 @@ local SocketManager = class("SocketManager")
 local ByteArray = cc.utils.ByteArray
 local ByteArrayVarint = cc.utils.ByteArrayVarint
 local SBMessage = require("core.network.SBMessage")
-require("ProtocolCommands")
 local instance = nil
 SocketManager.__index = SocketManager
 

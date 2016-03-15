@@ -11,7 +11,7 @@ function DBManager:ctor(dbFile)
     -- print(cc.FileUtils:getInstance():getWritablePath()..dbFile:split("/")[2])
     if native.platform.isAndroid then
         dbFilePath = cc.FileUtils:getInstance():getWritablePath()..dbFile:split("/")[2]
-        Log.i("~~~~~", dbFilePath)
+        -- Log.i("~~~~~", dbFilePath)
         if not cc.FileUtils:getInstance():isFileExist(dbFilePath) then
             local asset = cc.FileUtils:getInstance():fullPathForFilename(dbFile)
             local data = io.readfile(asset)
@@ -33,7 +33,7 @@ function DBManager:ctor(dbFile)
             Log.i("打开数据库成功, path=", dbFilePath)
         end
     else
-        Log.e("数据库文件不存在", dbFile, dbFilePath)
+        Log.w("数据库文件不存在", dbFile, dbFilePath)
     end
     
 end

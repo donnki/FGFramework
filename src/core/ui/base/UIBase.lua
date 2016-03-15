@@ -8,7 +8,7 @@ end)
 
 UIBase.__index = UIBase
 
-local changeColorShader = require("ChangeColorShader")
+-- local changeColorShader = require("ChangeColorShader")
 
 function UIBase:init(...) --lua本身的数据请在这里初始化
     self:registerScriptHandler(function(event)
