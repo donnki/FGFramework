@@ -27,6 +27,10 @@ local function search(k,plist)
     end  
 end  
 
+function _require(module)
+    xpcall(require(module), function(err) print("Module not exists: ", module)end)
+end
+
 function createClass(...)  
     local c={};  
     local parents={...};  

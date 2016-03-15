@@ -7,7 +7,7 @@ require "cocos.cocosdenshion.AudioEngine"
 require "common.GlobalFunctions" 
 require "common.helper"
 require "common.deepcopy"
-require("common.iso")
+-- require("common.iso")
 
 -- require "pb"
 package.path = package.path .. ";./core/network/protobuf/?.lua;"

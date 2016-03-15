@@ -6,6 +6,7 @@ cc.FileUtils:getInstance():addSearchPath("res/UIs/")
 
 require "config"
 require "cocos.init"
+require "framework.init"
 require "core.init"
 require "game.GameConfig"
 require "game.GameResources"
