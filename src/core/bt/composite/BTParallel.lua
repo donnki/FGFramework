@@ -1,17 +1,16 @@
-local BTNode = require("core.bt.BTNode")
 local BTParallel = class("BTParallel", BTNode)
 
 ----------------------
 -- BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.
 -- 
--- BTParallel ticks all children, if 
--- 	1. ParallelFunction.And: 	ends when all children ends
--- 	2. ParallelFunction.Or: 	ends when any of the children ends
+-- BTParallel ticks all children, if flag
+-- 	false: 	ends when all children ends
+-- 	 true: 	ends when any of the children ends
 -- 
 -- NOTE: Order of child node added does matter!
-function BTParallel:ctor(name, precondition, isEndWhenOneEnd)
+function BTParallel:ctor(name, precondition, flag)
 	BTNode.ctor(self, name, precondition)
-	self.shouldEndWhenOneEnd = isEndWhenOneEnd
+	self.shouldEndWhenOneEnd = flag
 	self._results = {}
 end
 
@@ -24,11 +23,11 @@ function BTParallel:doEvaluate()
 	return true
 end
 
-function BTParallel:tick()
+function BTParallel:tick(delta)
 	local endingResultCount = 0
 	for i,v in ipairs(self.children) do
 		if self._results[i] == BTResult.Running then
-			self._results[i] = self.children[i]:tick()
+			self._results[i] = self.children[i]:tick(delta)
 		end
 		if self.shouldEndWhenOneEnd then
 			if self._results[i] ~= BTResult.Running then

@@ -1,4 +1,3 @@
-local BTNode = require("core.bt.BTNode")
 local BTParallelFlexible = class("BTParallelFlexible", BTNode)
 
 ------------------
@@ -30,12 +29,12 @@ function BTParallelFlexible:doEvaluate()
 	return true
 end
 
-function BTParallelFlexible:tick()
+function BTParallelFlexible:tick(delta)
 	local numActiveChildren = 0
 	for i,child in ipairs(self.children) do
 		local active = self._activeList[i]
 		if active then
-			local result = child:tick()
+			local result = child:tick(delta)
 			if result == BTResult.Running then
 				numActiveChildren = numActiveChildren + 1
 			end

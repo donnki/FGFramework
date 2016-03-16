@@ -1,4 +1,3 @@
-local BTNode = require("core.bt.BTNode")
 local BTSequence = class("BTSequence", BTNode)
 
 -----------------
@@ -27,12 +26,13 @@ function BTSequence:doEvaluate()
 	end
 end
 
-function BTSequence:tick()
+function BTSequence:tick(delta)
 	if self._activeChild == nil then
 		self._activeIndex = 1
-		self._activeChild = self.children[self._activeIndex]
+		self._activeChild = self.children[1]
 	end
-	local result = self._activeChild:tick()
+	local result = self._activeChild:tick(delta)
+
 	if result == BTResult.Ended then
 		self._activeIndex = self._activeIndex + 1
 		if self._activeIndex > #self.children then

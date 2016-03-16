@@ -1,6 +1,11 @@
 local BTNode = require("core.bt.BTNode")
 local BTPrecondition = class("BTPrecondition", BTNode)
 
+function BTPrecondition:ctor(name, precondition, func)
+	BTNode.ctor(self, name, precondition)
+	self.func = func
+end
+
 function BTPrecondition:check()
 	if self.func then
 		return self.func()

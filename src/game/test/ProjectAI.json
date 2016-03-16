@@ -1,0 +1,300 @@
+{
+  "id": "1250349d-daba-4374-84f1-ccfdbc526ca5",
+  "title": "防御塔AI",
+  "description": "",
+  "root": "30201252-991c-43d6-8b49-4c94d7601acc",
+  "properties": {},
+  "nodes": {
+    "30201252-991c-43d6-8b49-4c94d7601acc": {
+      "id": "30201252-991c-43d6-8b49-4c94d7601acc",
+      "name": "BTPrioritySelector",
+      "title": "Pri: 防御塔AI",
+      "description": "BTPrioritySelector selects the first sussessfully evaluated child as the active child.",
+      "properties": {},
+      "display": {
+        "x": -300,
+        "y": 48
+      },
+      "children": [
+        "669e9aec-3793-45e5-a4d9-8a752a9496c5",
+        "bfea926e-4154-48ac-8dbe-e8a0588bc9c6",
+        "a7b92bab-a40a-45a3-891c-0e1f24b01397"
+      ]
+    },
+    "669e9aec-3793-45e5-a4d9-8a752a9496c5": {
+      "id": "669e9aec-3793-45e5-a4d9-8a752a9496c5",
+      "name": "BTParallel",
+      "title": "Pal: 塔被控制",
+      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n- false: \tends when all children ends\n- true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
+      "properties": {
+        "shouldEndWhenOneEnd": "false",
+        "precondition": "isUnderControl"
+      },
+      "display": {
+        "x": -60,
+        "y": -204
+      },
+      "children": [
+        "8b02a12c-6827-4ec4-86a8-60fab7b21ad6",
+        "a49c678f-04fb-47bc-8d2f-a0df8008fe1b"
+      ]
+    },
+    "bfea926e-4154-48ac-8dbe-e8a0588bc9c6": {
+      "id": "bfea926e-4154-48ac-8dbe-e8a0588bc9c6",
+      "name": "BTSequence",
+      "title": "Seq：当前有锁定单位",
+      "description": "BTSequence evaluteas the current active child, or the first child (if no active child).\nIf passed the evaluation, BTSequence ticks the current active child, or the first child (if no active child available), and if it's result is BTEnded, then change the active child to the next one.",
+      "properties": {
+        "precondition": "targetValid"
+      },
+      "display": {
+        "x": -36,
+        "y": 24
+      },
+      "children": [
+        "9ba59330-be1a-4e1a-8c83-e69f86a401a0",
+        "14e55a37-76d3-4772-885e-ce4f6c5c524a"
+      ]
+    },
+    "a7b92bab-a40a-45a3-891c-0e1f24b01397": {
+      "id": "a7b92bab-a40a-45a3-891c-0e1f24b01397",
+      "name": "BTParallel",
+      "title": "Pal: 当前无锁定单位",
+      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n- false: \tends when all children ends\n- true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
+      "properties": {
+        "shouldEndWhenOneEnd": "false",
+        "precondition": "targetNotValid"
+      },
+      "display": {
+        "x": -60,
+        "y": 264
+      },
+      "children": [
+        "21f0c421-2d01-43d1-9e99-85903dba1e7d",
+        "f54844ce-cd06-41a7-9baa-1771c0641b74"
+      ]
+    },
+    "17cc8d3d-b990-4603-ba56-9d238fe4c820": {
+      "id": "17cc8d3d-b990-4603-ba56-9d238fe4c820",
+      "name": "BTAimAction",
+      "title": "瞄准目标",
+      "description": "Action: 瞄准目标",
+      "properties": {},
+      "display": {
+        "x": 384,
+        "y": -144
+      }
+    },
+    "ded36ce4-b38a-46e6-8347-4e27b54d1692": {
+      "id": "ded36ce4-b38a-46e6-8347-4e27b54d1692",
+      "name": "BTWaitAction",
+      "title": "等待CD冷却",
+      "description": "Action: 等待时间",
+      "properties": {},
+      "display": {
+        "x": 384,
+        "y": -24
+      }
+    },
+    "14e55a37-76d3-4772-885e-ce4f6c5c524a": {
+      "id": "14e55a37-76d3-4772-885e-ce4f6c5c524a",
+      "name": "BTFireAction",
+      "title": "开炮",
+      "description": "Action: 开火",
+      "properties": {},
+      "display": {
+        "x": 216,
+        "y": 108
+      }
+    },
+    "21f0c421-2d01-43d1-9e99-85903dba1e7d": {
+      "id": "21f0c421-2d01-43d1-9e99-85903dba1e7d",
+      "name": "BTSearchAction",
+      "title": "寻找目标",
+      "description": "Action：查找目标\n寻找区域内是否存在目标，存在则锁定该目标",
+      "properties": {},
+      "display": {
+        "x": 192,
+        "y": 204
+      }
+    },
+    "f54844ce-cd06-41a7-9baa-1771c0641b74": {
+      "id": "f54844ce-cd06-41a7-9baa-1771c0641b74",
+      "name": "BTIdleAction",
+      "title": "警戒",
+      "description": "Action：待机",
+      "properties": {},
+      "display": {
+        "x": 192,
+        "y": 312
+      }
+    },
+    "a49c678f-04fb-47bc-8d2f-a0df8008fe1b": {
+      "id": "a49c678f-04fb-47bc-8d2f-a0df8008fe1b",
+      "name": "BTWaitAction",
+      "title": "等待控制结束",
+      "description": "Action: 等待时间",
+      "properties": {},
+      "display": {
+        "x": 168,
+        "y": -180
+      }
+    },
+    "8b02a12c-6827-4ec4-86a8-60fab7b21ad6": {
+      "id": "8b02a12c-6827-4ec4-86a8-60fab7b21ad6",
+      "name": "BTStunAction",
+      "title": "眩晕",
+      "description": "Action：眩晕",
+      "properties": {},
+      "display": {
+        "x": 168,
+        "y": -276
+      }
+    },
+    "9ba59330-be1a-4e1a-8c83-e69f86a401a0": {
+      "id": "9ba59330-be1a-4e1a-8c83-e69f86a401a0",
+      "name": "BTParallelFlexible",
+      "title": "PalF: 炮塔冷却",
+      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n-false: \tends when all children ends\n-true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
+      "properties": {},
+      "display": {
+        "x": 180,
+        "y": -84
+      },
+      "children": [
+        "17cc8d3d-b990-4603-ba56-9d238fe4c820",
+        "ded36ce4-b38a-46e6-8347-4e27b54d1692"
+      ]
+    }
+  },
+  "display": {
+    "camera_x": 629,
+    "camera_y": 352.5,
+    "camera_z": 0.75,
+    "x": -456,
+    "y": 48
+  },
+  "custom_nodes": [
+    {
+      "name": "Idle",
+      "category": "action",
+      "title": "Idle",
+      "description": "待机",
+      "properties": {}
+    },
+    {
+      "name": "NoTarget",
+      "category": "condition",
+      "title": null,
+      "description": "当前没有选中的目标",
+      "properties": {}
+    },
+    {
+      "name": "Fire",
+      "category": "action",
+      "title": "Fire",
+      "description": "开火",
+      "properties": {}
+    },
+    {
+      "name": "Aimed",
+      "category": "action",
+      "title": "Aimed",
+      "description": "瞄准目标",
+      "properties": {}
+    },
+    {
+      "name": "Parallel",
+      "category": "composite",
+      "title": null,
+      "description": null,
+      "properties": {}
+    },
+    {
+      "name": "FindTarget",
+      "category": "action",
+      "title": "FindTarget",
+      "description": "寻找区域内是否存在目标，存在则锁定该目标",
+      "properties": {}
+    },
+    {
+      "name": "BTParallel",
+      "category": "composite",
+      "title": "BTParallel",
+      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n- false: \tends when all children ends\n- true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
+      "properties": {
+        "shouldEndWhenOneEnd": "false"
+      }
+    },
+    {
+      "name": "BTParallelFlexible",
+      "category": "composite",
+      "title": "BTParallelFlexible",
+      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n-false: \tends when all children ends\n-true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
+      "properties": {}
+    },
+    {
+      "name": "BTSequence",
+      "category": "composite",
+      "title": "BTSequence",
+      "description": "BTSequence evaluteas the current active child, or the first child (if no active child).\nIf passed the evaluation, BTSequence ticks the current active child, or the first child (if no active child available), and if it's result is BTEnded, then change the active child to the next one.",
+      "properties": {}
+    },
+    {
+      "name": "BTIdleAction",
+      "category": "action",
+      "title": "BTIdleAction",
+      "description": "Action：待机",
+      "properties": {}
+    },
+    {
+      "name": "BTMoveAction",
+      "category": "action",
+      "title": "BTMoveAction",
+      "description": "Action: 移动",
+      "properties": {}
+    },
+    {
+      "name": "BTFireAction",
+      "category": "action",
+      "title": "BTFireAction",
+      "description": "Action: 开火",
+      "properties": {}
+    },
+    {
+      "name": "BTAimAction",
+      "category": "action",
+      "title": "BTAimAction",
+      "description": "Action: 瞄准目标",
+      "properties": {}
+    },
+    {
+      "name": "BTStunAction",
+      "category": "action",
+      "title": "BTStunAction",
+      "description": "Action：眩晕",
+      "properties": {}
+    },
+    {
+      "name": "BTWaitAction",
+      "category": "action",
+      "title": "BTWaitAction",
+      "description": "Action: 等待时间",
+      "properties": {}
+    },
+    {
+      "name": "BTSearchAction",
+      "category": "action",
+      "title": "BTSearchAction",
+      "description": "Action：查找目标",
+      "properties": {}
+    },
+    {
+      "name": "BTPrioritySelector",
+      "category": "composite",
+      "title": "BTPrioritySelector",
+      "description": "BTPrioritySelector selects the first sussessfully evaluated child as the active child.",
+      "properties": {}
+    }
+  ]
+}

@@ -7,23 +7,15 @@ function BTAction:ctor(name, precondition)
 end
 
 function BTAction:enter()
-	BTLog("On enter action: ", self.name, ".")
-	self.t = 0
+	BTLog("On enter action: ", self.name)
 end
 
 function BTAction:exit()
-	BTLog("On exit action: ", self.name, "..")
+	BTLog("On exit action: ", self.name)
 end
 
-function BTAction:execute()
-	self.t = self.t + 1
-	local t = self.name == "a3" and 200 or 100
-	t = self.name == "a5" and 500 or t
-	if self.t < t then
-		return BTResult.Running
-	else
-		return BTResult.Ended
-	end
+function BTAction:execute(delta)
+	return BTResult.Ended
 end
 
 function BTAction:clear()
@@ -35,14 +27,12 @@ end
 
 function BTAction:tick(delta)
 	local result = BTResult.Ended
-
 	if self._status == BTActionStatus.Ready then
 		self:enter()
 		self._status = BTActionStatus.Running
 	end
-
 	if self._status == BTActionStatus.Running then
-		result = self:execute()
+		result = self:execute(delta)
 		if result ~= BTResult.Running then
 			self:exit()
 			self._status = BTActionStatus.Ready

@@ -1,6 +1,7 @@
-local BTNode = require("core.bt.BTNode")
 local BTPrioritySelector = class("BTPrioritySelector", BTNode)
 
+-----------------
+-- BTPrioritySelector selects the first sussessfully evaluated child as the active child.
 function BTPrioritySelector:ctor(name)
 	BTNode.ctor(self, name)
 	self._activeChild = nil
@@ -13,7 +14,6 @@ function BTPrioritySelector:doEvaluate()
 				self._activeChild:clear()
 			end
 			self._activeChild = v
-
 			return true
 		end
 	end

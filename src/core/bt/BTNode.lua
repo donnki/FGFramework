@@ -21,7 +21,6 @@ function BTNode:activate(database)
 	-- print("~~", self.__cname, #self.children)
 	if #self.children > 0 then
 		for k,child in ipairs(self.children) do
-
 			child:activate(database)
 		end
 	end
