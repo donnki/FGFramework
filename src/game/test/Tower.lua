@@ -22,7 +22,6 @@ end
 function Tower:initBehaviorTree()
 	self.btRoot = bt.loadFromJson("src/game/test/ai_tower.json", self)
 	self.btRoot:activate(self)
-
 end
 
 function Tower:onEnter()

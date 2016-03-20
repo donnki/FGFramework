@@ -4,6 +4,20 @@ function handler(obj, method)
     end
 end
 
+
+function pGetDirection(from, to)
+    local x, y = from.x, from.y
+    local tx, ty = to.x, to.y
+    local flag = tx < x and 1 or -1
+    local angle = math.atan((y-ty)/(x-tx))
+    if flag > 0 then 
+        angle = math.deg(angle) - 180
+    else
+        angle = math.deg(angle)
+    end
+    return angle
+end
+
 function table.arrayContains(tab, val)
     for k,v in pairs(tab) do
         if v == val then

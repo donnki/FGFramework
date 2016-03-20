@@ -20,7 +20,7 @@ local function main()
     -- local DemoScene = require("game.demo.DemoScene")
     -- Engine:changeScene(DemoScene.create())
 
-	local TestScene = require("TestScene")
+	local TestScene = require("TestComponent")
     Engine:changeScene(TestScene.createWithData())
 
     -- local TestRecorderScene = require("TestRecorderScene")

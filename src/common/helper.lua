@@ -76,11 +76,11 @@ end
 
 
 -- string.split
-string.split = function(s, p)
-    local rt= {}
-    string.gsub(s, '[^'..p..']+', function(w) table.insert(rt, w) end )
-    return rt
-end
+-- string.split = function(s, p)
+--     local rt= {}
+--     string.gsub(s, '[^'..p..']+', function(w) table.insert(rt, w) end )
+--     return rt
+-- end
 
 -- table转string
 table.tostring = function(t)

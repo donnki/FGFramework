@@ -59,13 +59,13 @@ function TestScene:update(dt)
 end
 
 function TestScene:onEnter()
-    Engine:getEventManager():on(EventConstants.AppEnterForegroundEvent, function()
-        Log.i("~~~~on ", EventConstants.AppEnterForegroundEvent)
-    end)
+    -- Engine:getEventManager():on(EventConstants.AppEnterForegroundEvent, function()
+    --     Log.i("~~~~on ", EventConstants.AppEnterForegroundEvent)
+    -- end)
 
-    Engine:getEventManager():on(EventConstants.AppEnterBackgroundEvent, function()
-        Log.i("~~~~on ", EventConstants.AppEnterBackgroundEvent)
-    end)
+    -- Engine:getEventManager():on(EventConstants.AppEnterBackgroundEvent, function()
+    --     Log.i("~~~~on ", EventConstants.AppEnterBackgroundEvent)
+    -- end)
 
     self.touchListener = cc.EventListenerTouchOneByOne:create()
     self.touchListener:registerScriptHandler(function(touch, event)
