@@ -1,6 +1,6 @@
 local SBMessage = class("SBMessage")
 local ByteArray = cc.utils.ByteArray
-
+local des3 = require("common.des3")
 function SBMessage:ctor(packetId)
 	self.packetId = packetId
 	self._buf = ByteArray.new(ByteArray.ENDIAN_BIG)
@@ -35,9 +35,7 @@ function SBMessage:encryptMessage(msg, key)
 	--local encodeBase64Text = native.tripleDES(base64Text,key,true, true)
 	--local finalEncodeData = crypto.decodeBase64(encodeBase64Text)
 	--print("obj-c:===============\n", ByteArray.new(ByteArray.ENDIAN_BIG):writeStringBytes(finalEncodeData):toString(16))
-	if not des3 then
-		des3 = require("common.des3")
-	end
+
 	
 	local encodeBase64Text = des3.enBase64(key, base64Text)
 	local finalEncodeData = crypto.decodeBase64(encodeBase64Text)
@@ -56,9 +54,7 @@ function SBMessage:decryptMessage(msg, key)
 	-- local encodeBase64Text = native.tripleDES(base64Text,key,false, true)
 	-- local finalDecodeData = crypto.decodeBase64(encodeBase64Text)
 	-- print("obj-c:===============\n", ByteArray.new(ByteArray.ENDIAN_BIG):writeStringBytes(finalDecodeData):toString(16))
-	if not des3 then
-		des3 = require("common.des3")
-	end
+
 	local encodeBase64Text = des3.deBase64(key, base64Text)
 	local finalDecodeData = crypto.decodeBase64(encodeBase64Text)
 	-- print("obj-c:===============\n", ByteArray.new(ByteArray.ENDIAN_BIG):writeStringBytes(final_2):toString(16))

@@ -2,43 +2,30 @@ local Tower = class("Tower", function()
 	return cc.Node:create()
 end)
 
+local bt = require("core.bt.BTInit")
+
 function Tower:ctor(size, attackRadus, attackSpeed)
 	self.radius = size
 	self.attackRadius = attackRadus
-	self.attackSpeed = attackSpeed
-	local draw = cc.DrawNode:create()
-    draw:drawSolidCircle(cc.p(0,0), size, 0, 50, 1.0, 1.0, cc.c4f(1,0,1,1))
-    draw:drawCircle(cc.p(0,0), attackRadus, 0, 50, true, 1.0, 1.0, cc.c4f(1.0, 0.0, 0.0, 0.2))
-    self:addChild(draw)
-    self:initBehaviorTree()
 
+	self.attackSpeed = attackSpeed
+	self.drawNode = cc.DrawNode:create()
+    self.drawNode:drawSolidCircle(cc.p(0,0), size, 0, 50, 1.0, 1.0, cc.c4f(1,0,1,1))
+    self.drawNode:drawCircle(cc.p(0,0), attackRadus, 0, 50, true, 1.0, 1.0, cc.c4f(1.0, 0.0, 0.0, 0.2))
+    self:addChild(self.drawNode)
+
+    self:initBehaviorTree()
+    self.hp = 5
     self.allEnemies = {} 
 end
 
 function Tower:initBehaviorTree()
-	-- self.btRoot = BTPrioritySelector.new("Tower")
-
-	-- local sequence = BTSequence.new("SEQ", 
-	-- 	BTPrecondition.new("Check Unit Valid", nil, handler(self, self.targetValid))
-	-- )
-	-- local parallel = BTParallelFlexible.new("PAR")
-	-- parallel:addChild(BTWaitAction.new("AttackInterval"))
-	-- parallel:addChild(BTAimAction.new("Aim..."))
-
-	-- sequence:addChild(parallel)
-	-- sequence:addChild(BTFireAction.new("Tower Fire!"))
-	-- self.btRoot:addChild(sequence)
-
-
-	-- parallel = BTParallel.new("IDLE")
-	-- parallel:addChild(BTIdleAction.new("Idle"))
-	-- parallel:addChild(BTSearchAction.new("Search"))
-	-- self.btRoot:addChild(parallel)
-
-	-- self.btRoot:activate(self)
-
-	self.btRoot = BTLoadFromJson("src/game/test/ai_tower.json", self)
+	self.btRoot = bt.loadFromJson("src/game/test/ai_tower.json", self)
 	self.btRoot:activate(self)
+
+end
+
+function Tower:onEnter()
 end
 
 function Tower:getInterval(key)
@@ -47,6 +34,10 @@ end
 
 function Tower:isUnderControl()
 	return false
+end
+
+function Tower:isWorking()
+	return not self.isDead
 end
 
 function Tower:targetNotValid()
@@ -68,6 +59,17 @@ function Tower:targetValid()
 	return valid
 end
 
+function Tower:hurt()
+	self.hp = self.hp - 1
+	if self.hp <= 0 then
+		self:onDead()
+	end
+end
+
+function Tower:onDead()
+	self.isDead = true
+	self.drawNode:clear()
+end
 ----------
 -- 区域内寻找可攻击单位
 -- 返回是否有可攻击单位
@@ -139,6 +141,9 @@ function Tower:getAngle()
 end
 
 function Tower:update(dt)
+    if self.activeDrawNode then
+    	self.activeDrawNode:clear()
+    end
 	if self.btRoot and self.btRoot:evaluate() then
         self.btRoot:tick(dt)
     end

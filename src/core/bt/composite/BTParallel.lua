@@ -8,9 +8,9 @@ local BTParallel = class("BTParallel", BTNode)
 -- 	 true: 	ends when any of the children ends
 -- 
 -- NOTE: Order of child node added does matter!
-function BTParallel:ctor(name, precondition, flag)
-	BTNode.ctor(self, name, precondition)
-	self.shouldEndWhenOneEnd = flag
+function BTParallel:ctor(name, precondition, properties)
+	BTNode.ctor(self, name, precondition, properties)
+	self.shouldEndWhenOneEnd = properties.shouldEndWhenOneEnd
 	self._results = {}
 end
 
@@ -24,6 +24,7 @@ function BTParallel:doEvaluate()
 end
 
 function BTParallel:tick(delta)
+	self:debugSetHighlight(true)
 	local endingResultCount = 0
 	for i,v in ipairs(self.children) do
 		if self._results[i] == BTResult.Running then
@@ -44,6 +45,7 @@ function BTParallel:tick(delta)
 		self:resetResults()
 		return BTResult.Ended
 	end
+	self:debugDrawLineTo(self.children)
 	return BTResult.Running
 end
 
@@ -52,6 +54,7 @@ function BTParallel:clear()
 	for k,v in ipairs(self.children) do
 		v:clear()
 	end
+	self:debugSetHighlight(false)
 end
 
 function BTParallel:addChild(node)
@@ -69,4 +72,5 @@ function BTParallel:resetResults()
 		self._results[i] = BTResult.Running
 	end
 end
+
 return BTParallel

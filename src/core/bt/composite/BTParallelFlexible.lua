@@ -7,8 +7,8 @@ local BTParallelFlexible = class("BTParallelFlexible", BTNode)
 -- BTParallelFlexible ticks all active children, if all children ends, it ends.
 -- 
 -- NOTE: Order of child node added does matter!
-function BTParallelFlexible:ctor(name, precondition)
-	BTNode.ctor(self, name, precondition)
+function BTParallelFlexible:ctor(name, precondition, properties)
+	BTNode.ctor(self, name, precondition, properties)
 	
 	self._activeList = {}
 end
@@ -30,6 +30,7 @@ function BTParallelFlexible:doEvaluate()
 end
 
 function BTParallelFlexible:tick(delta)
+	self:debugSetHighlight(true)
 	local numActiveChildren = 0
 	for i,child in ipairs(self.children) do
 		local active = self._activeList[i]
@@ -43,6 +44,7 @@ function BTParallelFlexible:tick(delta)
 	if numActiveChildren == 0 then
 		return BTResult.Ended
 	end
+	self:debugDrawLineTo(self.children)
 	return BTResult.Running
 end
 
@@ -50,6 +52,7 @@ function BTParallelFlexible:clear()
 	for k,v in ipairs(self.children) do
 		v:clear()
 	end
+	self:debugSetHighlight(false)
 end
 
 function BTParallelFlexible:addChild(node)

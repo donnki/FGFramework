@@ -10,9 +10,11 @@
       "name": "BTPrioritySelector",
       "title": "Pri: 防御塔AI",
       "description": "BTPrioritySelector selects the first sussessfully evaluated child as the active child.",
-      "properties": {},
+      "properties": {
+        "precondition": "isWorking"
+      },
       "display": {
-        "x": -300,
+        "x": -312,
         "y": 48
       },
       "children": [
@@ -31,7 +33,7 @@
         "precondition": "isUnderControl"
       },
       "display": {
-        "x": -60,
+        "x": -72,
         "y": -204
       },
       "children": [
@@ -48,7 +50,7 @@
         "precondition": "targetValid"
       },
       "display": {
-        "x": -36,
+        "x": -48,
         "y": 24
       },
       "children": [
@@ -66,7 +68,7 @@
         "precondition": "targetNotValid"
       },
       "display": {
-        "x": -60,
+        "x": -72,
         "y": 264
       },
       "children": [
@@ -158,7 +160,7 @@
       "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n-false: \tends when all children ends\n-true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
       "properties": {},
       "display": {
-        "x": 180,
+        "x": 168,
         "y": -84
       },
       "children": [
@@ -215,13 +217,6 @@
       "category": "action",
       "title": "FindTarget",
       "description": "寻找区域内是否存在目标，存在则锁定该目标",
-      "properties": {}
-    },
-    {
-      "name": "BTPrioritySelector",
-      "category": "composite",
-      "title": "BTPrioritySelector",
-      "description": "BTPrioritySelector selects the first sussessfully evaluated child as the active child.",
       "properties": {}
     },
     {
@@ -294,6 +289,27 @@
       "category": "action",
       "title": "BTSearchAction",
       "description": "Action：查找目标",
+      "properties": {}
+    },
+    {
+      "name": "BTPrioritySelector",
+      "category": "composite",
+      "title": "BTPrioritySelector",
+      "description": "BTPrioritySelector selects the first sussessfully evaluated child as the active child.",
+      "properties": {}
+    },
+    {
+      "name": "BTSkillAction",
+      "category": "action",
+      "title": "BTSkillAction",
+      "description": "Action: 释放技能",
+      "properties": {}
+    },
+    {
+      "name": "BTFinishedAction",
+      "category": "action",
+      "title": "BTFinishedAction",
+      "description": "Action： 操作结束",
       "properties": {}
     }
   ]

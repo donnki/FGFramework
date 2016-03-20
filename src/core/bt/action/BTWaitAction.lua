@@ -1,10 +1,5 @@
 local BTWaitAction = class("BTWaitAction", BTAction)
 
-function BTWaitAction:ctor(name, precondition)
-	BTAction.ctor(self, name, precondition)
-	
-end
-
 function BTWaitAction:enter()
 	BTAction.enter(self)
 	self._duration = 0

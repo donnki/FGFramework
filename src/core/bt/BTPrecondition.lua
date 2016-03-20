@@ -1,8 +1,9 @@
 local BTNode = require("core.bt.BTNode")
 local BTPrecondition = class("BTPrecondition", BTNode)
 
-function BTPrecondition:ctor(name, precondition, func)
-	BTNode.ctor(self, name, precondition)
+function BTPrecondition:ctor(name, precondition, properties, func)
+	BTNode.ctor(self, name, precondition, properties)
+
 	self.func = func
 end
 

@@ -1,8 +1,9 @@
 local BTNode = class("BTNode")
 
-function BTNode:ctor(name, precondition)
+function BTNode:ctor(name, precondition, properties)
 	self.name = name
 	self.precondition = precondition
+	self.properties = properties
 	self.children = {}
 	self.interval = 0
 	self.lastTimeEvaluated = 0
@@ -18,7 +19,6 @@ function BTNode:activate(database)
 	if self.precondition then
 		self.precondition:activate(database)
 	end
-	-- print("~~", self.__cname, #self.children)
 	if #self.children > 0 then
 		for k,child in ipairs(self.children) do
 			child:activate(database)
@@ -33,8 +33,10 @@ end
 
 function BTNode:evaluate()
 	local coolDownOK = self:_checkTimer()
-	return self.activated and coolDownOK and 
+	local ret = self.activated and coolDownOK and 
 		(self.precondition == nil or self.precondition:check()) and self:doEvaluate()
+	
+	return ret
 end
 
 function BTNode:tick(delta)
@@ -63,5 +65,32 @@ end
 
 function BTNode:_checkTimer()
 	return true
+end
+
+function BTNode:debugClearDrawNode()
+	if BTDrawEnabled and self.display.drawNode then
+		self.display.drawNode:clear()
+	end
+end
+
+function BTNode:debugDrawLineTo(nodes, index)
+	if BTDrawEnabled and self.display.drawNode then
+		if not index then index = #nodes end
+		for i=1,index do
+			local v = nodes[i]
+			self.display.drawNode:drawLine(cc.p(self.display.node:getPosition()), cc.p(v.display.node:getPosition()), cc.c4f(0,1,0,0.4))
+		end
+	end
+end
+
+function BTNode:debugSetHighlight(flag)
+	-- print(self.__cname, self.display.node)
+	if BTDrawEnabled and self.display.node then
+		if flag then
+			self.display.node:getChildByTag(1):setColor(cc.c3b(0,255,0))
+		else
+			self.display.node:getChildByTag(1):setColor(cc.c3b(255,255,255))
+		end
+	end
 end
 return BTNode

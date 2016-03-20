@@ -1,20 +1,23 @@
 local BTNode = require("core.bt.BTNode")
 local BTAction = class("BTAction", BTNode)
 
-function BTAction:ctor(name, precondition)
-	BTNode.ctor(self, name, precondition)
+function BTAction:ctor(name, precondition, properties)
+	BTNode.ctor(self, name, precondition, properties)
 	self._status = BTActionStatus.Ready
 end
 
 function BTAction:enter()
-	BTLog("On enter action: ", self.name)
+	BTLog(self.database.__cname.." On enter action: ", self.name)
+	self:debugSetHighlight(true)
 end
 
 function BTAction:exit()
-	BTLog("On exit action: ", self.name)
+	BTLog(self.database.__cname.." On exit action: ", self.name)
+	self:debugSetHighlight(false)
 end
 
 function BTAction:execute(delta)
+
 	return BTResult.Ended
 end
 

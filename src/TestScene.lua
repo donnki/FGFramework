@@ -1,46 +1,113 @@
 local TestScene = class("TestScene" , SceneBase)
-require("core.bt.BTInit")
+local bt = require("core.bt.BTInit")
+local Tower = require("game.test.Tower")
+local Unit = require("game.test.Unit")
 TestScene.__index = TestScene
 TestScene.name = "TestScene"
 local tmpbox = nil
-function TestScene:ctor()
-    self:init()
-end
+
 function TestScene:init(config)
     SceneBase.init(self)
 
     Log.d("TestScene初始化临时测试场景")
-    local layer = cc.Layer:create()
-    layer:setSwallowsTouches(true)
-    layer:setTag(1024)
-    self:addChild(layer)
+ 
+    self.tower = Tower.new(50,300, 1):pos(display.cx, display.cy):addTo(self)
+    self.tower2 = Tower.new(50,300, 1):pos(display.width*0.9, display.height*0.8):addTo(self)
 
-    tmpbox = cc.LayerColor:create(cc.c4b(100,100,255,255));
-    tmpbox:setContentSize(10,10);
-    tmpbox:setPosition(display.cx,display.cy)
-    layer:addChild(tmpbox)
+    self.unit = Unit.new(20,100, 1):pos(0, 0):addTo(self)
+    table.insert(self.tower.allEnemies, self.unit)
+    table.insert(self.tower2.allEnemies, self.unit)
+    table.insert(self.unit.allBuildings, self.tower)
+    table.insert(self.unit.allBuildings, self.tower2)
 
 
-    local box = cc.LayerColor:create(cc.c4b(100,100,255,255));
-    box:setContentSize( cc.size(display.width,display.height) );
-    box:setPosition(0,0)
-    layer:addChild(box)
-
-    -- local t = ccs.GUIReader:getInstance():widgetFromJsonFile("res/UIs/GameOver_1.ExportJson")
-    -- self:addChild(t)
+    local node = cc.DrawNode:create()
+    node:setPosition(300,500)
+    node:drawSolidCircle(cc.p(0,0), 15, 0, 50, 1.0, 1.0, cc.c4f(0,0,1,0.5))
+    node.radius = 15
+    self:addChild(node)
+    table.insert(self.unit.allEnemyUnits, node)
 
     local menu = cc.Menu:create()
-    layer:addChild(menu, 10)
+    self:addChild(menu, 10)
 
-    local label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("DoTest", "Helvetica", 60))
+    local label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("addRandomNode", "Helvetica", 30))
     label:setAnchorPoint(cc.p(0.5, 0.5))
     label:registerScriptTapHandler(function()
-        local scene = require("TestScene").new()
-        display.replaceScene(scene)
+
+       
     end)
     menu:addChild(label)
+    menu:alignItemsVertically()
+    menu:setPosition(display.width*0.9, 50)
+    local node = bt.debugDisplayTree(self.unit.btRoot)
+    node:setPosition(300, display.cy+100):scale(0.5)
+    self:addChild(node)
+end
 
+function TestScene:update(dt)
 
+    if self.tower then
+        self.tower:update(dt)
+    end
+    if self.tower2 then
+        self.tower2:update(dt)
+    end
+    if self.unit then
+        self.unit:update(dt)
+    end
+end
+
+function TestScene:onEnter()
+    Engine:getEventManager():on(EventConstants.AppEnterForegroundEvent, function()
+        Log.i("~~~~on ", EventConstants.AppEnterForegroundEvent)
+    end)
+
+    Engine:getEventManager():on(EventConstants.AppEnterBackgroundEvent, function()
+        Log.i("~~~~on ", EventConstants.AppEnterBackgroundEvent)
+    end)
+
+    self.touchListener = cc.EventListenerTouchOneByOne:create()
+    self.touchListener:registerScriptHandler(function(touch, event)
+        
+        local distance = cc.pGetDistance(touch:getLocation(), cc.p(self.tower:getPosition()))
+        local distance2 = cc.pGetDistance(touch:getLocation(), cc.p(self.tower2:getPosition()))
+        if distance < self.tower.radius then
+            self.unit:leadTo(true, self.tower)
+        elseif distance2 < self.tower2.radius then
+            self.unit:leadTo(true, self.tower2)
+        else
+            self.unit:leadTo(false, touch:getLocation())
+        end
+
+    end ,cc.Handler.EVENT_TOUCH_BEGAN )
+    -- self.touchListener:registerScriptHandler(touchMoved,cc.Handler.EVENT_TOUCH_MOVED )
+    -- self.touchListener:registerScriptHandler(touchEnded,cc.Handler.EVENT_TOUCH_ENDED )
+    local eventDispatcher = self:getEventDispatcher()
+    eventDispatcher:addEventListenerWithFixedPriority(self.touchListener, -1)
+end
+
+function TestScene:onExit()
+    Engine:getEventManager():clear(EventConstants.AppEnterForegroundEvent)
+    Engine:getEventManager():clear(EventConstants.AppEnterBackgroundEvent)
+    print("~~~onExit")
+end
+
+-- local t = 0
+-- function TestScene:update(delta)
+--     -- Log.i(delta)
+--     t = t + delta*2
+--     if t > 2 * math.pi then
+--         t = 0 
+--     end
+--     local x, y = tmpbox:getPosition()
+--     x = 150 * math.cos(t)
+--     y = 150 * math.sin(t)
+--     tmpbox:setPosition(display.cx + x, display.cy + y)
+-- end
+
+function TestScene:test()
+    
     local a, b = 3, 2
     self.btRoot = BTPrioritySelector.new("test")
     
@@ -74,86 +141,7 @@ function TestScene:init(config)
     self.btRoot:addChild(seq)
 
     self.btRoot:activate()
-
-    menu:alignItemsVertically()
-
-    display.newScale9Sprite("BG.png",51,60, cc.size(720,720)):pos(display.cx, display.cy):addTo(self)
-
-
-    
 end
-
-function TestScene:update(dt)
-    if self.btRoot:evaluate() then
-        self.btRoot:tick()
-    end
-end
-function TestScene:onEnter()
-    -- Engine:getEventManager():on(EventConstants.AppEnterForegroundEvent, function()
-    --     Log.i("~~~~on ", EventConstants.AppEnterForegroundEvent)
-    -- end)
-
-    -- Engine:getEventManager():on(EventConstants.AppEnterBackgroundEvent, function()
-    --     Log.i("~~~~on ", EventConstants.AppEnterBackgroundEvent)
-    -- end)
-
-
-    -- self:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
-    --     if event.name == "began" then
-    --         print("began")
-    --     elseif event.name == "moved" then
-    --         print("moved")
-    --     elseif event.name == "ended" then
-    --         print("end")
-    --     end
-    --     return true
-    -- end)
-
-    -- local listener = cc.EventListenerTouchOneByOne:create()
-    -- listener:registerScriptHandler(function(touch,event) print("on touch began") return true end,cc.Handler.EVENT_TOUCH_BEGAN )
-    -- listener:registerScriptHandler(function(touch)  print("on touch moved")  end,cc.Handler.EVENT_TOUCH_MOVED )
-    -- listener:registerScriptHandler(function(touch)  print("on touch end")   end,cc.Handler.EVENT_TOUCH_ENDED )
-    -- local eventDispatcher = self:getEventDispatcher()
-    -- eventDispatcher:addEventListenerWithFixedPriority(listener, -1)
-    -- self.lastTouchEventListener = listener
-end
-
-function TestScene:onExit()
-    Engine:getEventManager():clear(EventConstants.AppEnterForegroundEvent)
-    Engine:getEventManager():clear(EventConstants.AppEnterBackgroundEvent)
-    print("~~~onExit")
-end
-
--- local t = 0
--- function TestScene:update(delta)
---     -- Log.i(delta)
---     t = t + delta*2
---     if t > 2 * math.pi then
---         t = 0 
---     end
---     local x, y = tmpbox:getPosition()
---     x = 150 * math.cos(t)
---     y = 150 * math.sin(t)
---     tmpbox:setPosition(display.cx + x, display.cy + y)
--- end
-
-function TestScene:test()
-    -- local LoadingScene = require("game.scenes.LoadingScene")
-    -- Engine:changeScene(LoadingScene:createForNext(require("game.scenes.TestScene")))
-    -- local window = Engine:getUIManager():openSingleton("GameOverLayer")
-    -- local window = Engine:getUIManager():openSingleton("MenuBgLayer")
---    local window = Engine:getUIManager():openSingleton("ShopLayer")
-end
-
-function TestScene:setupListView()
-    local logger = LoggerWindow:getInstance()
-    self:addChild(logger)
-end
-
-function TestScene:testFireEvent()
-    EventManager:getInstance():dispatchEvent(Event.TestEvent.event1,{param="1234"})
-end
-
 
 function TestScene.createWithData(data)
     local scene = TestScene.new()
