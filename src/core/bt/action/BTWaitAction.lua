@@ -3,7 +3,7 @@ local BTWaitAction = class("BTWaitAction", BTAction)
 function BTWaitAction:enter()
 	BTAction.enter(self)
 	self._duration = 0
-	self._endTime = self.database:getInterval(self.name)
+	self._endTime = self.database:getValue(self.properties.key)
 end
 
 function BTWaitAction:exit()

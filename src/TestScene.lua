@@ -40,9 +40,9 @@ function TestScene:init(config)
     menu:addChild(label)
     menu:alignItemsVertically()
     menu:setPosition(display.width*0.9, 50)
-    local node = bt.debugDisplayTree(self.unit.btRoot)
-    node:setPosition(300, display.cy+100):scale(0.5)
-    self:addChild(node)
+    -- local node = bt.debugDisplayTree(self.unit.btRoot)
+    -- node:setPosition(300, display.cy+100):scale(0.5)
+    -- self:addChild(node)
 end
 
 function TestScene:update(dt)

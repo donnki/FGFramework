@@ -4,6 +4,9 @@ function handler(obj, method)
     end
 end
 
+function lerp(t, from, to)
+    return (1 - t) * from + t * to
+end
 
 function pGetDirection(from, to)
     local x, y = from.x, from.y

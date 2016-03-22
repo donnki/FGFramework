@@ -2,7 +2,7 @@
   "id": "1250349d-daba-4374-84f1-ccfdbc526ca5",
   "title": "防御塔AI",
   "description": "",
-  "root": "30201252-991c-43d6-8b49-4c94d7601acc",
+  "root": "f5d8ae6b-d9ee-4340-83d0-6b155f02eba7",
   "properties": {},
   "nodes": {
     "30201252-991c-43d6-8b49-4c94d7601acc": {
@@ -11,15 +11,15 @@
       "title": "Pri: 防御塔AI",
       "description": "BTPrioritySelector selects the first sussessfully evaluated child as the active child.",
       "properties": {
-        "precondition": "isWorking"
+        "precondition": ""
       },
       "display": {
-        "x": -312,
-        "y": 48
+        "x": -144,
+        "y": -132
       },
       "children": [
         "669e9aec-3793-45e5-a4d9-8a752a9496c5",
-        "bfea926e-4154-48ac-8dbe-e8a0588bc9c6",
+        "8ecd2576-2672-441c-ae1a-27150a5a98d1",
         "a7b92bab-a40a-45a3-891c-0e1f24b01397"
       ]
     },
@@ -33,29 +33,12 @@
         "precondition": "isUnderControl"
       },
       "display": {
-        "x": -72,
-        "y": -204
+        "x": 336,
+        "y": -312
       },
       "children": [
         "8b02a12c-6827-4ec4-86a8-60fab7b21ad6",
         "a49c678f-04fb-47bc-8d2f-a0df8008fe1b"
-      ]
-    },
-    "bfea926e-4154-48ac-8dbe-e8a0588bc9c6": {
-      "id": "bfea926e-4154-48ac-8dbe-e8a0588bc9c6",
-      "name": "BTSequence",
-      "title": "Seq：当前有锁定单位",
-      "description": "BTSequence evaluteas the current active child, or the first child (if no active child).\nIf passed the evaluation, BTSequence ticks the current active child, or the first child (if no active child available), and if it's result is BTEnded, then change the active child to the next one.",
-      "properties": {
-        "precondition": "targetValid"
-      },
-      "display": {
-        "x": -48,
-        "y": 24
-      },
-      "children": [
-        "9ba59330-be1a-4e1a-8c83-e69f86a401a0",
-        "14e55a37-76d3-4772-885e-ce4f6c5c524a"
       ]
     },
     "a7b92bab-a40a-45a3-891c-0e1f24b01397": {
@@ -68,46 +51,13 @@
         "precondition": "targetNotValid"
       },
       "display": {
-        "x": -72,
-        "y": 264
+        "x": 480,
+        "y": 180
       },
       "children": [
         "21f0c421-2d01-43d1-9e99-85903dba1e7d",
         "f54844ce-cd06-41a7-9baa-1771c0641b74"
       ]
-    },
-    "17cc8d3d-b990-4603-ba56-9d238fe4c820": {
-      "id": "17cc8d3d-b990-4603-ba56-9d238fe4c820",
-      "name": "BTAimAction",
-      "title": "瞄准目标",
-      "description": "Action: 瞄准目标",
-      "properties": {},
-      "display": {
-        "x": 384,
-        "y": -144
-      }
-    },
-    "ded36ce4-b38a-46e6-8347-4e27b54d1692": {
-      "id": "ded36ce4-b38a-46e6-8347-4e27b54d1692",
-      "name": "BTWaitAction",
-      "title": "等待CD冷却",
-      "description": "Action: 等待时间",
-      "properties": {},
-      "display": {
-        "x": 384,
-        "y": -24
-      }
-    },
-    "14e55a37-76d3-4772-885e-ce4f6c5c524a": {
-      "id": "14e55a37-76d3-4772-885e-ce4f6c5c524a",
-      "name": "BTFireAction",
-      "title": "开炮",
-      "description": "Action: 开火",
-      "properties": {},
-      "display": {
-        "x": 216,
-        "y": 108
-      }
     },
     "21f0c421-2d01-43d1-9e99-85903dba1e7d": {
       "id": "21f0c421-2d01-43d1-9e99-85903dba1e7d",
@@ -116,8 +66,8 @@
       "description": "Action：查找目标\n寻找区域内是否存在目标，存在则锁定该目标",
       "properties": {},
       "display": {
-        "x": 192,
-        "y": 204
+        "x": 744,
+        "y": 180
       }
     },
     "f54844ce-cd06-41a7-9baa-1771c0641b74": {
@@ -127,8 +77,8 @@
       "description": "Action：待机",
       "properties": {},
       "display": {
-        "x": 192,
-        "y": 312
+        "x": 720,
+        "y": 240
       }
     },
     "a49c678f-04fb-47bc-8d2f-a0df8008fe1b": {
@@ -138,8 +88,8 @@
       "description": "Action: 等待时间",
       "properties": {},
       "display": {
-        "x": 168,
-        "y": -180
+        "x": 576,
+        "y": -252
       }
     },
     "8b02a12c-6827-4ec4-86a8-60fab7b21ad6": {
@@ -149,32 +99,303 @@
       "description": "Action：眩晕",
       "properties": {},
       "display": {
-        "x": 168,
-        "y": -276
+        "x": 576,
+        "y": -324
       }
     },
-    "9ba59330-be1a-4e1a-8c83-e69f86a401a0": {
-      "id": "9ba59330-be1a-4e1a-8c83-e69f86a401a0",
-      "name": "BTParallelFlexible",
-      "title": "PalF: 炮塔冷却",
-      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n-false: \tends when all children ends\n-true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
+    "6a442dea-5299-4155-87c4-a6f1fd77330e": {
+      "id": "6a442dea-5299-4155-87c4-a6f1fd77330e",
+      "name": "BTWaitAction",
+      "title": "Time: 攻击前摇",
+      "description": "Action: 等待时间",
+      "properties": {
+        "key": "beforeAttackDelay"
+      },
+      "display": {
+        "x": 984,
+        "y": -120
+      }
+    },
+    "191aae7f-b78e-450a-90e0-affca078d69f": {
+      "id": "191aae7f-b78e-450a-90e0-affca078d69f",
+      "name": "BTFireAction",
+      "title": "Action: 开炮并设置冷却中",
+      "description": "Action: 开火",
       "properties": {},
       "display": {
-        "x": 168,
-        "y": -84
+        "x": 1008,
+        "y": -36
+      }
+    },
+    "7873ae66-5e41-4fb8-8e1d-4727d88f1365": {
+      "id": "7873ae66-5e41-4fb8-8e1d-4727d88f1365",
+      "name": "BTSequence",
+      "title": "Seq: 已冷却",
+      "description": "需要冷却中和攻击后摇同时完成后才算已冷却",
+      "properties": {
+        "precondition": "isColdDown"
+      },
+      "display": {
+        "x": 720,
+        "y": -48
       },
       "children": [
-        "17cc8d3d-b990-4603-ba56-9d238fe4c820",
-        "ded36ce4-b38a-46e6-8347-4e27b54d1692"
+        "6a442dea-5299-4155-87c4-a6f1fd77330e",
+        "191aae7f-b78e-450a-90e0-affca078d69f"
       ]
+    },
+    "830f078d-a92b-441b-821d-cca95009c7e0": {
+      "id": "830f078d-a92b-441b-821d-cca95009c7e0",
+      "name": "BTWaitAction",
+      "title": "Time:瞄准时间",
+      "description": "Action: 等待时间",
+      "properties": {
+        "key": "aimTime"
+      },
+      "display": {
+        "x": 744,
+        "y": -204
+      }
+    },
+    "530c18d4-1d56-4d2d-8ccc-76b4fb65dfab": {
+      "id": "530c18d4-1d56-4d2d-8ccc-76b4fb65dfab",
+      "name": "BTParallel",
+      "title": "Pal: 瞄准",
+      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n- false: \tends when all children ends\n- true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
+      "properties": {
+        "shouldEndWhenOneEnd": "false",
+        "precondition": "notAimed"
+      },
+      "display": {
+        "x": 528,
+        "y": -180
+      },
+      "children": [
+        "830f078d-a92b-441b-821d-cca95009c7e0",
+        "4e9c3f63-ba99-4274-895e-abfaa945ff75"
+      ]
+    },
+    "4e9c3f63-ba99-4274-895e-abfaa945ff75": {
+      "id": "4e9c3f63-ba99-4274-895e-abfaa945ff75",
+      "name": "BTAimAction",
+      "title": "Action:瞄准目标",
+      "description": "Action: 瞄准目标",
+      "properties": {},
+      "display": {
+        "x": 744,
+        "y": -144
+      }
+    },
+    "df5136aa-cb1a-468d-82bc-f1d8b0a86f19": {
+      "id": "df5136aa-cb1a-468d-82bc-f1d8b0a86f19",
+      "name": "BTPrioritySelector",
+      "title": "Pri: 选择",
+      "description": "BTPrioritySelector selects the first sussessfully evaluated child as the active child.",
+      "properties": {},
+      "display": {
+        "x": 504,
+        "y": 24
+      },
+      "children": [
+        "7873ae66-5e41-4fb8-8e1d-4727d88f1365",
+        "a36c3749-e2c7-4f35-8c90-967191f2ee46",
+        "4d7a90b0-4bec-4959-8988-e9d9742471f9"
+      ]
+    },
+    "a36c3749-e2c7-4f35-8c90-967191f2ee46": {
+      "id": "a36c3749-e2c7-4f35-8c90-967191f2ee46",
+      "name": "BTSequence",
+      "title": "Seq; 进入攻击后摇",
+      "description": "攻击后摇未完成过才会进入，已完成不会再次进入",
+      "properties": {
+        "precondition": "isAfterAttack"
+      },
+      "display": {
+        "x": 744,
+        "y": 36
+      },
+      "children": [
+        "c39fbd78-3900-47e0-afce-9f6c9f6d1a3a",
+        "643f3bb3-c29a-4573-8842-d95e87ec3dab"
+      ]
+    },
+    "c39fbd78-3900-47e0-afce-9f6c9f6d1a3a": {
+      "id": "c39fbd78-3900-47e0-afce-9f6c9f6d1a3a",
+      "name": "BTWaitAction",
+      "title": "Time:攻击后摇",
+      "description": "Action: 等待时间",
+      "properties": {
+        "key": "afterAttackDelay"
+      },
+      "display": {
+        "x": 1176,
+        "y": 36
+      }
+    },
+    "643f3bb3-c29a-4573-8842-d95e87ec3dab": {
+      "id": "643f3bb3-c29a-4573-8842-d95e87ec3dab",
+      "name": "BTFinishedAction",
+      "title": "Action：设置攻击后摇完成",
+      "description": "Action： 操作结束",
+      "properties": {
+        "operation": "setAfterAttack"
+      },
+      "display": {
+        "x": 1200,
+        "y": 108
+      }
+    },
+    "16900397-3835-45c9-994b-f9772fbaae53": {
+      "id": "16900397-3835-45c9-994b-f9772fbaae53",
+      "name": "BTWaitAction",
+      "title": "Time: 等待CD冷却",
+      "description": "Action: 等待时间",
+      "properties": {
+        "key": "atkCD",
+        "precondition": ""
+      },
+      "display": {
+        "x": 312,
+        "y": 360
+      }
+    },
+    "cf2c639d-1d5f-46f5-a7eb-e95036d44441": {
+      "id": "cf2c639d-1d5f-46f5-a7eb-e95036d44441",
+      "name": "BTSequence",
+      "title": "Seq",
+      "description": "",
+      "properties": {
+        "precondition": ""
+      },
+      "display": {
+        "x": 120,
+        "y": 564
+      },
+      "children": [
+        "00f9a4f2-7eea-4765-aabf-32ebfab2a473"
+      ]
+    },
+    "00f9a4f2-7eea-4765-aabf-32ebfab2a473": {
+      "id": "00f9a4f2-7eea-4765-aabf-32ebfab2a473",
+      "name": "BTIdleAction",
+      "title": "BTIdleAction",
+      "description": "Action：待机",
+      "properties": {},
+      "display": {
+        "x": 312,
+        "y": 564
+      }
+    },
+    "c8c5bf11-0b83-42de-834e-4b8309677701": {
+      "id": "c8c5bf11-0b83-42de-834e-4b8309677701",
+      "name": "BTFinishedAction",
+      "title": "Action：设置已冷却",
+      "description": "Action： 操作结束notColddown",
+      "properties": {
+        "operation": "setColddown"
+      },
+      "display": {
+        "x": 312,
+        "y": 468
+      }
+    },
+    "8ecd2576-2672-441c-ae1a-27150a5a98d1": {
+      "id": "8ecd2576-2672-441c-ae1a-27150a5a98d1",
+      "name": "BTPrioritySelector",
+      "title": "Pri: ：当前有锁定单位",
+      "description": "BTPrioritySelector selects the first sussessfully evaluated child as the active child.",
+      "properties": {
+        "precondition": "targetValid"
+      },
+      "display": {
+        "x": 264,
+        "y": -180
+      },
+      "children": [
+        "530c18d4-1d56-4d2d-8ccc-76b4fb65dfab",
+        "df5136aa-cb1a-468d-82bc-f1d8b0a86f19"
+      ]
+    },
+    "eaf6513f-5e41-4986-a949-00b00b86f432": {
+      "id": "eaf6513f-5e41-4986-a949-00b00b86f432",
+      "name": "BTCondition",
+      "title": "判断：冷却中",
+      "description": "条件结点",
+      "properties": {
+        "assertFunc": "notColddown"
+      },
+      "display": {
+        "x": 312,
+        "y": 252
+      }
+    },
+    "0fc90ae6-e08a-4714-a1c5-f6d5f6fb8b57": {
+      "id": "0fc90ae6-e08a-4714-a1c5-f6d5f6fb8b57",
+      "name": "BTSequence",
+      "title": "Seq",
+      "description": "",
+      "properties": {
+        "precondition": ""
+      },
+      "display": {
+        "x": 0,
+        "y": 384
+      },
+      "children": [
+        "eaf6513f-5e41-4986-a949-00b00b86f432",
+        "16900397-3835-45c9-994b-f9772fbaae53",
+        "c8c5bf11-0b83-42de-834e-4b8309677701"
+      ]
+    },
+    "bf9c7e38-2542-4ddf-bb32-891b7a723eb9": {
+      "id": "bf9c7e38-2542-4ddf-bb32-891b7a723eb9",
+      "name": "BTSequence",
+      "title": "Seq:当前有锁定单位",
+      "description": "BTSequence evaluteas the current active child, or the first child (if no active child).\nIf passed the evaluation, BTSequence ticks the current active child, or the first child (if no active child available), and if it's result is BTEnded, then change the active child to the next one.",
+      "properties": {
+        "precondition": "targetValid"
+      },
+      "display": {
+        "x": -72,
+        "y": -324
+      },
+      "children": []
+    },
+    "f5d8ae6b-d9ee-4340-83d0-6b155f02eba7": {
+      "id": "f5d8ae6b-d9ee-4340-83d0-6b155f02eba7",
+      "name": "BTParallel",
+      "title": "BTParallel",
+      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n- false: \tends when all children ends\n- true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
+      "properties": {
+        "shouldEndWhenOneEnd": "true"
+      },
+      "display": {
+        "x": -408,
+        "y": -60
+      },
+      "children": [
+        "30201252-991c-43d6-8b49-4c94d7601acc",
+        "0fc90ae6-e08a-4714-a1c5-f6d5f6fb8b57"
+      ]
+    },
+    "4d7a90b0-4bec-4959-8988-e9d9742471f9": {
+      "id": "4d7a90b0-4bec-4959-8988-e9d9742471f9",
+      "name": "BTIdleAction",
+      "title": "BTIdleAction",
+      "description": "Action：待机",
+      "properties": {},
+      "display": {
+        "x": 720,
+        "y": 108
+      }
     }
   },
   "display": {
     "camera_x": 629,
     "camera_y": 352.5,
-    "camera_z": 0.75,
-    "x": -456,
-    "y": 48
+    "camera_z": 0.5,
+    "x": -528,
+    "y": -156
   },
   "custom_nodes": [
     {
@@ -310,6 +531,13 @@
       "category": "action",
       "title": "BTFinishedAction",
       "description": "Action： 操作结束",
+      "properties": {}
+    },
+    {
+      "name": "BTCondition",
+      "category": "condition",
+      "title": "BTCondition",
+      "description": "条件结点",
       "properties": {}
     }
   ]

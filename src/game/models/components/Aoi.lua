@@ -9,7 +9,6 @@ local MAP_DIVIDE = 6 			--分割次数
 
 function Aoi:ctor()
     Aoi.super.ctor(self, "Aoi")
-    self.idGen = 0 
     self.units = {}
 end
 
@@ -43,12 +42,10 @@ function Aoi:aoiSearchByRadius(x, y, radius)
 	return self.aoimap:search_circle(radius, {x, y})
 end
 
-function Aoi:aoiAdd(x, y, size)
-	self.idGen = self.idGen + 1
-	local unit = laoi.new_unit_with_radius(self.idGen, {x, y, size})
+function Aoi:aoiAdd(id, x, y, size)
+	local unit = laoi.new_unit_with_radius(id, {x, y, size})
 	self.aoimap:unit_add(unit)
-	self.units[self.idGen] = unit
-	return self.idGen
+	self.units[id] = unit
 end
 
 function Aoi:aoiDelete(id)

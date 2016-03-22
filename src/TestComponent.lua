@@ -1,7 +1,6 @@
 local TestComponent = class("TestComponent" , SceneBase)
 local TowerModel = require("game.models.TowerModel")
-local TowerEntity = require("game.scenes.battle.entity.TowerEntity")
-local BattleEntity = require("game.scenes.battle.entity.BattleEntity")
+local SoldierModel = require("game.models.SoldierModel")
 TestComponent.__index = TestComponent
 TestComponent.name = "TestComponent"
 
@@ -13,14 +12,19 @@ function TestComponent:init(config)
 
     local player = require("game.models.PlayerModel").new()
     
-    self.battleNode = BattleEntity.new(require("game.models.BattleModel").new(player, player))
-    self:addChild(self.battleNode)
+    -- self.battleNode = BattleEntity.new()
+    -- self:addChild(self.battleNode)
+    self.battle = require("game.models.BattleModel").new(player, player)
+    self.battleField = self.battle:getRenderer()
+    self:addChild(self.battleField)
 
-    
+    local node = bt.debugDisplayTree(self.battle.defender.clan.buildings[1].btRoot)
+    node:setPosition(300, display.cy+100):scale(0.5)
+    self:addChild(node)
 end
 
 function TestComponent:update(dt)
-    self.battleNode:update(dt)
+    self.battle:update(dt)
 end
 
 function TestComponent:onEnter()
@@ -35,6 +39,18 @@ function TestComponent:onEnter()
     menu:addChild(label)
     menu:alignItemsVertically()
     menu:setPosition(display.width*0.9, 50)
+
+
+    self.touchListener = cc.EventListenerTouchOneByOne:create()
+    self.touchListener:registerScriptHandler(function(touch, event)
+        local unit = SoldierModel.new({x = touch:getLocation().x, y = touch:getLocation().y})
+        self.battle:addUnit(unit)
+
+    end ,cc.Handler.EVENT_TOUCH_BEGAN )
+    -- self.touchListener:registerScriptHandler(touchMoved,cc.Handler.EVENT_TOUCH_MOVED )
+    -- self.touchListener:registerScriptHandler(touchEnded,cc.Handler.EVENT_TOUCH_ENDED )
+    local eventDispatcher = self:getEventDispatcher()
+    eventDispatcher:addEventListenerWithFixedPriority(self.touchListener, -1)
    
 end
 

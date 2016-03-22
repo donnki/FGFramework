@@ -7,6 +7,11 @@ local BTParallelFlexible = class("BTParallelFlexible", BTNode)
 -- BTParallelFlexible ticks all active children, if all children ends, it ends.
 -- 
 -- NOTE: Order of child node added does matter!
+-- BTParallelFlexible【松散检查并行结点】
+-- BTParallelFlexible和BTParallel有点类似，它会评估所有子结点，
+-- 只要其中一个子结点评估成功，则BTParallelFlexible评估成功
+-- 所有评估成功的子结点才会执行tick。
+-- 当所有子结点返回Ended时，BTParallelFlexible返回Ended
 function BTParallelFlexible:ctor(name, precondition, properties)
 	BTNode.ctor(self, name, precondition, properties)
 	

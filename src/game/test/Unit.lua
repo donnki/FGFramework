@@ -71,7 +71,7 @@ end
 -- 向当前目标开火
 -- 返回是否已开火完毕
 function Unit:fire()
-	local angle = pGetDirection(cc.p(self:getPosition()), cc.p(self.target:getPosition()))
+	local angle = math.deg(cc.pToAngleSelf(cc.pSub(cc.p(self.target:getPosition()), cc.p(self:getPosition()))))
 
 	local distance = cc.pGetDistance(cc.p(self:getPosition()), cc.p(self.target:getPosition()))
 	local node = cc.DrawNode:create()
@@ -103,13 +103,13 @@ function Unit:move()
 		targetDistance = self.attackRadius + self.target.radius
 	end
 	local curPos = cc.p(self:getPosition())
-	local distance = cc.pGetDistance(curPos, targetPos)
-	if distance < targetDistance then
+	local distance = cc.pDistanceSQ(curPos, targetPos)
+	if distance < targetDistance * targetDistance then
 		return true
 	else
-		local angle = pGetDirection(curPos, targetPos)
-		self:setRotation(-angle)
-		self:setPosition(curPos.x+5*math.cos(math.rad(angle)), curPos.y+5*math.sin(math.rad(angle)))
+		local p = cc.pNormalize(cc.pSub(targetPos, curPos))
+		self:setPosition(curPos.x + 5*p.x, curPos.y + 5*p.y)
+		self:setRotation(-math.deg(cc.pToAngleSelf(p)))
 		return false
 	end
 end
@@ -118,7 +118,7 @@ end
 -- 瞄准当前目标
 -- 返回是否已瞄准完毕
 function Unit:aim()
-	local targetAngle = pGetDirection(cc.p(self:getPosition()), cc.p(self.target:getPosition()))
+	local targetAngle = math.deg(cc.pToAngleSelf(cc.pSub(cc.p(self.target:getPosition()), cc.p(self:getPosition()))))
 	if not self.rotating then
 		self.rotating = true
 		self:runAction(cc.Sequence:create(

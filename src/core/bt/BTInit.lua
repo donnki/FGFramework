@@ -24,7 +24,8 @@ BTAction = require("core.bt.action.BTAction")
 BTPrecondition = require("core.bt.BTPrecondition")
 
 BT_TREE_NODE = {
-	BTPrecondition 		= "core.bt.composite.BTPrecondition",
+	BTCondition 		= "core.bt.condition.BTCondition",
+	
 	BTPrioritySelector 	= "core.bt.composite.BTPrioritySelector",
 	BTSequence 			= "core.bt.composite.BTSequence",
 	BTParallel 			= "core.bt.composite.BTParallel",
@@ -44,6 +45,7 @@ BT_TREE_NODE = {
 
 
 function bt.loadFromJson(path, database)
+	local index = 0
 	if cc.FileUtils:getInstance():isFileExist(path) then
         local data = json.decode(cc.FileUtils:getInstance():getStringFromFile(path))
         local function loadChild(key)
@@ -64,6 +66,8 @@ function bt.loadFromJson(path, database)
 							treeNode:addChild(loadChild(child))
 						end
 					end
+					treeNode.id = index 
+					index = index + 1
 					treeNode.display = node.display
 					return treeNode
 				else
@@ -86,7 +90,7 @@ function bt.genDisplayTree(root, nodeRoot, drawNode, activeDrawNode)
 	node:setPosition(root.display.x, -root.display.y)
 	root.display.node = node
 	root.display.drawNode = activeDrawNode
-	local text = root.__cname.."\n"
+	local text = root.__cname.."("..root.id..")\n"
 	if root.properties and root.properties.precondition then
 		text = text.."前置条件："..root.properties.precondition.."\n"
 	end

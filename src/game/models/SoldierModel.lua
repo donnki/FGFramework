@@ -3,11 +3,20 @@ local Soldier = class("Soldier", Unit)
 
 function Soldier:ctor(proto)
 	Soldier.super.ctor(self, proto)
+	self:initComponents()
+
+	self:setPosition(proto.x, proto.y)
+	self.id = Engine:nextTag()
+	self.size = 0
+	self.hp = 2
 end
 
 function Soldier:initComponents()
-	cc(self):addComponent("game.models.components.AttackComponent"):exportMethods()
-	cc(self):addComponent("game.models.components.MovableComponent"):exportMethods()
+	-- cc(self):addComponent("game.models.components.AttackComponent"):exportMethods()
+	-- cc(self):addComponent("game.models.components.MovableComponent"):exportMethods()
+	cc(self):addComponent("game.models.components.Renderer")
+		:setRenderer("game.scenes.battle.view.SoldierNode")
+		:exportMethods()
 end
 
 function Soldier:initBehaviorTree()
@@ -16,5 +25,14 @@ function Soldier:initBehaviorTree()
 	self.btRoot:activate(self)
 end
 
+function Soldier:hurt()
+	self.hp = self.hp - 1
+	if self.hp <= 0 then
+		self.isDead = true
+		self:getRenderer():setVisible(false)
+	end
+end
 
+function Soldier:update(dt)
+end
 return Soldier

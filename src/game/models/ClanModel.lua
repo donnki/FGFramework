@@ -3,6 +3,8 @@ local ClanModel = class("ClanModel")
 local Tower = import(".TowerModel")
 
 function ClanModel:ctor(player)
+	cc(self):addComponent("game.models.components.Renderer"):exportMethods()
+
 	self.player = player
 	self:load()
 end
@@ -27,14 +29,16 @@ end
 -- 初始化建筑
 function ClanModel:initBuildings()
 	self.buildings = {}
-
-	local b = Tower.new({x=display.cx, y=display.cy})
-	table.insert(self.buildings, b)
+	
+	local id = Engine:nextTag()
+	local b = Tower.new({id=id, x=display.cx, y=display.cy}, self)
+	self.buildings[id] = b
 end
 
 ------------
 -- 初始化建筑
 function ClanModel:initForBattle(battleModel)
+	if self.setParent then self:setParent(battleModel) end
 	for i,v in ipairs(self.buildings) do
 		v:initForBattle(battleModel)
 	end

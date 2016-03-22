@@ -2,12 +2,17 @@ local BTParallel = class("BTParallel", BTNode)
 
 ----------------------
 -- BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.
--- 
 -- BTParallel ticks all children, if flag
 -- 	false: 	ends when all children ends
 -- 	 true: 	ends when any of the children ends
--- 
 -- NOTE: Order of child node added does matter!
+
+-- BTParallel【并行结点
+-- 评估所有的子结点，如果其中一个子结点评估失败，那么BTParallel评估失败
+-- 当评估成功时，BTParallel会执行每一个子结点的tick，如果shouldEndWhenOneEnd设置为：
+-- false: 当所有子结点tick返回Ended时，BTParallel才返回Ended
+-- true: 当其中任何一个子结点返回Ended时，BTParallel即返回Ended
+-- 注意：子结点的顺序不影响运行
 function BTParallel:ctor(name, precondition, properties)
 	BTNode.ctor(self, name, precondition, properties)
 	self.shouldEndWhenOneEnd = properties.shouldEndWhenOneEnd
@@ -22,7 +27,6 @@ function BTParallel:doEvaluate()
 	end
 	return true
 end
-
 function BTParallel:tick(delta)
 	self:debugSetHighlight(true)
 	local endingResultCount = 0
@@ -30,7 +34,8 @@ function BTParallel:tick(delta)
 		if self._results[i] == BTResult.Running then
 			self._results[i] = self.children[i]:tick(delta)
 		end
-		if self.shouldEndWhenOneEnd then
+
+		if self.shouldEndWhenOneEnd and self.shouldEndWhenOneEnd ~= "false" then
 			if self._results[i] ~= BTResult.Running then
 				self:resetResults()
 				return BTResult.Ended
@@ -41,6 +46,7 @@ function BTParallel:tick(delta)
 			end
 		end
 	end
+	
 	if endingResultCount == #self.children then
 		self:resetResults()
 		return BTResult.Ended

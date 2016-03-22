@@ -10,6 +10,7 @@ require "framework.init"
 require "core.init"
 require "game.GameConfig"
 require "game.GameResources"
+bt = require("core.bt.BTInit")
 local DataManager = require "game.GameDataModel"
 
 local function main()

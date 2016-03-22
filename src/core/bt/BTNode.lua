@@ -9,6 +9,8 @@ function BTNode:ctor(name, precondition, properties)
 	self.lastTimeEvaluated = 0
 	self.activated = false
 	self.database = nil
+	self.tmp = 0
+
 end
 
 function BTNode:activate(database)
@@ -93,4 +95,12 @@ function BTNode:debugSetHighlight(flag)
 		end
 	end
 end
+
+function BTNode:debugByID(id, ...)
+	if self.id == id then
+		self.tmp = self.tmp + 1
+		print(self.tmp, ...)
+	end
+end
 return BTNode
+
