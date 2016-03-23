@@ -34,6 +34,7 @@ function BTAction:tick(delta)
 		self:enter()
 		self._status = BTActionStatus.Running
 	end
+
 	if self._status == BTActionStatus.Running then
 		result = self:execute(delta)
 		if result ~= BTResult.Running then

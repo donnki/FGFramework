@@ -8,6 +8,7 @@ end
 
 function BTWaitAction:exit()
 	BTAction.exit(self)
+	-- print(self.properties.key, " wait time: ", self._duration)
 end
 
 function BTWaitAction:execute(delta)

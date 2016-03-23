@@ -24,7 +24,10 @@ function AttackComponent:exportMethods()
     	"isAfterAttack",
     	"setAfterAttack",
     	"notAimed",
-    	"isColdDownAndAfterAttack",
+    	"isBeforeAttack",
+    	"idle",
+    	"hurtTarget",
+    	"notAfterAttack",
     })
     return self.target_
 end
@@ -33,6 +36,7 @@ function AttackComponent:onBind_(gameObject)
 	self.gameObject = gameObject
 	self.cooling = false 		--冷却中
 	self.afterAttack = false 	--攻击后摇中
+	self.beforeAttack = true 	--攻击前摇中
 	self.aimed = false 			--已瞄准
 	self.underControl = false 	--被控制
 	self.target = nil 			--锁定的目标
@@ -45,7 +49,7 @@ function AttackComponent:init(battle)
 	self.atkRangeMax = self.gameObject:getValue("attackRangeMax")
 	--单位攻击最小半径
 	self.atkRangeMin = self.gameObject:getValue("attackRangeMin")
-	--单位转身速度
+	--单位瞄准时间
 	self.aimTime = self.gameObject:getValue("aimTime")
 	return self
 end
@@ -88,17 +92,17 @@ end
 -- 返回是否有可攻击单位
 function AttackComponent:findTarget()
 	self.aimed = false
-	local minDistance = 99999
 	local target = nil
 	local units = self.battle:aoiUnitSearch(self.gameObject.id, self.atkRangeMax)
+	local minDistance = 999
 	for i,v in pairs(units) do
 		local unit = self.battle.units[v:get_id()]
 		if self:targetValid(unit) then
 			local distanceSQ = cc.pDistanceSQ(
 				cc.p(self.gameObject:getPosition()), cc.p(unit:getPosition())
 			)
-			if minDistance*minDistance > distanceSQ then
-				minDistance = distance
+			if (minDistance * minDistance) > distanceSQ then
+				minDistance = distanceSQ
 				target = unit
 			end
 		end
@@ -117,13 +121,20 @@ end
 function AttackComponent:fire()
 	print("~fire")
 	self.cooling = true 	--冷却标记
-	self.afterAttack = true
-    self.target:hurt()
+	self.beforeAttack = true --攻击前摇
 	return true
 end
 
+function AttackComponent:hurtTarget()
+	-- print("~hurtTarget")
+	self.beforeAttack = false
+	self.afterAttack = true
+    self.target:hurt()
+    return true
+end
+
 function AttackComponent:notColddown()
-	return not self:isColdDown()
+	return self.cooling
 end
 
 function AttackComponent:isColdDown()
@@ -132,39 +143,60 @@ end
 
 function AttackComponent:setColddown()
 	self.cooling = false
+	self.beforeAttack = true
+	return true
 end
 
+function AttackComponent:notAfterAttack()
+	return not self.afterAttack
+end
+
+
+------------
+--是否处于攻击后摇中
 function AttackComponent:isAfterAttack()
 	return self.afterAttack
 end
 
-function AttackComponent:isColdDownAndAfterAttack()
-	local t =  not self.afterAttack and self:isColdDown()
-	return t
+------------
+--是否处于攻击前摇中
+function AttackComponent:isBeforeAttack()
+	return self.beforeAttack
 end
 
+------------
+--设置攻击后摇完成
 function AttackComponent:setAfterAttack()
 	self.afterAttack = false
+	return true
 end
 
 function AttackComponent:notAimed()
 	return not self.aimed
 end
+
+function AttackComponent:idle()
+	return false
+end
 ----------
 -- 瞄准当前目标
 -- 返回是否已瞄准完毕
-function AttackComponent:aim(timer, origin)
+function AttackComponent:aim(timer)
+	if self.originRotation == nil then
+		self.originRotation = self.gameObject:getRotation()
+	end
 	local angle = math.deg(cc.pToAngleSelf(cc.pSub(
 		self.target:getPosition(), self.gameObject:getPosition()
 	)))
 	if self.aimTime >= timer then
-		local offset = lerp((self.aimTime-timer)/self.aimTime, angle - origin, 0)
-		self.gameObject:setRotation(origin + offset)
+		local offset = lerp((self.aimTime-timer)/self.aimTime, angle - self.originRotation, 0)
+		self.gameObject:setRotation(self.originRotation + offset)
 
 		return false
 	else
 		self.aimed = true
 		self.gameObject:setRotation(angle)
+		self.originRotation = nil
 		return true
 	end
 end

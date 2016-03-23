@@ -32,27 +32,19 @@ function Building:getValue(key)
 		return 200
 	elseif key == "attackRangeMin" then
 		return 0
-	elseif key == "atkCD" then
-		return 5
-	elseif key == "aimTime" then
-		return 0.5
-	elseif key == "afterAttackDelay" then
+	elseif key == "atkCD" then 			--攻击CD
 		return 1
-	elseif key == "beforeAttackDelay" then
-		return 1.1
+	elseif key == "aimTime" then 		--瞄准时间
+		return 0.2
+	elseif key == "afterAttackDelay" then 	--攻击后摇时间
+		return 0
+	elseif key == "beforeAttackDelay" then  --攻击前摇时间
+		return 0
 	end
 
 	return 10
 end
 
-function Building:onFinished(actionType)
-	if actionType == "setColddown" then
-		self:setColddown()
-	elseif actionType == "setAfterAttack" then
-		self:setAfterAttack()
-	end
-	return true
-end
 
 function Building:update(dt)
 	if self:isRendered() then

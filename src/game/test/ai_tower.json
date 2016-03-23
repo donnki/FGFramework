@@ -1,544 +1,411 @@
 {
-  "id": "1250349d-daba-4374-84f1-ccfdbc526ca5",
-  "title": "防御塔AI",
+  "version": "0.3.0",
+  "scope": "tree",
+  "id": "cd875fde-1a5a-4116-810d-b3368cfafd8a",
+  "title": "A behavior tree",
   "description": "",
-  "root": "f5d8ae6b-d9ee-4340-83d0-6b155f02eba7",
+  "root": "ee4f070b-b52f-4f50-84ae-4c35999b11ec",
   "properties": {},
   "nodes": {
-    "30201252-991c-43d6-8b49-4c94d7601acc": {
-      "id": "30201252-991c-43d6-8b49-4c94d7601acc",
+    "ee4f070b-b52f-4f50-84ae-4c35999b11ec": {
+      "id": "ee4f070b-b52f-4f50-84ae-4c35999b11ec",
+      "name": "BTParallel",
+      "title": "BTParallel",
+      "description": "BTParallel【并行结点】\n评估所有的子结点，如果其中一个子结点评估失败，那么BTParallel评估失败\n当评估成功时，BTParallel会执行每一个子结点的tick，如果shouldEndWhenOneEnd设置为：\nfalse: 当所有子结点tick返回Ended时，BTParallel才返回Ended\ntrue: 当其中任何一个子结点返回Ended时，BTParallel即返回Ended\n注意：子结点的顺序不影响运行",
+      "properties": {
+        "shouldEndWhenOneEnd": "true",
+        "precondition": ""
+      },
+      "display": {
+        "x": -816,
+        "y": -288
+      },
+      "children": [
+        "842198ed-a49e-4ec5-b75d-a6874d5ff07a",
+        "1ea46290-acf5-4438-b0b6-8700e028fb70"
+      ]
+    },
+    "842198ed-a49e-4ec5-b75d-a6874d5ff07a": {
+      "id": "842198ed-a49e-4ec5-b75d-a6874d5ff07a",
       "name": "BTPrioritySelector",
-      "title": "Pri: 防御塔AI",
-      "description": "BTPrioritySelector selects the first sussessfully evaluated child as the active child.",
+      "title": "BTPrioritySelector",
+      "description": "BTPrioritySelector【优先选择结点】\n按优先顺序开始评估子结点，当某个子结点评估失败时，才开始评估下一个子结点\n一旦某个子结点评估成功，则BTPrioritySelector评估成功，并开始执行该子结点的tick，\n直至该子结点返回Ended时，BTPrioritySelector返回Ended。\n若无任何子结点评估成成，则BTPrioritySelector评估失败。\n注意：先加入（排在上面）的子结点顺序优先级更高。",
       "properties": {
         "precondition": ""
       },
       "display": {
-        "x": -144,
-        "y": -132
+        "x": -612,
+        "y": -552
       },
       "children": [
-        "669e9aec-3793-45e5-a4d9-8a752a9496c5",
-        "8ecd2576-2672-441c-ae1a-27150a5a98d1",
-        "a7b92bab-a40a-45a3-891c-0e1f24b01397"
+        "9f1b34d7-66a9-4715-8a3d-d99362a5a35f",
+        "6602deb3-e491-47a5-bc3b-0cdb8f3b0317",
+        "54a0e0b0-da89-4b3d-8743-e506d8e4f428"
       ]
     },
-    "669e9aec-3793-45e5-a4d9-8a752a9496c5": {
-      "id": "669e9aec-3793-45e5-a4d9-8a752a9496c5",
+    "9f1b34d7-66a9-4715-8a3d-d99362a5a35f": {
+      "id": "9f1b34d7-66a9-4715-8a3d-d99362a5a35f",
       "name": "BTParallel",
       "title": "Pal: 塔被控制",
-      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n- false: \tends when all children ends\n- true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
+      "description": "BTParallel【并行结点】\n评估所有的子结点，如果其中一个子结点评估失败，那么BTParallel评估失败\n当评估成功时，BTParallel会执行每一个子结点的tick，如果shouldEndWhenOneEnd设置为：\nfalse: 当所有子结点tick返回Ended时，BTParallel才返回Ended\ntrue: 当其中任何一个子结点返回Ended时，BTParallel即返回Ended\n注意：子结点的顺序不影响运行",
       "properties": {
-        "shouldEndWhenOneEnd": "false",
+        "shouldEndWhenOneEnd": null,
         "precondition": "isUnderControl"
       },
       "display": {
-        "x": 336,
-        "y": -312
+        "x": -336,
+        "y": -684
       },
       "children": [
-        "8b02a12c-6827-4ec4-86a8-60fab7b21ad6",
-        "a49c678f-04fb-47bc-8d2f-a0df8008fe1b"
+        "3d24eaea-0bc8-4576-8752-94e6ec4ca82b",
+        "eac6428a-b5a2-4f67-a38e-08b0166bdfd3"
       ]
     },
-    "a7b92bab-a40a-45a3-891c-0e1f24b01397": {
-      "id": "a7b92bab-a40a-45a3-891c-0e1f24b01397",
-      "name": "BTParallel",
-      "title": "Pal: 当前无锁定单位",
-      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n- false: \tends when all children ends\n- true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
+    "6602deb3-e491-47a5-bc3b-0cdb8f3b0317": {
+      "id": "6602deb3-e491-47a5-bc3b-0cdb8f3b0317",
+      "name": "BTPrioritySelector",
+      "title": "Pri:当前有锁定单位",
+      "description": "BTPrioritySelector【优先选择结点】\n按优先顺序开始评估子结点，当某个子结点评估失败时，才开始评估下一个子结点\n一旦某个子结点评估成功，则BTPrioritySelector评估成功，并开始执行该子结点的tick，\n直至该子结点返回Ended时，BTPrioritySelector返回Ended。\n若无任何子结点评估成成，则BTPrioritySelector评估失败。\n注意：先加入（排在上面）的子结点顺序优先级更高。",
       "properties": {
-        "shouldEndWhenOneEnd": "false",
-        "precondition": "targetNotValid"
+        "precondition": "targetValid"
       },
       "display": {
-        "x": 480,
-        "y": 180
+        "x": -288,
+        "y": -492
       },
       "children": [
-        "21f0c421-2d01-43d1-9e99-85903dba1e7d",
-        "f54844ce-cd06-41a7-9baa-1771c0641b74"
+        "9e465abf-02a2-4dad-8ae1-dd7e9ff24cdc",
+        "7ecad81b-6c13-4a1f-a603-904200fa9161"
       ]
     },
-    "21f0c421-2d01-43d1-9e99-85903dba1e7d": {
-      "id": "21f0c421-2d01-43d1-9e99-85903dba1e7d",
-      "name": "BTSearchAction",
-      "title": "寻找目标",
-      "description": "Action：查找目标\n寻找区域内是否存在目标，存在则锁定该目标",
-      "properties": {},
-      "display": {
-        "x": 744,
-        "y": 180
-      }
-    },
-    "f54844ce-cd06-41a7-9baa-1771c0641b74": {
-      "id": "f54844ce-cd06-41a7-9baa-1771c0641b74",
-      "name": "BTIdleAction",
-      "title": "警戒",
-      "description": "Action：待机",
-      "properties": {},
-      "display": {
-        "x": 720,
-        "y": 240
-      }
-    },
-    "a49c678f-04fb-47bc-8d2f-a0df8008fe1b": {
-      "id": "a49c678f-04fb-47bc-8d2f-a0df8008fe1b",
-      "name": "BTWaitAction",
-      "title": "等待控制结束",
-      "description": "Action: 等待时间",
-      "properties": {},
-      "display": {
-        "x": 576,
-        "y": -252
-      }
-    },
-    "8b02a12c-6827-4ec4-86a8-60fab7b21ad6": {
-      "id": "8b02a12c-6827-4ec4-86a8-60fab7b21ad6",
-      "name": "BTStunAction",
-      "title": "眩晕",
-      "description": "Action：眩晕",
-      "properties": {},
-      "display": {
-        "x": 576,
-        "y": -324
-      }
-    },
-    "6a442dea-5299-4155-87c4-a6f1fd77330e": {
-      "id": "6a442dea-5299-4155-87c4-a6f1fd77330e",
-      "name": "BTWaitAction",
-      "title": "Time: 攻击前摇",
-      "description": "Action: 等待时间",
+    "3d24eaea-0bc8-4576-8752-94e6ec4ca82b": {
+      "id": "3d24eaea-0bc8-4576-8752-94e6ec4ca82b",
+      "name": "BTRunAction",
+      "title": "执行<operation>函数",
+      "description": "",
       "properties": {
-        "key": "beforeAttackDelay"
+        "operation": "stun",
+        "precondition": ""
       },
       "display": {
-        "x": 984,
-        "y": -120
+        "x": -96,
+        "y": -816
       }
     },
-    "191aae7f-b78e-450a-90e0-affca078d69f": {
-      "id": "191aae7f-b78e-450a-90e0-affca078d69f",
-      "name": "BTFireAction",
-      "title": "Action: 开炮并设置冷却中",
-      "description": "Action: 开火",
-      "properties": {},
-      "display": {
-        "x": 1008,
-        "y": -36
-      }
-    },
-    "7873ae66-5e41-4fb8-8e1d-4727d88f1365": {
-      "id": "7873ae66-5e41-4fb8-8e1d-4727d88f1365",
-      "name": "BTSequence",
-      "title": "Seq: 已冷却",
-      "description": "需要冷却中和攻击后摇同时完成后才算已冷却",
-      "properties": {
-        "precondition": "isColdDown"
-      },
-      "display": {
-        "x": 720,
-        "y": -48
-      },
-      "children": [
-        "6a442dea-5299-4155-87c4-a6f1fd77330e",
-        "191aae7f-b78e-450a-90e0-affca078d69f"
-      ]
-    },
-    "830f078d-a92b-441b-821d-cca95009c7e0": {
-      "id": "830f078d-a92b-441b-821d-cca95009c7e0",
+    "eac6428a-b5a2-4f67-a38e-08b0166bdfd3": {
+      "id": "eac6428a-b5a2-4f67-a38e-08b0166bdfd3",
       "name": "BTWaitAction",
-      "title": "Time:瞄准时间",
-      "description": "Action: 等待时间",
+      "title": "等待<key>时间",
+      "description": "",
       "properties": {
-        "key": "aimTime"
+        "key": "stunTime",
+        "precondition": ""
       },
       "display": {
-        "x": 744,
-        "y": -204
+        "x": -96,
+        "y": -708
       }
     },
-    "530c18d4-1d56-4d2d-8ccc-76b4fb65dfab": {
-      "id": "530c18d4-1d56-4d2d-8ccc-76b4fb65dfab",
+    "9e465abf-02a2-4dad-8ae1-dd7e9ff24cdc": {
+      "id": "9e465abf-02a2-4dad-8ae1-dd7e9ff24cdc",
       "name": "BTParallel",
       "title": "Pal: 瞄准",
-      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n- false: \tends when all children ends\n- true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
+      "description": "BTParallel【并行结点】\n评估所有的子结点，如果其中一个子结点评估失败，那么BTParallel评估失败\n当评估成功时，BTParallel会执行每一个子结点的tick，如果shouldEndWhenOneEnd设置为：\nfalse: 当所有子结点tick返回Ended时，BTParallel才返回Ended\ntrue: 当其中任何一个子结点返回Ended时，BTParallel即返回Ended\n注意：子结点的顺序不影响运行",
       "properties": {
-        "shouldEndWhenOneEnd": "false",
+        "shouldEndWhenOneEnd": null,
         "precondition": "notAimed"
       },
       "display": {
-        "x": 528,
-        "y": -180
+        "x": -48,
+        "y": -588
       },
       "children": [
-        "830f078d-a92b-441b-821d-cca95009c7e0",
-        "4e9c3f63-ba99-4274-895e-abfaa945ff75"
+        "edadfbc7-45af-48ad-ba59-59a900663eaf",
+        "1bff277f-95b5-4812-8043-f53b7f2a3f22"
       ]
     },
-    "4e9c3f63-ba99-4274-895e-abfaa945ff75": {
-      "id": "4e9c3f63-ba99-4274-895e-abfaa945ff75",
-      "name": "BTAimAction",
-      "title": "Action:瞄准目标",
-      "description": "Action: 瞄准目标",
-      "properties": {},
+    "edadfbc7-45af-48ad-ba59-59a900663eaf": {
+      "id": "edadfbc7-45af-48ad-ba59-59a900663eaf",
+      "name": "BTWaitAction",
+      "title": "等待<key>时间",
+      "description": "",
+      "properties": {
+        "key": "aimTime",
+        "precondition": ""
+      },
       "display": {
-        "x": 744,
-        "y": -144
+        "x": 144,
+        "y": -672
       }
     },
-    "df5136aa-cb1a-468d-82bc-f1d8b0a86f19": {
-      "id": "df5136aa-cb1a-468d-82bc-f1d8b0a86f19",
+    "1bff277f-95b5-4812-8043-f53b7f2a3f22": {
+      "id": "1bff277f-95b5-4812-8043-f53b7f2a3f22",
+      "name": "BTRunAction",
+      "title": "执行<operation>函数",
+      "description": "",
+      "properties": {
+        "operation": "aim",
+        "precondition": ""
+      },
+      "display": {
+        "x": 144,
+        "y": -600
+      }
+    },
+    "7ecad81b-6c13-4a1f-a603-904200fa9161": {
+      "id": "7ecad81b-6c13-4a1f-a603-904200fa9161",
       "name": "BTPrioritySelector",
-      "title": "Pri: 选择",
-      "description": "BTPrioritySelector selects the first sussessfully evaluated child as the active child.",
-      "properties": {},
+      "title": "Pri: 进入攻击",
+      "description": "BTPrioritySelector【优先选择结点】\n按优先顺序开始评估子结点，当某个子结点评估失败时，才开始评估下一个子结点\n一旦某个子结点评估成功，则BTPrioritySelector评估成功，并开始执行该子结点的tick，\n直至该子结点返回Ended时，BTPrioritySelector返回Ended。\n若无任何子结点评估成成，则BTPrioritySelector评估失败。\n注意：先加入（排在上面）的子结点顺序优先级更高。",
+      "properties": {
+        "precondition": ""
+      },
       "display": {
-        "x": 504,
-        "y": 24
+        "x": -72,
+        "y": -408
       },
       "children": [
-        "7873ae66-5e41-4fb8-8e1d-4727d88f1365",
-        "a36c3749-e2c7-4f35-8c90-967191f2ee46",
-        "4d7a90b0-4bec-4959-8988-e9d9742471f9"
+        "3756adc5-3721-42ba-8e80-f8c2ea19c7a9",
+        "6cebbbac-4e37-49fc-859f-90e0c6ddd09c",
+        "be6c59d4-8ebc-4fe5-8480-6880e2a87e6b"
       ]
     },
-    "a36c3749-e2c7-4f35-8c90-967191f2ee46": {
-      "id": "a36c3749-e2c7-4f35-8c90-967191f2ee46",
+    "3756adc5-3721-42ba-8e80-f8c2ea19c7a9": {
+      "id": "3756adc5-3721-42ba-8e80-f8c2ea19c7a9",
       "name": "BTSequence",
-      "title": "Seq; 进入攻击后摇",
-      "description": "攻击后摇未完成过才会进入，已完成不会再次进入",
+      "title": "Seq: 已冷却",
+      "description": "BTSequence【序列结点】\n1) BTSequence评估当前被激活的子结点（若当前无被激活子结点，则评估第一个子结点）\n2) 如果当前被激活的子结点评估失败，则BTSequence评估失败\n3) 否则执行当前被激活子结点的tick，直至该结点返回Ended，\n4) 若BTSequence里的子结点全部执行完毕返回Ended，则BTSequence返回Ended\n5) BTSequence开始将下一个子结点设为激活，重新开始第一步评估。",
       "properties": {
-        "precondition": "isAfterAttack"
+        "precondition": "isBeforeAttack",
+        "operation": ""
       },
       "display": {
-        "x": 744,
-        "y": 36
+        "x": 132,
+        "y": -468
       },
       "children": [
-        "c39fbd78-3900-47e0-afce-9f6c9f6d1a3a",
-        "643f3bb3-c29a-4573-8842-d95e87ec3dab"
+        "a7cf511c-21e2-42b7-b501-b7f5aeb99a96",
+        "a037b3ca-468b-4a3c-a63b-6dab1196967a",
+        "762d0a1f-302f-45b7-8b23-787edf2286af"
       ]
     },
-    "c39fbd78-3900-47e0-afce-9f6c9f6d1a3a": {
-      "id": "c39fbd78-3900-47e0-afce-9f6c9f6d1a3a",
+    "a037b3ca-468b-4a3c-a63b-6dab1196967a": {
+      "id": "a037b3ca-468b-4a3c-a63b-6dab1196967a",
       "name": "BTWaitAction",
-      "title": "Time:攻击后摇",
-      "description": "Action: 等待时间",
+      "title": "等待<key>时间",
+      "description": "",
       "properties": {
-        "key": "afterAttackDelay"
+        "key": "beforeAttackDelay",
+        "precondition": ""
       },
       "display": {
-        "x": 1176,
-        "y": 36
+        "x": 384,
+        "y": -516
       }
     },
-    "643f3bb3-c29a-4573-8842-d95e87ec3dab": {
-      "id": "643f3bb3-c29a-4573-8842-d95e87ec3dab",
-      "name": "BTFinishedAction",
-      "title": "Action：设置攻击后摇完成",
-      "description": "Action： 操作结束",
+    "762d0a1f-302f-45b7-8b23-787edf2286af": {
+      "id": "762d0a1f-302f-45b7-8b23-787edf2286af",
+      "name": "BTRunAction",
+      "title": "执行<operation>函数",
+      "description": "",
       "properties": {
-        "operation": "setAfterAttack"
+        "operation": "hurtTarget",
+        "precondition": ""
       },
       "display": {
-        "x": 1200,
-        "y": 108
+        "x": 360,
+        "y": -444
       }
     },
-    "16900397-3835-45c9-994b-f9772fbaae53": {
-      "id": "16900397-3835-45c9-994b-f9772fbaae53",
+    "6cebbbac-4e37-49fc-859f-90e0c6ddd09c": {
+      "id": "6cebbbac-4e37-49fc-859f-90e0c6ddd09c",
+      "name": "BTSequence",
+      "title": "Seq: 攻击后摇",
+      "description": "BTSequence【序列结点】\n1) BTSequence评估当前被激活的子结点（若当前无被激活子结点，则评估第一个子结点）\n2) 如果当前被激活的子结点评估失败，则BTSequence评估失败\n3) 否则执行当前被激活子结点的tick，直至该结点返回Ended，\n4) 若BTSequence里的子结点全部执行完毕返回Ended，则BTSequence返回Ended\n5) BTSequence开始将下一个子结点设为激活，重新开始第一步评估。",
+      "properties": {
+        "precondition": "isAfterAttack",
+        "operation": ""
+      },
+      "display": {
+        "x": 132,
+        "y": -384
+      },
+      "children": [
+        "0a1f0640-680d-48bf-8ea4-4e86dc16c5e6",
+        "7c72bcd2-9443-4288-9f48-d77e418f1ecf"
+      ]
+    },
+    "0a1f0640-680d-48bf-8ea4-4e86dc16c5e6": {
+      "id": "0a1f0640-680d-48bf-8ea4-4e86dc16c5e6",
       "name": "BTWaitAction",
-      "title": "Time: 等待CD冷却",
-      "description": "Action: 等待时间",
+      "title": "等待<key>时间",
+      "description": "",
+      "properties": {
+        "key": "afterAttackDelay",
+        "precondition": ""
+      },
+      "display": {
+        "x": 384,
+        "y": -360
+      }
+    },
+    "7c72bcd2-9443-4288-9f48-d77e418f1ecf": {
+      "id": "7c72bcd2-9443-4288-9f48-d77e418f1ecf",
+      "name": "BTRunAction",
+      "title": "执行<operation>函数",
+      "description": "",
+      "properties": {
+        "operation": "setAfterAttack",
+        "precondition": ""
+      },
+      "display": {
+        "x": 372,
+        "y": -276
+      }
+    },
+    "be6c59d4-8ebc-4fe5-8480-6880e2a87e6b": {
+      "id": "be6c59d4-8ebc-4fe5-8480-6880e2a87e6b",
+      "name": "BTRunAction",
+      "title": "执行<operation>函数",
+      "description": "",
+      "properties": {
+        "operation": "idle",
+        "precondition": ""
+      },
+      "display": {
+        "x": 144,
+        "y": -276
+      }
+    },
+    "1ea46290-acf5-4438-b0b6-8700e028fb70": {
+      "id": "1ea46290-acf5-4438-b0b6-8700e028fb70",
+      "name": "BTSequence",
+      "title": "Seq: 冷却时间",
+      "description": "BTSequence【序列结点】\n1) BTSequence评估当前被激活的子结点（若当前无被激活子结点，则评估第一个子结点）\n2) 如果当前被激活的子结点评估失败，则BTSequence评估失败\n3) 否则执行当前被激活子结点的tick，直至该结点返回Ended，\n4) 若BTSequence里的子结点全部执行完毕返回Ended，则BTSequence返回Ended\n5) BTSequence开始将下一个子结点设为激活，重新开始第一步评估。",
+      "properties": {
+        "precondition": "",
+        "operation": ""
+      },
+      "display": {
+        "x": -660,
+        "y": 48
+      },
+      "children": [
+        "281b6c4d-0657-4bad-8414-828d0aac1fe2",
+        "f1c398a0-7766-43f5-a0e8-18c8e1073419",
+        "1b19365e-8cf4-41f2-831d-dc3ee45f7627"
+      ]
+    },
+    "281b6c4d-0657-4bad-8414-828d0aac1fe2": {
+      "id": "281b6c4d-0657-4bad-8414-828d0aac1fe2",
+      "name": "BTCondition",
+      "title": "判断：是否冷却中",
+      "description": "【条件判断结点】",
+      "properties": {
+        "precondition": "",
+        "assertFunc": "notColddown",
+        "assertValue": ""
+      },
+      "display": {
+        "x": -372,
+        "y": -60
+      }
+    },
+    "f1c398a0-7766-43f5-a0e8-18c8e1073419": {
+      "id": "f1c398a0-7766-43f5-a0e8-18c8e1073419",
+      "name": "BTWaitAction",
+      "title": "等待<key>时间",
+      "description": "",
       "properties": {
         "key": "atkCD",
         "precondition": ""
       },
       "display": {
-        "x": 312,
-        "y": 360
+        "x": -372,
+        "y": 72
       }
     },
-    "cf2c639d-1d5f-46f5-a7eb-e95036d44441": {
-      "id": "cf2c639d-1d5f-46f5-a7eb-e95036d44441",
-      "name": "BTSequence",
-      "title": "Seq",
+    "1b19365e-8cf4-41f2-831d-dc3ee45f7627": {
+      "id": "1b19365e-8cf4-41f2-831d-dc3ee45f7627",
+      "name": "BTRunAction",
+      "title": "执行<operation>函数",
       "description": "",
       "properties": {
+        "operation": "setColddown",
         "precondition": ""
       },
       "display": {
-        "x": 120,
-        "y": 564
+        "x": -348,
+        "y": 156
+      }
+    },
+    "54a0e0b0-da89-4b3d-8743-e506d8e4f428": {
+      "id": "54a0e0b0-da89-4b3d-8743-e506d8e4f428",
+      "name": "BTParallel",
+      "title": "Pal: 当前无锁定单位",
+      "description": "BTParallel【并行结点】\n评估所有的子结点，如果其中一个子结点评估失败，那么BTParallel评估失败\n当评估成功时，BTParallel会执行每一个子结点的tick，如果shouldEndWhenOneEnd设置为：\nfalse: 当所有子结点tick返回Ended时，BTParallel才返回Ended\ntrue: 当其中任何一个子结点返回Ended时，BTParallel即返回Ended\n注意：子结点的顺序不影响运行",
+      "properties": {
+        "shouldEndWhenOneEnd": null,
+        "precondition": "targetNotValid"
+      },
+      "display": {
+        "x": -228,
+        "y": -156
       },
       "children": [
-        "00f9a4f2-7eea-4765-aabf-32ebfab2a473"
+        "9fcba779-b88b-479d-ad51-7673732d40f8",
+        "eb0ccda9-b9fe-4e78-a33c-9ed902f510f1"
       ]
     },
-    "00f9a4f2-7eea-4765-aabf-32ebfab2a473": {
-      "id": "00f9a4f2-7eea-4765-aabf-32ebfab2a473",
-      "name": "BTIdleAction",
-      "title": "BTIdleAction",
-      "description": "Action：待机",
-      "properties": {},
-      "display": {
-        "x": 312,
-        "y": 564
-      }
-    },
-    "c8c5bf11-0b83-42de-834e-4b8309677701": {
-      "id": "c8c5bf11-0b83-42de-834e-4b8309677701",
-      "name": "BTFinishedAction",
-      "title": "Action：设置已冷却",
-      "description": "Action： 操作结束notColddown",
-      "properties": {
-        "operation": "setColddown"
-      },
-      "display": {
-        "x": 312,
-        "y": 468
-      }
-    },
-    "8ecd2576-2672-441c-ae1a-27150a5a98d1": {
-      "id": "8ecd2576-2672-441c-ae1a-27150a5a98d1",
-      "name": "BTPrioritySelector",
-      "title": "Pri: ：当前有锁定单位",
-      "description": "BTPrioritySelector selects the first sussessfully evaluated child as the active child.",
-      "properties": {
-        "precondition": "targetValid"
-      },
-      "display": {
-        "x": 264,
-        "y": -180
-      },
-      "children": [
-        "530c18d4-1d56-4d2d-8ccc-76b4fb65dfab",
-        "df5136aa-cb1a-468d-82bc-f1d8b0a86f19"
-      ]
-    },
-    "eaf6513f-5e41-4986-a949-00b00b86f432": {
-      "id": "eaf6513f-5e41-4986-a949-00b00b86f432",
-      "name": "BTCondition",
-      "title": "判断：冷却中",
-      "description": "条件结点",
-      "properties": {
-        "assertFunc": "notColddown"
-      },
-      "display": {
-        "x": 312,
-        "y": 252
-      }
-    },
-    "0fc90ae6-e08a-4714-a1c5-f6d5f6fb8b57": {
-      "id": "0fc90ae6-e08a-4714-a1c5-f6d5f6fb8b57",
-      "name": "BTSequence",
-      "title": "Seq",
+    "9fcba779-b88b-479d-ad51-7673732d40f8": {
+      "id": "9fcba779-b88b-479d-ad51-7673732d40f8",
+      "name": "BTRunAction",
+      "title": "执行<operation>函数",
       "description": "",
       "properties": {
+        "operation": "findTarget",
         "precondition": ""
       },
       "display": {
         "x": 0,
-        "y": 384
-      },
-      "children": [
-        "eaf6513f-5e41-4986-a949-00b00b86f432",
-        "16900397-3835-45c9-994b-f9772fbaae53",
-        "c8c5bf11-0b83-42de-834e-4b8309677701"
-      ]
+        "y": -204
+      }
     },
-    "bf9c7e38-2542-4ddf-bb32-891b7a723eb9": {
-      "id": "bf9c7e38-2542-4ddf-bb32-891b7a723eb9",
-      "name": "BTSequence",
-      "title": "Seq:当前有锁定单位",
-      "description": "BTSequence evaluteas the current active child, or the first child (if no active child).\nIf passed the evaluation, BTSequence ticks the current active child, or the first child (if no active child available), and if it's result is BTEnded, then change the active child to the next one.",
+    "eb0ccda9-b9fe-4e78-a33c-9ed902f510f1": {
+      "id": "eb0ccda9-b9fe-4e78-a33c-9ed902f510f1",
+      "name": "BTRunAction",
+      "title": "执行<operation>函数",
+      "description": "",
       "properties": {
-        "precondition": "targetValid"
+        "operation": "idle",
+        "precondition": ""
       },
       "display": {
-        "x": -72,
-        "y": -324
-      },
-      "children": []
+        "x": 0,
+        "y": -120
+      }
     },
-    "f5d8ae6b-d9ee-4340-83d0-6b155f02eba7": {
-      "id": "f5d8ae6b-d9ee-4340-83d0-6b155f02eba7",
-      "name": "BTParallel",
-      "title": "BTParallel",
-      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n- false: \tends when all children ends\n- true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
+    "a7cf511c-21e2-42b7-b501-b7f5aeb99a96": {
+      "id": "a7cf511c-21e2-42b7-b501-b7f5aeb99a96",
+      "name": "BTRunAction",
+      "title": "执行<operation>函数",
+      "description": "",
       "properties": {
-        "shouldEndWhenOneEnd": "true"
+        "operation": "fire",
+        "precondition": ""
       },
       "display": {
-        "x": -408,
-        "y": -60
-      },
-      "children": [
-        "30201252-991c-43d6-8b49-4c94d7601acc",
-        "0fc90ae6-e08a-4714-a1c5-f6d5f6fb8b57"
-      ]
-    },
-    "4d7a90b0-4bec-4959-8988-e9d9742471f9": {
-      "id": "4d7a90b0-4bec-4959-8988-e9d9742471f9",
-      "name": "BTIdleAction",
-      "title": "BTIdleAction",
-      "description": "Action：待机",
-      "properties": {},
-      "display": {
-        "x": 720,
-        "y": 108
+        "x": 360,
+        "y": -588
       }
     }
   },
   "display": {
-    "camera_x": 629,
-    "camera_y": 352.5,
+    "camera_x": 764,
+    "camera_y": 492.5,
     "camera_z": 0.5,
-    "x": -528,
-    "y": -156
+    "x": -972,
+    "y": -288
   },
-  "custom_nodes": [
-    {
-      "name": "Idle",
-      "category": "action",
-      "title": "Idle",
-      "description": "待机",
-      "properties": {}
-    },
-    {
-      "name": "NoTarget",
-      "category": "condition",
-      "title": null,
-      "description": "当前没有选中的目标",
-      "properties": {}
-    },
-    {
-      "name": "Fire",
-      "category": "action",
-      "title": "Fire",
-      "description": "开火",
-      "properties": {}
-    },
-    {
-      "name": "Aimed",
-      "category": "action",
-      "title": "Aimed",
-      "description": "瞄准目标",
-      "properties": {}
-    },
-    {
-      "name": "Parallel",
-      "category": "composite",
-      "title": null,
-      "description": null,
-      "properties": {}
-    },
-    {
-      "name": "FindTarget",
-      "category": "action",
-      "title": "FindTarget",
-      "description": "寻找区域内是否存在目标，存在则锁定该目标",
-      "properties": {}
-    },
-    {
-      "name": "BTParallel",
-      "category": "composite",
-      "title": "BTParallel",
-      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n- false: \tends when all children ends\n- true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
-      "properties": {
-        "shouldEndWhenOneEnd": "false"
-      }
-    },
-    {
-      "name": "BTParallelFlexible",
-      "category": "composite",
-      "title": "BTParallelFlexible",
-      "description": "BTParallel evaluates all children, if any of them fails the evaluation, BTParallel fails.\nBTParallel ticks all children, if flag\n-false: \tends when all children ends\n-true: \tends when any of the children ends\nNOTE: Order of child node added does matter!",
-      "properties": {}
-    },
-    {
-      "name": "BTSequence",
-      "category": "composite",
-      "title": "BTSequence",
-      "description": "BTSequence evaluteas the current active child, or the first child (if no active child).\nIf passed the evaluation, BTSequence ticks the current active child, or the first child (if no active child available), and if it's result is BTEnded, then change the active child to the next one.",
-      "properties": {}
-    },
-    {
-      "name": "BTIdleAction",
-      "category": "action",
-      "title": "BTIdleAction",
-      "description": "Action：待机",
-      "properties": {}
-    },
-    {
-      "name": "BTMoveAction",
-      "category": "action",
-      "title": "BTMoveAction",
-      "description": "Action: 移动",
-      "properties": {}
-    },
-    {
-      "name": "BTFireAction",
-      "category": "action",
-      "title": "BTFireAction",
-      "description": "Action: 开火",
-      "properties": {}
-    },
-    {
-      "name": "BTAimAction",
-      "category": "action",
-      "title": "BTAimAction",
-      "description": "Action: 瞄准目标",
-      "properties": {}
-    },
-    {
-      "name": "BTStunAction",
-      "category": "action",
-      "title": "BTStunAction",
-      "description": "Action：眩晕",
-      "properties": {}
-    },
-    {
-      "name": "BTWaitAction",
-      "category": "action",
-      "title": "BTWaitAction",
-      "description": "Action: 等待时间",
-      "properties": {}
-    },
-    {
-      "name": "BTSearchAction",
-      "category": "action",
-      "title": "BTSearchAction",
-      "description": "Action：查找目标",
-      "properties": {}
-    },
-    {
-      "name": "BTPrioritySelector",
-      "category": "composite",
-      "title": "BTPrioritySelector",
-      "description": "BTPrioritySelector selects the first sussessfully evaluated child as the active child.",
-      "properties": {}
-    },
-    {
-      "name": "BTSkillAction",
-      "category": "action",
-      "title": "BTSkillAction",
-      "description": "Action: 释放技能",
-      "properties": {}
-    },
-    {
-      "name": "BTFinishedAction",
-      "category": "action",
-      "title": "BTFinishedAction",
-      "description": "Action： 操作结束",
-      "properties": {}
-    },
-    {
-      "name": "BTCondition",
-      "category": "condition",
-      "title": "BTCondition",
-      "description": "条件结点",
-      "properties": {}
-    }
-  ]
+  "custom_nodes": []
 }

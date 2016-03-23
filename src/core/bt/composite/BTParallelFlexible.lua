@@ -3,10 +3,9 @@ local BTParallelFlexible = class("BTParallelFlexible", BTNode)
 ------------------
 -- BTParallelFlexible evaluates all children, if all children fails evaluation, it fails. 
 -- Any child passes the evaluation will be regarded as active.
--- 
 -- BTParallelFlexible ticks all active children, if all children ends, it ends.
--- 
 -- NOTE: Order of child node added does matter!
+
 -- BTParallelFlexible【松散检查并行结点】
 -- BTParallelFlexible和BTParallel有点类似，它会评估所有子结点，
 -- 只要其中一个子结点评估成功，则BTParallelFlexible评估成功

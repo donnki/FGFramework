@@ -31,15 +31,8 @@ BT_TREE_NODE = {
 	BTParallel 			= "core.bt.composite.BTParallel",
 	BTParallelFlexible 	= "core.bt.composite.BTParallelFlexible",
 
-	BTFireAction 		= "core.bt.action.BTFireAction",
+	BTRunAction 		= "core.bt.action.BTRunAction",
 	BTWaitAction 		= "core.bt.action.BTWaitAction",
-	BTAimAction 		= "core.bt.action.BTAimAction",
-	BTSearchAction 		= "core.bt.action.BTSearchAction",
-	BTIdleAction 		= "core.bt.action.BTIdleAction",
-	BTStunAction 		= "core.bt.action.BTStunAction",
-	BTMoveAction 		= "core.bt.action.BTMoveAction",
-	BTSkillAction 		= "core.bt.action.BTSkillAction",
-	BTFinishedAction 	= "core.bt.action.BTFinishedAction",
 }
 
 
@@ -90,11 +83,22 @@ function bt.genDisplayTree(root, nodeRoot, drawNode, activeDrawNode)
 	node:setPosition(root.display.x, -root.display.y)
 	root.display.node = node
 	root.display.drawNode = activeDrawNode
-	local text = root.__cname.."("..root.id..")\n"
+	local name = root.name
+	local t,t2 = name:find("<.*>")
+	if t then
+		local key = name:sub(t+1, t2-1)
+		name = (name:gsub("<.*>", root.properties[key]))
+		print(name)
+	end
+
+	local text = name.."("..root.id..")\n"
 	if root.properties and root.properties.precondition then
 		text = text.."前置条件："..root.properties.precondition.."\n"
 	end
-	text = text..root.name
+	
+	
+	
+	text = text..root.__cname
 	display.newTTFLabel({text=text, size=20}):setTag(1):addTo(node)
 
 	for i,child in ipairs(root.children) do

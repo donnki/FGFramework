@@ -25,16 +25,19 @@ function BTParallel:doEvaluate()
 			return false
 		end
 	end
+
 	return true
 end
 function BTParallel:tick(delta)
 	self:debugSetHighlight(true)
 	local endingResultCount = 0
 	for i,v in ipairs(self.children) do
+		
 		if self._results[i] == BTResult.Running then
+			-- self:debugByID(5, "~!~~", v.__cname, self._results[i])
 			self._results[i] = self.children[i]:tick(delta)
+			-- self:debugByID(5, "~~~", v.__cname, self._results[i])
 		end
-
 		if self.shouldEndWhenOneEnd and self.shouldEndWhenOneEnd ~= "false" then
 			if self._results[i] ~= BTResult.Running then
 				self:resetResults()

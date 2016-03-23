@@ -19,7 +19,7 @@ function TestComponent:init(config)
     self:addChild(self.battleField)
 
     local node = bt.debugDisplayTree(self.battle.defender.clan.buildings[1].btRoot)
-    node:setPosition(300, display.cy+100):scale(0.5)
+    node:setPosition(500, 200):scale(0.55)
     self:addChild(node)
 end
 

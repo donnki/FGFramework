@@ -8,7 +8,8 @@ function Soldier:ctor(proto)
 	self:setPosition(proto.x, proto.y)
 	self.id = Engine:nextTag()
 	self.size = 0
-	self.hp = 2
+	self.hp = 5
+	self.t = 0
 end
 
 function Soldier:initComponents()
@@ -30,9 +31,13 @@ function Soldier:hurt()
 	if self.hp <= 0 then
 		self.isDead = true
 		self:getRenderer():setVisible(false)
+
 	end
+	print("~~~~~~",self.t )
 end
 
+
 function Soldier:update(dt)
+	self.t = self.t + dt
 end
 return Soldier
