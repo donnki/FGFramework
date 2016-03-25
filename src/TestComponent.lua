@@ -44,7 +44,7 @@ function TestComponent:onEnter()
     self.touchListener = cc.EventListenerTouchOneByOne:create()
     self.touchListener:registerScriptHandler(function(touch, event)
         local unit = SoldierModel.new({x = touch:getLocation().x, y = touch:getLocation().y})
-        self.battle:addUnit(unit)
+        self.battle:addUnit(unit, true)
 
     end ,cc.Handler.EVENT_TOUCH_BEGAN )
     -- self.touchListener:registerScriptHandler(touchMoved,cc.Handler.EVENT_TOUCH_MOVED )
@@ -52,6 +52,7 @@ function TestComponent:onEnter()
     local eventDispatcher = self:getEventDispatcher()
     eventDispatcher:addEventListenerWithFixedPriority(self.touchListener, -1)
    
+  
 end
 
 function TestComponent:onExit()

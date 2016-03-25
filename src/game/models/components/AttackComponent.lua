@@ -28,22 +28,22 @@ function AttackComponent:exportMethods()
     	"idle",
     	"hurtTarget",
     	"notAfterAttack",
+    	"isTargetInRange",
     })
     return self.target_
 end
 
-function AttackComponent:onBind_(gameObject)
-	self.gameObject = gameObject
+----------
+-- 初始化
+function AttackComponent:init(battle)
+	self.battle = battle
+
 	self.cooling = false 		--冷却中
 	self.afterAttack = false 	--攻击后摇中
 	self.beforeAttack = true 	--攻击前摇中
 	self.aimed = false 			--已瞄准
 	self.underControl = false 	--被控制
 	self.target = nil 			--锁定的目标
-end
-
-function AttackComponent:init(battle)
-	self.battle = battle
 
 	--单位攻击最大半径
 	self.atkRangeMax = self.gameObject:getValue("attackRangeMax")
@@ -71,20 +71,33 @@ end
 function AttackComponent:targetNotValid()
 	return not self:targetValid()
 end
+
+----------
+-- 返回目标是否在攻击范围以内
+function AttackComponent:isTargetInRange(target)
+	local distance = cc.pGetDistance(target:getPosition(), self.gameObject:getPosition())
+	local targetInRange = (distance < self.atkRangeMax + target:getValue("size")
+		and distance > self.atkRangeMin - target:getValue("size"))
+	
+	return targetInRange
+end
+
 -----------
 -- 返回当前目标是否有效，会检查：
 -- 1）是否有目标
 -- 2）是否已死亡
 -- 3）处于隐身（无敌）中
--- 4）是否已离开有效攻击范围
+-- 4）目标是否已离开有效攻击范围，并且不包含可移动的组件
 function AttackComponent:targetValid(target)
 	if target == nil then target = self.target end
 	if target == nil then return false end
 	if target.isDead then return false end
 	if target.isInvisible then return false end
-	local distance = cc.pGetDistance(target:getPosition(), self.gameObject:getPosition())
-	return (distance < self.atkRangeMax + target.size 
-		and distance > self.atkRangeMin - target.size)
+	if not self.gameObject:checkComponent("game.models.components.MovableComponent")  
+		and not self:isTargetInRange(target) then 
+		return false 
+	end
+	return true
 end
 
 ----------
@@ -115,6 +128,13 @@ function AttackComponent:findTarget()
 	return false
 end
 
+-------------
+-- 寻找整个地图范围内最近的单位
+-- team：		留空时表示任意分组，否则与指定team相同的分组
+-- priority：	优先级留空则表示无优先及，否则根据优先级寻找最近的单位
+function AttackComponent:findNearestTarget(team, priority)
+end
+
 ----------
 -- 向当前目标开火
 -- 返回是否已开火完毕
@@ -125,6 +145,8 @@ function AttackComponent:fire()
 	return true
 end
 
+-----------
+-- 对单位造成伤害（或者发射出子弹，由子弹对单位造成伤害）
 function AttackComponent:hurtTarget()
 	-- print("~hurtTarget")
 	self.beforeAttack = false
@@ -133,20 +155,29 @@ function AttackComponent:hurtTarget()
     return true
 end
 
+------------
+--是否未冷却
 function AttackComponent:notColddown()
 	return self.cooling
 end
 
+------------
+--是否已冷却
 function AttackComponent:isColdDown()
 	return not self.cooling
 end
 
+
+------------
+--设置冷却完成
 function AttackComponent:setColddown()
 	self.cooling = false
 	self.beforeAttack = true
 	return true
 end
 
+------------
+--是否不处于攻击后摇中
 function AttackComponent:notAfterAttack()
 	return not self.afterAttack
 end
@@ -171,17 +202,28 @@ function AttackComponent:setAfterAttack()
 	return true
 end
 
+------------
+-- 是否尚未瞄准完成
 function AttackComponent:notAimed()
 	return not self.aimed
 end
 
+--------------
+-- 等待CD结束的同时调整角度，使面向当前单位
 function AttackComponent:idle()
+	if self.aimed then
+		local angle = math.deg(cc.pToAngleSelf(cc.pSub(
+			self.target:getPosition(), self.gameObject:getPosition()
+		)))
+		self.gameObject:setRotation(angle)
+	end
 	return false
 end
+
 ----------
 -- 瞄准当前目标
 -- 返回是否已瞄准完毕
-function AttackComponent:aim(timer)
+function AttackComponent:aim(timer, properties)
 	if self.originRotation == nil then
 		self.originRotation = self.gameObject:getRotation()
 	end

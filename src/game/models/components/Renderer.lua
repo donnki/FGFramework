@@ -21,10 +21,6 @@ function Renderer:exportMethods()
     return self.target_
 end
 
-function Renderer:onBind_(gameObject)
-	self.gameObject = gameObject
-end
-
 function Renderer:onUnbind_()
 end
 

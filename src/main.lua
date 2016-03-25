@@ -27,9 +27,7 @@ local function main()
     -- local TestRecorderScene = require("TestRecorderScene")
     -- Engine:changeScene(TestRecorderScene.create())
 
-
-    -- local gate = cc.WebSocket:create("ws://localhost:3014")
-    
+    -- print(dump(cc.pLerp(cc.p(0,0), cc.p(display.width,display.height), 0.58639351690963)))
 end
 
 local status, msg = xpcall(main, __G__TRACKBACK__)

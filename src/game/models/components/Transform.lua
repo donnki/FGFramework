@@ -40,8 +40,11 @@ function Transform:getScale()
 end
 
 function Transform:setPosition(x, y)
-    self.position.x = x
-    self.position.y = y
+
+    self.position = cc.p(x, y)
+    if self.gameObject.battleModel then
+        self.gameObject.battleModel:aoiUpdate(self.gameObject.id, x, y)
+    end
 end
 
 function Transform:setRotation(r)

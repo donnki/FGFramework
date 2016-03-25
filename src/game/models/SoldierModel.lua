@@ -7,14 +7,11 @@ function Soldier:ctor(proto)
 
 	self:setPosition(proto.x, proto.y)
 	self.id = Engine:nextTag()
-	self.size = 0
-	self.hp = 5
+	self.hp = 11115
 	self.t = 0
 end
 
 function Soldier:initComponents()
-	-- cc(self):addComponent("game.models.components.AttackComponent"):exportMethods()
-	-- cc(self):addComponent("game.models.components.MovableComponent"):exportMethods()
 	cc(self):addComponent("game.models.components.Renderer")
 		:setRenderer("game.scenes.battle.view.SoldierNode")
 		:exportMethods()
@@ -33,11 +30,37 @@ function Soldier:hurt()
 		self:getRenderer():setVisible(false)
 
 	end
-	print("~~~~~~",self.t )
+end
+
+function Soldier:getValue(key)
+	if key == "size" then
+		return 20
+	elseif key == "attackRange" then
+		return 100
+	elseif key == "moveSpeed" then
+		return 400 			--每秒钟移动400像素
+	end
+
+	return 10
+end
+
+function Soldier:initForBattle(battleModel)
+	self.battleModel = battleModel
+	cc(self):addComponent("game.models.components.AttackComponent"):exportMethods()
+	cc(self):addComponent("game.models.components.MovableComponent"):init(battleModel):exportMethods()
+	self:findPath(cc.p(display.cx, display.cy), 1, 50)
 end
 
 
 function Soldier:update(dt)
-	self.t = self.t + dt
+	if self:checkComponent("game.models.components.MovableComponent") 
+		and self:moveByPath() then
+		
+	end
+	
+	if self:isRendered() then
+		self:getRenderer():update()
+	end
 end
+
 return Soldier

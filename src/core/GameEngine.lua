@@ -68,8 +68,10 @@ function GameEngine:init()
     -- local result,val = self.db:query("select * from SoldiersData where id='211401'")
     -- print(dump(result))
     self:scheduleMainLoop()
-
+    
     PlanScheduler:getInstance():start()
+
+
 end
 
 

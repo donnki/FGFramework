@@ -27,7 +27,7 @@ end
 -- 取得各种数值，如攻击力、攻击间隔等
 function Building:getValue(key)
 	if key == "size" then
-		return 5
+		return 50
 	elseif key == "attackRangeMax" then
 		return 200
 	elseif key == "attackRangeMin" then

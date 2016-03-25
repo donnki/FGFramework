@@ -11,7 +11,7 @@ end
 function BTRunAction:execute(delta)
 	self.timer = self.timer + delta
 	if self.database then
-		local ret = handler(self.database, self.database[self.properties.operation])(self.timer)
+		local ret = handler(self.database, self.database[self.properties.operation])(self.timer, self.properties)
 		if ret then
 			return BTResult.Ended
 		end

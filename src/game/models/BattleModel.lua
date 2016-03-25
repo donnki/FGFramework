@@ -18,20 +18,20 @@ function BattleModel:init()
 	self.defender.clan:initForBattle(self)
 end
 
-function BattleModel:addUnit(unit)
+function BattleModel:addUnit(unit, shouldInit)
 	if self.setParent then
 		unit:setParent(self.defender.clan)
 	end
-
 	local pos = unit:getPosition()
-	self:aoiAdd(unit.id, pos.x, pos.y, unit.size)
+	self:aoiAdd(unit.id, pos.x, pos.y, unit:getValue("size"))
 	
 	if self.units[unit.id] then
 		Log.w("ID不唯一, 单位已存在！")
 	end
 	self.units[unit.id] = unit
-
-	
+	if shouldInit then
+		unit:initForBattle(self)
+	end
 end
 
 function BattleModel:update()

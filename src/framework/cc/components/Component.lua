@@ -35,6 +35,7 @@ end
 
 function Component:bind_(target)
     self.target_ = target
+    self.gameObject = target
     for _, name in ipairs(self.depends_) do
         if not target:checkComponent(name) then
             target:addComponent(name)
