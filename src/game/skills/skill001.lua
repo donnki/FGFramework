@@ -1,16 +1,19 @@
 -- 喷火男技能
-local skill001 = {}
+local skill = {}
+
+-- 技能ID
+skill.id = "skill001"
 
 -- 事件
-skill001.triggerEvent = BattleEvents.onPlayerUseSkill
+skill.triggerEvent = BattleEvents.onPlayerUseSkill
 
 -- 触发的条件
-skill001.condition = function(skillID)
-    return skillID == "skill001"
+skill.condition = function(skillID)
+    return skillID == skill.id
 end
 
 -- 技能
-skill001.actions = function(sender)
+skill.actions = function(sender)
     print("TODO: 播放技能音效")
     print("TODO: 定义：局部变量p = 施放者朝向的正前方200的坐标点")
     print("TODO: 在p点位置播放“烈焰”的动画特效")
@@ -28,6 +31,6 @@ skill001.actions = function(sender)
 end
 
 -- 技能施放完毕后从注册列表中移除
-skill001.clearOnFinished = true
+-- skill.clearOnFinished = true
 
-return skill001
+return skill
