@@ -13,7 +13,7 @@ skill.condition = function(skillID)
 end
 
 -- 技能
-skill.actions = function(sender)
+skill.action = function(sender)
     print("TODO: 播放技能音效")
     print("TODO: 定义：局部变量p = 施放者朝向的正前方200的坐标点")
     print("TODO: 在p点位置播放“烈焰”的动画特效")

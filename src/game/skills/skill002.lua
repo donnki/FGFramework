@@ -12,8 +12,9 @@ skill.condition = function(skillID)
 end
 
 -- 技能
-skill.actions = function(sender)
-	print("TODO: 为施放单位加上一个攻击力提升BUFF")
+skill.action = function(param)
+	print("TODO: 为施放单位加上一个攻击力提升BUFF, ")
+	param.sender.buffAgent:addBuff("buff003")
     return true
 end
 

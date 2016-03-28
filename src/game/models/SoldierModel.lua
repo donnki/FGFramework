@@ -4,6 +4,7 @@ local Soldier = class("Soldier", Unit)
 function Soldier:ctor(proto)
 	Soldier.super.ctor(self, proto)
 	self:initComponents()
+	
 
 	self:setPosition(proto.x, proto.y)
 	self.id = Engine:nextTag()
@@ -15,6 +16,7 @@ function Soldier:initComponents()
 	cc(self):addComponent("game.models.components.Renderer")
 		:setRenderer("game.scenes.battle.view.SoldierNode")
 		:exportMethods()
+
 end
 
 function Soldier:initBehaviorTree()
@@ -44,11 +46,18 @@ function Soldier:getValue(key)
 	return 10
 end
 
+function Soldier:isUsingSkill()
+	return false
+end
+function Soldier:isLeading()
+	return false
+end
 function Soldier:initForBattle(battleModel)
 	self.battleModel = battleModel
 	cc(self):addComponent("game.models.components.AttackComponent"):exportMethods()
 	cc(self):addComponent("game.models.components.MovableComponent"):init(battleModel):exportMethods()
-	self:findPath(cc.p(display.cx, display.cy), 1, 50)
+	self:initBehaviorTree()
+	-- self:findPath(cc.p(display.cx, display.cy), 1, 50)
 end
 
 
@@ -61,6 +70,10 @@ function Soldier:update(dt)
 	if self:isRendered() then
 		self:getRenderer():update()
 	end
+
+	if self.btRoot and self.btRoot:evaluate() then
+        self.btRoot:tick(dt)
+    end
 end
 
 return Soldier

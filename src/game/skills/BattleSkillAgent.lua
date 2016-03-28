@@ -48,7 +48,7 @@ function BattleSkillAgent:onEvent(eventID, ...)
 		if registeredSkills and #registeredSkills > 0 then
 			for i,v in ipairs(registeredSkills) do
 				if v[1].condition(...) then
-					local co = coroutine.create(v[1].actions)
+					local co = coroutine.create(v[1].action)
 					table.insert(self.coroutines, {co, {timer=0, skill=v[1], sender=v[2]}})
 				end
 			end
@@ -61,7 +61,7 @@ end
 function BattleSkillAgent:update(dt)
 	for i,co in ipairs(self.coroutines) do
 		local status, ret = coroutine.resume(co[1], co[2])
-		if ret then
+		if status and ret then
 			table.remove(self.coroutines, i)
 			if co[2].skill.clearOnFinished then 		--从技能注册列表中移除对象
 				local r = self.registerTable[co[2].skill.triggerEvent]

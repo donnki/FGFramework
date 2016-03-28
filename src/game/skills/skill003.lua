@@ -11,7 +11,7 @@ skill.condition = function(skillID)
 end
 
 -- 技能
-skill.actions = function(sender)
+skill.action = function(sender)
     print("TODO: 释放技能003，释放者进入技能引导状态")
     print("TODO: 播放技能音效")
     print("TODO: 定义：局部变量p = 施放者朝向的正前方100的坐标点")

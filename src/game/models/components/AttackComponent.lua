@@ -29,6 +29,7 @@ function AttackComponent:exportMethods()
     	"hurtTarget",
     	"notAfterAttack",
     	"isTargetInRange",
+    	"findNearestTarget",
     })
     return self.target_
 end
@@ -139,7 +140,7 @@ end
 -- 向当前目标开火
 -- 返回是否已开火完毕
 function AttackComponent:fire()
-	print("~fire")
+	-- print("~fire")
 	self.cooling = true 	--冷却标记
 	self.beforeAttack = true --攻击前摇
 	return true

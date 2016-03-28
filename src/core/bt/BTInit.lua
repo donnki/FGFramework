@@ -88,7 +88,7 @@ function bt.genDisplayTree(root, nodeRoot, drawNode, activeDrawNode)
 	if t then
 		local key = name:sub(t+1, t2-1)
 		name = (name:gsub("<.*>", root.properties[key]))
-		print(name)
+		-- print(name)
 	end
 
 	local text = name.."("..root.id..")\n"
