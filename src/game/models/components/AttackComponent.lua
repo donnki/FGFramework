@@ -38,7 +38,6 @@ end
 -- 初始化
 function AttackComponent:init(battle)
 	self.battle = battle
-
 	self.cooling = false 		--冷却中
 	self.afterAttack = false 	--攻击后摇中
 	self.beforeAttack = true 	--攻击前摇中
@@ -101,26 +100,18 @@ function AttackComponent:targetValid(target)
 	return true
 end
 
+
 ----------
 -- 区域内寻找可攻击单位
 -- 返回是否有可攻击单位
 function AttackComponent:findTarget()
 	self.aimed = false
-	local target = nil
-	local units = self.battle:aoiUnitSearch(self.gameObject.id, self.atkRangeMax)
-	local minDistance = 999
-	for i,v in pairs(units) do
-		local unit = self.battle.units[v:get_id()]
-		if self:targetValid(unit) then
-			local distanceSQ = cc.pDistanceSQ(
-				cc.p(self.gameObject:getPosition()), cc.p(unit:getPosition())
-			)
-			if (minDistance * minDistance) > distanceSQ then
-				minDistance = distanceSQ
-				target = unit
-			end
-		end
-	end
+	local target = self.battle:findNearestInRange(
+		self.gameObject.id, 
+		self.atkRangeMax, 
+		TEAM.enemy(self.gameObject.team),
+		handler(self, self.targetValid)
+	)
 	if target then
 		self.target = target
 		return true
@@ -131,9 +122,16 @@ end
 
 -------------
 -- 寻找整个地图范围内最近的单位
--- team：		留空时表示任意分组，否则与指定team相同的分组
--- priority：	优先级留空则表示无优先及，否则根据优先级寻找最近的单位
-function AttackComponent:findNearestTarget(team, priority)
+-- team:		留空时表示任意分组，否则根据指定team相同的分组来寻找最近的单位
+-- type:		类型留空则表示无优先级，否则根据type来寻找最近的单位
+function AttackComponent:findNearestTarget(team, type_)
+	local target = self.battle:findNearestInAll(
+		self.gameObject.id,
+		self.atkRangeMax,
+		TEAM.enemy(self.gameObject.team),
+		handler(self, self.targetValid)
+	)
+	print(target)
 end
 
 ----------

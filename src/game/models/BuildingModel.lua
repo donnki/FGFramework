@@ -19,7 +19,7 @@ function Building:initForBattle(battleModel)
 	-- 单位的尺寸
 	self.size = self:getValue("size")
 	--aoi
-	battleModel:addUnit(self)
+	battleModel:addUnit(self, false, TEAM.defender, UNIT_TYPE.building)
 end
 
 

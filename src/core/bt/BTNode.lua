@@ -13,6 +13,7 @@ function BTNode:ctor(name, precondition, properties)
 
 end
 
+
 function BTNode:activate(database)
 	if self.activated then
 		return

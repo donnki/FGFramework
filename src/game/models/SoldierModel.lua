@@ -54,7 +54,7 @@ function Soldier:isLeading()
 end
 function Soldier:initForBattle(battleModel)
 	self.battleModel = battleModel
-	cc(self):addComponent("game.models.components.AttackComponent"):exportMethods()
+	cc(self):addComponent("game.models.components.AttackComponent"):init(battleModel):exportMethods()
 	cc(self):addComponent("game.models.components.MovableComponent"):init(battleModel):exportMethods()
 	self:initBehaviorTree()
 	-- self:findPath(cc.p(display.cx, display.cy), 1, 50)

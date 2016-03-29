@@ -10,6 +10,8 @@ require "framework.init"
 require "core.init"
 require "game.GameConfig"
 require "game.GameResources"
+require "game.GameConstants"
+
 bt = require("core.bt.BTInit")
 local DataManager = require "game.GameDataModel"
 
@@ -28,6 +30,7 @@ local function main()
     -- Engine:changeScene(TestRecorderScene.create())
 
     -- print(dump(cc.pLerp(cc.p(0,0), cc.p(display.width,display.height), 0.58639351690963)))
+
 end
 
 local status, msg = xpcall(main, __G__TRACKBACK__)

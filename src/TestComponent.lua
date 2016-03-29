@@ -43,6 +43,7 @@ end
 function TestComponent:onEnter()
     local menu = cc.Menu:create()
     self:addChild(menu, 10)
+    
     local label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("释放技能", "Helvetica", 30))
     label:setAnchorPoint(cc.p(0.5, 0.5))
     label:registerScriptTapHandler(function()
@@ -77,7 +78,7 @@ function TestComponent:onEnter()
     self.touchListener = cc.EventListenerTouchOneByOne:create()
     self.touchListener:registerScriptHandler(function(touch, event)
         self.unit = SoldierModel.new({x = touch:getLocation().x, y = touch:getLocation().y})
-        self.battle:addUnit(self.unit, true)
+        self.battle:addUnit(self.unit, true, TEAM.attacker, UNIT_TYPE.movable)
 
         local node = bt.debugDisplayTree(self.unit.btRoot)
         node:setPosition(500, 400):scale(0.55)
