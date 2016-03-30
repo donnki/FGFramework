@@ -26,4 +26,8 @@ function TowerModel:update(dt)
     end
 end
 
+function TowerModel:hurt()
+	print("~~~~~tower hurt")
+end
+
 return TowerModel

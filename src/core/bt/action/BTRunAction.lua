@@ -2,7 +2,7 @@ local BTRunAction = class("BTRunAction", BTAction)
 
 function BTRunAction:enter()
 	self.timer = 0
-	
+	-- print(self.properties.operation)
 end
 
 function BTRunAction:exit()

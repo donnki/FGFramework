@@ -78,6 +78,7 @@ function TestComponent:onEnter()
     self.touchListener = cc.EventListenerTouchOneByOne:create()
     self.touchListener:registerScriptHandler(function(touch, event)
         self.unit = SoldierModel.new({x = touch:getLocation().x, y = touch:getLocation().y})
+        self.unit.team = TEAM.attacker
         self.battle:addUnit(self.unit, true, TEAM.attacker, UNIT_TYPE.movable)
 
         local node = bt.debugDisplayTree(self.unit.btRoot)

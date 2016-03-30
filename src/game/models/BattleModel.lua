@@ -34,6 +34,10 @@ function BattleModel:addUnit(unit, shouldInit, team, type_)
 	end
 end
 
+function BattleModel:getById(id)
+	return self.units[id]
+end
+
 function BattleModel:update()
 	for i,v in pairs(self.units) do
 		v:update(Time.delta)

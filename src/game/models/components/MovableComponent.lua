@@ -13,7 +13,8 @@ function MovableComponent:exportMethods()
     self:exportMethods_({
     	"moveTo",
     	"moveByPath",
-    	"findPath"
+    	"findPath",
+    	"move",
     })
     return self.target_
 end
@@ -42,7 +43,7 @@ function MovableComponent:moveTo(pos)
 	if self.timer_ <= self.costTime_ then
 		local t = self.timer_/self.costTime_
 		local newPos = cc.pLerp(self.originPos_, pos, t)
-		self.gameObject:setPosition(newPos.x, newPos.y)
+		
 		if self.mode_ == 1 then 		-- 优化： 应该只需要计算最后一个路径点
 			local distance = cc.pGetDistance(newPos, self.finalPos_)
 			if distance  < self.attackRange_ + self.radius_ - 10 then
@@ -51,7 +52,7 @@ function MovableComponent:moveTo(pos)
 				return true
 			end
 		end
-		
+		self.gameObject:setPosition(newPos.x, newPos.y)
 		return false
 	else
 		self.originPos_ = nil
@@ -74,17 +75,31 @@ function MovableComponent:moveByPath()
 	end
 end
 
+function MovableComponent:move()
+	return self:moveByPath()
+end
 --------------
 -- 寻找到指定位置点的路径
 -- @param pos: 终点的坐标
 -- @param mode: 值为0或空时，终点为精确坐标点；值为1时，终点为单位可攻击到的范围
 -- @param radius: 目标的半径，仅当mode值为1时有效
-function MovableComponent:findPath(pos, mode, radius)
+function MovableComponent:findTargetPath(pos, mode, radius)
 	self.finalPos_ = pos
 	self.mode_ = mode and mode or 0
 	self.radius_ = radius and radius or 0
-	self.path_ = {cc.p(100,100), cc.p(100,250), pos}
+	self.path_ = {pos}
 	self.pathIndex_ = 1
+end
+
+function MovableComponent:findPath()
+	local target = self.gameObject:getCurrentTarget()
+	if target then
+		self:findTargetPath(cc.p(target:getPosition()), 1, target:getValue("size"))
+		return true
+	else
+
+	end
+	
 end
 
 return MovableComponent

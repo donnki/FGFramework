@@ -34,15 +34,24 @@ function Soldier:hurt()
 	end
 end
 
+------------
+-- 取得各种数值，如攻击力、攻击间隔等
 function Soldier:getValue(key)
 	if key == "size" then
-		return 20
+		return 50
 	elseif key == "attackRange" then
 		return 100
+	elseif key == "atkCD" then 			--攻击CD
+		return 5
+	elseif key == "aimTime" then 		--瞄准时间
+		return 0.2
+	elseif key == "afterAttackDelay" then 	--攻击后摇时间
+		return 1
+	elseif key == "beforeAttackDelay" then  --攻击前摇时间
+		return 1
 	elseif key == "moveSpeed" then
 		return 400 			--每秒钟移动400像素
 	end
-
 	return 10
 end
 
@@ -62,10 +71,6 @@ end
 
 
 function Soldier:update(dt)
-	if self:checkComponent("game.models.components.MovableComponent") 
-		and self:moveByPath() then
-		
-	end
 	
 	if self:isRendered() then
 		self:getRenderer():update()

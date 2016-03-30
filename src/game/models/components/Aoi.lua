@@ -107,12 +107,17 @@ function Aoi:findNearestInAll(tag, team, type_, checkFunc)
 		cc.p(self.units[tag]:get_pos()), self.units, 
 		function(unit)
 			local uTeam, uType = unit:get_team_type()
-			if team == uTeam and type_ == uType then
-				return checkFunc()
+			-- print(uTeam, uType, team, type_, unit:get_id(), tag )
+			if unit:get_id() ~= tag 
+				and (team == -1 or team == uTeam) 
+				and (type_ == -1 or type_ == uType)
+				and checkFunc(unit) then
+				return true
 			else
 				return false
 			end
 		end)
+	return target
 end
 
 return Aoi

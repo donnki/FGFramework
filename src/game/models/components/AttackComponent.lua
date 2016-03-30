@@ -30,6 +30,7 @@ function AttackComponent:exportMethods()
     	"notAfterAttack",
     	"isTargetInRange",
     	"findNearestTarget",
+    	"getCurrentTarget",
     })
     return self.target_
 end
@@ -52,6 +53,10 @@ function AttackComponent:init(battle)
 	--单位瞄准时间
 	self.aimTime = self.gameObject:getValue("aimTime")
 	return self
+end
+
+function AttackComponent:getCurrentTarget()
+	return self.target
 end
 
 ------------
@@ -88,8 +93,13 @@ end
 -- 2）是否已死亡
 -- 3）处于隐身（无敌）中
 -- 4）目标是否已离开有效攻击范围，并且不包含可移动的组件
-function AttackComponent:targetValid(target)
-	if target == nil then target = self.target end
+function AttackComponent:targetValid(v)
+	local target = nil
+	if v == nil then 
+		target = self.target 
+	else
+		target = self.battle:getById(v:get_id())
+	end
 	if target == nil then return false end
 	if target.isDead then return false end
 	if target.isInvisible then return false end
@@ -124,14 +134,24 @@ end
 -- 寻找整个地图范围内最近的单位
 -- team:		留空时表示任意分组，否则根据指定team相同的分组来寻找最近的单位
 -- type:		类型留空则表示无优先级，否则根据type来寻找最近的单位
-function AttackComponent:findNearestTarget(team, type_)
+function AttackComponent:getNearestTarget(team, type_)
 	local target = self.battle:findNearestInAll(
 		self.gameObject.id,
-		self.atkRangeMax,
-		TEAM.enemy(self.gameObject.team),
+		team,
+		type_,
 		handler(self, self.targetValid)
 	)
-	print(target)
+	return target
+end
+
+function AttackComponent:findNearestTarget()
+	local unit = self:getNearestTarget()
+	if unit then
+		self.target = self.battle:getById(unit:get_id())
+		return true 
+	else
+		return false
+	end
 end
 
 ----------
