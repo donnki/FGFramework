@@ -6,4 +6,5 @@ function RenderNode:ctor(model)
 	self.model = model
 end
 
+
 return RenderNode

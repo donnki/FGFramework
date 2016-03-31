@@ -217,14 +217,15 @@
       "id": "c62710f2-fa3c-49ee-b2ce-8d046bfd2928",
       "name": "BTRunAction",
       "title": "执行<operation>函数",
-      "description": "",
+      "description": "type=1为寻找最近的小兵单位",
       "properties": {
         "operation": "findNearestTarget",
-        "precondition": ""
+        "precondition": "",
+        "type": 1
       },
       "display": {
-        "x": 804,
-        "y": -36
+        "x": 792,
+        "y": -12
       }
     },
     "4078d207-9b79-49c2-b6fa-42132e8ff7a7": {
@@ -241,7 +242,7 @@
       },
       "children": [
         "f55a20db-e631-42bd-afe8-7dc3323a1b5a",
-        "434bbe44-b24d-4bdf-a401-481c748b7c24"
+        "9b225d85-1c1c-4bbf-96b9-70f105e25c57"
       ]
     },
     "73c9d6e1-ee25-484c-8384-e7a54e26332c": {
@@ -254,29 +255,11 @@
       },
       "display": {
         "x": -168,
-        "y": 276
+        "y": 396
       },
       "children": [
         "01bd5f90-a83a-4028-bff3-4db73bbd15c7",
         "ad273125-6eeb-4aaa-be3e-52d8318cb324"
-      ]
-    },
-    "434bbe44-b24d-4bdf-a401-481c748b7c24": {
-      "id": "434bbe44-b24d-4bdf-a401-481c748b7c24",
-      "name": "BTSequence",
-      "title": "Seq: 当前锁定单位小兵",
-      "description": "BTSequence【序列结点】\n1) BTSequence评估当前被激活的子结点（若当前无被激活子结点，则评估第一个子结点）\n2) 如果当前被激活的子结点评估失败，则BTSequence评估失败\n3) 否则执行当前被激活子结点的tick，直至该结点返回Ended，\n4) 若BTSequence里的子结点全部执行完毕返回Ended，则BTSequence返回Ended\n5) BTSequence开始将下一个子结点设为激活，重新开始第一步评估。",
-      "properties": {
-        "precondition": ""
-      },
-      "display": {
-        "x": 96,
-        "y": 120
-      },
-      "children": [
-        "59a4b2d7-b229-4a41-bc79-17a27dd180ca",
-        "b209fa00-9d1b-4951-81c4-e219d505cc2c",
-        "9b225d85-1c1c-4bbf-96b9-70f105e25c57"
       ]
     },
     "e6ddefbb-59ec-4ee3-a6e4-99ce708e6d9c": {
@@ -289,7 +272,7 @@
       },
       "display": {
         "x": 804,
-        "y": -156
+        "y": -96
       },
       "children": [
         "b52b98a6-5107-4025-92f1-9ddd4fa3cf88",
@@ -424,11 +407,11 @@
       "title": "Seq:视野内无敌方移动单位或引导强制攻击中",
       "description": "BTSequence【序列结点】\n1) BTSequence评估当前被激活的子结点（若当前无被激活子结点，则评估第一个子结点）\n2) 如果当前被激活的子结点评估失败，则BTSequence评估失败\n3) 否则执行当前被激活子结点的tick，直至该结点返回Ended，\n4) 若BTSequence里的子结点全部执行完毕返回Ended，则BTSequence返回Ended\n5) BTSequence开始将下一个子结点设为激活，重新开始第一步评估。",
       "properties": {
-        "precondition": ""
+        "precondition": "noSoldierInSight"
       },
       "display": {
-        "x": 456,
-        "y": -108
+        "x": 444,
+        "y": -120
       },
       "children": [
         "77db8ef9-017e-4ab2-8dbb-39e5c9f628c4",
@@ -442,10 +425,10 @@
       "title": "Pri: 当前锁定单位为建筑",
       "description": "BTPrioritySelector【优先选择结点】\n按优先顺序开始评估子结点，当某个子结点评估失败时，才开始评估下一个子结点\n一旦某个子结点评估成功，则BTPrioritySelector评估成功，并开始执行该子结点的tick，\n直至该子结点返回Ended时，BTPrioritySelector返回Ended。\n若无任何子结点评估成成，则BTPrioritySelector评估失败。\n注意：先加入（排在上面）的子结点顺序优先级更高。",
       "properties": {
-        "precondition": ""
+        "precondition": "isBuildingTarget"
       },
       "display": {
-        "x": 108,
+        "x": 84,
         "y": -84
       },
       "children": [
@@ -510,7 +493,7 @@
       },
       "display": {
         "x": 816,
-        "y": -288
+        "y": -264
       }
     },
     "b0b4d924-e007-4581-b5c1-0222cc59b5a8": {
@@ -524,7 +507,7 @@
       },
       "display": {
         "x": 816,
-        "y": -228
+        "y": -180
       }
     },
     "2d030b72-5ad4-4582-95e4-dbb2a52f1c42": {
@@ -533,11 +516,11 @@
       "title": "Seq:视野内有敌方移动单位或被移动单位攻击",
       "description": "BTSequence【序列结点】\n1) BTSequence评估当前被激活的子结点（若当前无被激活子结点，则评估第一个子结点）\n2) 如果当前被激活的子结点评估失败，则BTSequence评估失败\n3) 否则执行当前被激活子结点的tick，直至该结点返回Ended，\n4) 若BTSequence里的子结点全部执行完毕返回Ended，则BTSequence返回Ended\n5) BTSequence开始将下一个子结点设为激活，重新开始第一步评估。",
       "properties": {
-        "precondition": ""
+        "precondition": "hasSoldierInSight"
       },
       "display": {
-        "x": 456,
-        "y": 24
+        "x": 444,
+        "y": -24
       },
       "children": [
         "c62710f2-fa3c-49ee-b2ce-8d046bfd2928"
@@ -546,16 +529,17 @@
     "9b225d85-1c1c-4bbf-96b9-70f105e25c57": {
       "id": "9b225d85-1c1c-4bbf-96b9-70f105e25c57",
       "name": "BTPrioritySelector",
-      "title": "Pri: 进入攻击",
+      "title": "Pri: 当前锁定单位小兵",
       "description": "BTPrioritySelector【优先选择结点】\n按优先顺序开始评估子结点，当某个子结点评估失败时，才开始评估下一个子结点\n一旦某个子结点评估成功，则BTPrioritySelector评估成功，并开始执行该子结点的tick，\n直至该子结点返回Ended时，BTPrioritySelector返回Ended。\n若无任何子结点评估成成，则BTPrioritySelector评估失败。\n注意：先加入（排在上面）的子结点顺序优先级更高。",
       "properties": {
-        "precondition": ""
+        "precondition": "isSoldierTarget"
       },
       "display": {
-        "x": 348,
-        "y": 288
+        "x": 96,
+        "y": 180
       },
       "children": [
+        "b88fd94b-5db1-4a79-a7f4-49381f638332",
         "c9f9de32-ef1c-4313-8d7a-1f71928cec2a",
         "42c47779-f658-4e3d-8ecc-f63175bf9b00",
         "34fbd126-f5cb-439d-8522-2103be46c95d"
@@ -571,8 +555,8 @@
         "operation": ""
       },
       "display": {
-        "x": 768,
-        "y": 192
+        "x": 504,
+        "y": 168
       },
       "children": [
         "eda97e8f-179e-4487-806c-fcac76cf2bd7",
@@ -590,8 +574,8 @@
         "precondition": ""
       },
       "display": {
-        "x": 1020,
-        "y": 144
+        "x": 924,
+        "y": 192
       }
     },
     "914884bf-be0b-47c4-882d-ef011a40cce2": {
@@ -604,8 +588,8 @@
         "precondition": ""
       },
       "display": {
-        "x": 996,
-        "y": 216
+        "x": 900,
+        "y": 252
       }
     },
     "42c47779-f658-4e3d-8ecc-f63175bf9b00": {
@@ -618,8 +602,8 @@
         "operation": ""
       },
       "display": {
-        "x": 768,
-        "y": 276
+        "x": 396,
+        "y": 240
       },
       "children": [
         "f5d6c82d-d026-4991-930f-64972821a896",
@@ -636,7 +620,7 @@
         "precondition": ""
       },
       "display": {
-        "x": 1020,
+        "x": 744,
         "y": 300
       }
     },
@@ -650,8 +634,8 @@
         "precondition": ""
       },
       "display": {
-        "x": 1008,
-        "y": 384
+        "x": 744,
+        "y": 396
       }
     },
     "34fbd126-f5cb-439d-8522-2103be46c95d": {
@@ -664,8 +648,8 @@
         "precondition": ""
       },
       "display": {
-        "x": 780,
-        "y": 384
+        "x": 408,
+        "y": 336
       }
     },
     "eda97e8f-179e-4487-806c-fcac76cf2bd7": {
@@ -678,8 +662,8 @@
         "precondition": ""
       },
       "display": {
-        "x": 996,
-        "y": 72
+        "x": 888,
+        "y": 132
       }
     },
     "59a4b2d7-b229-4a41-bc79-17a27dd180ca": {
@@ -692,8 +676,8 @@
         "precondition": ""
       },
       "display": {
-        "x": 408,
-        "y": 144
+        "x": 636,
+        "y": 48
       }
     },
     "b209fa00-9d1b-4951-81c4-e219d505cc2c": {
@@ -706,8 +690,8 @@
         "precondition": ""
       },
       "display": {
-        "x": 360,
-        "y": 216
+        "x": 636,
+        "y": 108
       }
     },
     "01bd5f90-a83a-4028-bff3-4db73bbd15c7": {
@@ -716,10 +700,10 @@
       "title": "Seq:视野内无敌方移动单位",
       "description": "BTSequence【序列结点】\n1) BTSequence评估当前被激活的子结点（若当前无被激活子结点，则评估第一个子结点）\n2) 如果当前被激活的子结点评估失败，则BTSequence评估失败\n3) 否则执行当前被激活子结点的tick，直至该结点返回Ended，\n4) 若BTSequence里的子结点全部执行完毕返回Ended，则BTSequence返回Ended\n5) BTSequence开始将下一个子结点设为激活，重新开始第一步评估。",
       "properties": {
-        "precondition": ""
+        "precondition": "noSoldierInSight"
       },
       "display": {
-        "x": 120,
+        "x": 108,
         "y": 336
       },
       "children": [
@@ -730,14 +714,15 @@
       "id": "76fd9933-67dd-4761-8368-f945da317a15",
       "name": "BTRunAction",
       "title": "执行<operation>函数",
-      "description": "",
+      "description": "type=2为寻找最近的建筑",
       "properties": {
         "operation": "findNearestTarget",
-        "precondition": ""
+        "precondition": "",
+        "type": 2
       },
       "display": {
-        "x": 420,
-        "y": 372
+        "x": 396,
+        "y": 408
       }
     },
     "ad273125-6eeb-4aaa-be3e-52d8318cb324": {
@@ -746,11 +731,11 @@
       "title": "Seq:视野内有敌方移动单位或被移动单位攻击",
       "description": "BTSequence【序列结点】\n1) BTSequence评估当前被激活的子结点（若当前无被激活子结点，则评估第一个子结点）\n2) 如果当前被激活的子结点评估失败，则BTSequence评估失败\n3) 否则执行当前被激活子结点的tick，直至该结点返回Ended，\n4) 若BTSequence里的子结点全部执行完毕返回Ended，则BTSequence返回Ended\n5) BTSequence开始将下一个子结点设为激活，重新开始第一步评估。",
       "properties": {
-        "precondition": ""
+        "precondition": "hasSoldierInSight"
       },
       "display": {
         "x": 204,
-        "y": 480
+        "y": 468
       },
       "children": [
         "74d79f0f-e10e-4907-9acf-ed83b1c80e6b"
@@ -760,15 +745,33 @@
       "id": "74d79f0f-e10e-4907-9acf-ed83b1c80e6b",
       "name": "BTRunAction",
       "title": "执行<operation>函数",
-      "description": "",
+      "description": "type=1为寻找最近的小兵单位",
       "properties": {
         "operation": "findNearestTarget",
-        "precondition": ""
+        "precondition": "",
+        "type": 1
       },
       "display": {
         "x": 600,
         "y": 492
       }
+    },
+    "b88fd94b-5db1-4a79-a7f4-49381f638332": {
+      "id": "b88fd94b-5db1-4a79-a7f4-49381f638332",
+      "name": "BTSequence",
+      "title": "Seq: 小兵不在攻击范围",
+      "description": "BTSequence【序列结点】\n1) BTSequence评估当前被激活的子结点（若当前无被激活子结点，则评估第一个子结点）\n2) 如果当前被激活的子结点评估失败，则BTSequence评估失败\n3) 否则执行当前被激活子结点的tick，直至该结点返回Ended，\n4) 若BTSequence里的子结点全部执行完毕返回Ended，则BTSequence返回Ended\n5) BTSequence开始将下一个子结点设为激活，重新开始第一步评估。",
+      "properties": {
+        "precondition": "isTargetNotInRange"
+      },
+      "display": {
+        "x": 360,
+        "y": 84
+      },
+      "children": [
+        "59a4b2d7-b229-4a41-bc79-17a27dd180ca",
+        "b209fa00-9d1b-4951-81c4-e219d505cc2c"
+      ]
     }
   },
   "display": {

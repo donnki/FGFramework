@@ -1,37 +1,42 @@
 --[[
 	战斗模型
 ]]
+require("game.skills.BattleEventConstants")
+local BattleSkillAgent = require("game.skills.BattleSkillAgent")
+
 local BattleModel = class("BattleModel")
 
-function BattleModel:ctor(attacker, defender)
+
+function BattleModel:ctor()
+	laoi = require("laoi")
+	cc(self):addComponent("game.models.components.AoiComponent"):init():exportMethods()
+
+	--初始化技能管理器
+	self.skillAgent = BattleSkillAgent:sharedInstance()
+end
+
+function BattleModel:init(attacker, defender)
 	self.attacker = attacker
 	self.defender = defender
+	self:initUnits()
+end
 
+function BattleModel:initUnits()
 	self.units = {}
-	laoi = require("laoi")
-	cc(self):addComponent("game.models.components.Aoi"):init():exportMethods()
-	cc(self):addComponent("game.models.components.Renderer"):exportMethods()
-	self:init()
-end
 
-function BattleModel:init()
-	self.defender.clan:initForBattle(self)
-end
-
-function BattleModel:addUnit(unit, shouldInit, team, type_)
-	if self.setParent then
-		unit:setParent(self.defender.clan)
+	-- 防守方的建筑单位初始化加入战场
+	for i,v in ipairs(self.defender.buildings) do
+		self:addUnit(v)
 	end
+end
+
+function BattleModel:addUnit(unit)
 	local pos = unit:getPosition()
-	self:aoiAdd(unit.id, pos.x, pos.y, unit:getValue("size"),  team, type_)
+	-- print(unit.bid, pos.x, pos.y, unit:getValue("size"),  unit.team, unit.config.unitType)
+	self:aoiAdd(unit.bid, pos.x, pos.y, unit:getValue("size"),  unit.team, unit.config.unitType)
 	
-	if self.units[unit.id] then
-		Log.w("ID不唯一, 单位已存在！")
-	end
-	self.units[unit.id] = unit
-	if shouldInit then
-		unit:initForBattle(self)
-	end
+	self.units[unit.bid] = unit
+	
 end
 
 function BattleModel:getById(id)

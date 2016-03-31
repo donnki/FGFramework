@@ -1,17 +1,18 @@
 --[[
     AOI组件
 ]]
+import(".iso")
 local laoi = require("laoi")
 local Component = cc.Component
-local Aoi = class("Aoi", Component)
+local AoiComponent = class("AoiComponent", Component)
 
 local MAP_DIVIDE = 6 			--分割次数
 
-function Aoi:ctor()
-    Aoi.super.ctor(self, "Aoi")
+function AoiComponent:ctor()
+    AoiComponent.super.ctor(self, "AoiComponent")
 end
 
-function Aoi:exportMethods()
+function AoiComponent:exportMethods()
     self:exportMethods_({
     	"aoiAdd",
     	"aoiDelete",
@@ -26,41 +27,41 @@ function Aoi:exportMethods()
     return self.target_
 end
 
-function Aoi:init()
+function AoiComponent:init()
 	self.units = {}
     self.aoimap = laoi.new_map({1280,1280}, MAP_DIVIDE, {0, 0})
     return self
 end
 
-function Aoi:aoiUpdate(tag, x, y)
-	self.aoimap:unit_update(self.units[tag], {x, y})
+function AoiComponent:aoiUpdate(id, x, y)
+	self.aoimap:unit_update(self.units[id], {x, y})
 end
 
-function Aoi:aoiUnitSearch(tag, radius, team, type_)
+function AoiComponent:aoiUnitSearch(id, radius, team, type_)
 	team = team and team or -1
 	type_ = type_ and type_ or -1
-	return self.aoimap:unit_search(self.units[tag], radius, team, type_)
+	return self.aoimap:unit_search(self.units[id], radius, team, type_)
 end
 
-function Aoi:aoiSearchByRadius(x, y, radius, team, type_)
+function AoiComponent:aoiSearchByRadius(x, y, radius, team, type_)
 	team = team and team or -1
 	type_ = type_ and type_ or -1
 	return self.aoimap:search_circle(radius, {x, y, team, type_})
 end
 
-function Aoi:aoiAdd(id, x, y, size, team, type_)
+function AoiComponent:aoiAdd(id, x, y, size, team, type_)
 	local unit = laoi.new_unit_with_userdata(id, {x, y, size, team, type_})
 	self.aoimap:unit_add(unit)
 	self.units[id] = unit
 	return unit
 end
 
-function Aoi:aoiDelete(id)
+function AoiComponent:aoiDelete(id)
 	self.aoimap:unit_del_by_id(id)
 	self.units[id] = nil
 end
 
-function Aoi:aoiGetById(id)
+function AoiComponent:aoiGetById(id)
 	for k, unit in pairs(map:get_units()) do
 		if k == id then
 			return unit
@@ -68,7 +69,7 @@ function Aoi:aoiGetById(id)
 	end
 end
 
-function Aoi:aoiClear()
+function AoiComponent:aoiClear()
 	laoi.imeta_cache_clear()
 	self.units = nil
 	self.aoimap = nil
@@ -92,23 +93,24 @@ local function getMinimumUnit(pos, units, checkFunc)
 	return unit
 end
 
-function Aoi:findNearestInRange(tag, range, team, checkFunc, type_)
-	local units = self:aoiUnitSearch(tag, range, team, type_)
-	local unit = getMinimumUnit(cc.p(self.units[tag]:get_pos()), units, checkFunc)
+function AoiComponent:findNearestInRange(id, range, team, checkFunc, type_)
+	local units = self:aoiUnitSearch(id, range, team, type_)
+	local unit = getMinimumUnit(cc.p(self.units[id]:get_pos()), units, checkFunc)
 	if unit then
 		return self.gameObject:getById(unit:get_id())
 	end
 end
 
-function Aoi:findNearestInAll(tag, team, type_, checkFunc)
+function AoiComponent:findNearestInAll(id, team, type_, checkFunc)
 	team = team and team or -1
 	type_ = type_ and type_ or -1
+	-- print(id, self.units[id])
 	local target = getMinimumUnit(
-		cc.p(self.units[tag]:get_pos()), self.units, 
+		cc.p(self.units[id]:get_pos()), self.units, 
 		function(unit)
 			local uTeam, uType = unit:get_team_type()
-			-- print(uTeam, uType, team, type_, unit:get_id(), tag )
-			if unit:get_id() ~= tag 
+			-- print(uTeam, uType, team, type_, unit:get_id(), id )
+			if unit:get_id() ~= id 
 				and (team == -1 or team == uTeam) 
 				and (type_ == -1 or type_ == uType)
 				and checkFunc(unit) then
@@ -120,4 +122,4 @@ function Aoi:findNearestInAll(tag, team, type_, checkFunc)
 	return target
 end
 
-return Aoi
+return AoiComponent

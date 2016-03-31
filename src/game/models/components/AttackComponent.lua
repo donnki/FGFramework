@@ -29,8 +29,15 @@ function AttackComponent:exportMethods()
     	"hurtTarget",
     	"notAfterAttack",
     	"isTargetInRange",
+    	"isTargetNotInRange",
     	"findNearestTarget",
     	"getCurrentTarget",
+    	"setCurrentTarget",
+    	"setForceTarget",
+    	"isSoldierTarget",
+    	"isBuildingTarget",
+    	"hasSoldierInSight",
+    	"noSoldierInSight"
     })
     return self.target_
 end
@@ -57,6 +64,43 @@ end
 
 function AttackComponent:getCurrentTarget()
 	return self.target
+end
+
+function AttackComponent:setCurrentTarget(target)
+	self.target = target
+end
+
+function AttackComponent:isSoldierTarget()
+	return self.target.config.unitType == UNIT_TYPE.movable
+end
+
+function AttackComponent:isBuildingTarget()
+	return self.target.config.unitType == UNIT_TYPE.building
+end
+
+function AttackComponent:noSoldierInSight()
+	return not self:hasSoldierInSight()
+end
+
+function AttackComponent:hasSoldierInSight()
+	--防守方小兵拥有全图视角
+	if self.gameObject.team == TEAM.defender then
+		return true
+	else
+		local units = self.battle:aoiUnitSearch(
+				self.gameObject.bid, 
+				self.gameObject:getValue("viewRange"), 
+				TEAM.enemy(self.gameObject.team),
+				UNIT_TYPE.movable
+			)
+		
+		return table.nums(units) > 0
+	end
+end
+-------------
+-- 设置强制攻击
+function AttackComponent:setForceTarget(force)
+	self.forseAttack = force
 end
 
 ------------
@@ -87,6 +131,9 @@ function AttackComponent:isTargetInRange(target)
 	return targetInRange
 end
 
+function AttackComponent:isTargetNotInRange()
+	return not self:isTargetInRange(self.target)
+end
 -----------
 -- 返回当前目标是否有效，会检查：
 -- 1）是否有目标
@@ -117,7 +164,7 @@ end
 function AttackComponent:findTarget()
 	self.aimed = false
 	local target = self.battle:findNearestInRange(
-		self.gameObject.id, 
+		self.gameObject.bid, 
 		self.atkRangeMax, 
 		TEAM.enemy(self.gameObject.team),
 		handler(self, self.targetValid)
@@ -136,7 +183,7 @@ end
 -- type:		类型留空则表示无优先级，否则根据type来寻找最近的单位
 function AttackComponent:getNearestTarget(team, type_)
 	local target = self.battle:findNearestInAll(
-		self.gameObject.id,
+		self.gameObject.bid,
 		team,
 		type_,
 		handler(self, self.targetValid)
@@ -144,8 +191,9 @@ function AttackComponent:getNearestTarget(team, type_)
 	return target
 end
 
-function AttackComponent:findNearestTarget()
-	local unit = self:getNearestTarget()
+function AttackComponent:findNearestTarget(timer, prop)
+	-- TODO: 改成根据单位的攻击属性调整搜索目标，比如如果是医生单位，则应搜索已方受伤目标
+	local unit = self:getNearestTarget(TEAM.enemy(self.gameObject.team), prop.type)
 	if unit then
 		self.target = self.battle:getById(unit:get_id())
 		return true 
@@ -159,8 +207,10 @@ end
 -- 返回是否已开火完毕
 function AttackComponent:fire()
 	-- print("~fire")
+	self:ajustRotation()
 	self.cooling = true 	--冷却标记
 	self.beforeAttack = true --攻击前摇
+	self.gameObject:doFire()
 	return true
 end
 
@@ -227,14 +277,20 @@ function AttackComponent:notAimed()
 	return not self.aimed
 end
 
+function AttackComponent:ajustRotation()
+	local angle = math.deg(cc.pToAngleSelf(cc.pSub(
+		self.target:getPosition(), self.gameObject:getPosition()
+	)))
+	if self.gameObject.config.unitType == UNIT_TYPE.movable then
+		angle = -angle
+	end
+	self.gameObject:setRotation(angle)
+end
 --------------
 -- 等待CD结束的同时调整角度，使面向当前单位
 function AttackComponent:idle()
-	if self.aimed then
-		local angle = math.deg(cc.pToAngleSelf(cc.pSub(
-			self.target:getPosition(), self.gameObject:getPosition()
-		)))
-		self.gameObject:setRotation(angle)
+	if self.aimed or self.gameObject.config.unitType == UNIT_TYPE.movable then
+		self:ajustRotation()
 	end
 	return false
 end

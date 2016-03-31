@@ -15,14 +15,22 @@ function MovableComponent:exportMethods()
     	"moveByPath",
     	"findPath",
     	"move",
+    	"isLeading",
+    	"leadToPosition",
+    	"leadToBuilding",
+    	"setLeafFinished"
+
     })
     return self.target_
 end
 
 function MovableComponent:init(battleModel)
 	self.moveSpeed_ = self.gameObject:getValue("moveSpeed")
-	self.attackRange_ = self.gameObject:getValue("attackRange")
+	self.attackRange_ = self.gameObject:getValue("attackRangeMax")
 	self.pathIndex_ = 0
+
+	self.leading = 0 
+	self.leadPos = nil
 	return self
 end
 
@@ -53,6 +61,7 @@ function MovableComponent:moveTo(pos)
 			end
 		end
 		self.gameObject:setPosition(newPos.x, newPos.y)
+	    self.gameObject.battle:aoiUpdate(self.gameObject.bid, newPos.x, newPos.y)
 		return false
 	else
 		self.originPos_ = nil
@@ -89,17 +98,50 @@ function MovableComponent:findTargetPath(pos, mode, radius)
 	self.radius_ = radius and radius or 0
 	self.path_ = {pos}
 	self.pathIndex_ = 1
+	self.originPos_ = nil
 end
 
 function MovableComponent:findPath()
 	local target = self.gameObject:getCurrentTarget()
 	if target then
-		self:findTargetPath(cc.p(target:getPosition()), 1, target:getValue("size"))
-		return true
-	else
-
+		self:findTargetPath(target:getPosition(), 1, target:getValue("size"))
+	elseif self.leadPos then
+		self:findTargetPath(self.leadPos, 0, 0)
 	end
+
+	return true
 	
 end
 
+
+function MovableComponent:isLeading()
+	return self.leading > 0
+end
+
+-------------
+-- 引导向空地
+function MovableComponent:leadToPosition(pos)
+	-- 1为引导向空地
+	self.leading = 1
+	-- 将当前锁定单位置空
+	self.gameObject:setCurrentTarget(nil)
+	self.originPos_ = nil
+	self.leadPos = pos
+	self:findPath()
+end
+
+-------------
+-- 引导向建筑
+function MovableComponent:leadToBuilding(target)
+	self.leading = 2
+	self.gameObject:setCurrentTarget(target)
+	self.gameObject:setForceTarget(true)
+	self.originPos_ = nil
+	self:findPath()
+end
+
+function MovableComponent:setLeafFinished()
+	self.leading = 0
+	self.gameObject:setForceTarget(false)
+end
 return MovableComponent

@@ -1,33 +1,23 @@
 local BuildingModel = require("game.models.BuildingModel")
 local TowerModel = class("TowerModel", BuildingModel)
-------------
--- 战斗初始化接口
-function TowerModel:initForBattle(battleModel)
-	BuildingModel.initForBattle(self, battleModel)
 
-	-- 防御塔有攻击组件
-	cc(self):addComponent("game.models.components.AttackComponent"):init(battleModel):exportMethods()
-	self:initBehaviorTree()
+function TowerModel:initConfigData()
+	self.config = {
+		ai = "src/game/test/ai_tower.json",
+		size = 50,
+		attackRangeMax = 200,
+		attackRangeMin = 0,
+		atkCD = 5,
+		aimTime = 0.2,
+		afterAttackDelay = 1,
+		beforeAttackDelay = 1,
+		unitType = UNIT_TYPE.building
+	}
 end
 
----------------
--- 初始化行为树
-function TowerModel:initBehaviorTree()
-	self.btRoot = bt.loadFromJson("src/game/test/ai_tower.json", self)
-	self.btRoot:activate(self)
-end
-
-
-function TowerModel:update(dt)
-	BuildingModel.update(self,dt)
-	-- self.btRoot:debugClearDrawNode()
-	if self.btRoot and self.btRoot:evaluate() then
-        self.btRoot:tick(dt)
-    end
-end
-
-function TowerModel:hurt()
-	print("~~~~~tower hurt")
+function TowerModel:initComponents()
+	TowerModel.super.initComponents(self)
+	cc(self):addComponent("game.models.components.AttackComponent"):init(self.battle):exportMethods()
 end
 
 return TowerModel
