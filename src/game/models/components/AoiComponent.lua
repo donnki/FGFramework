@@ -21,6 +21,7 @@ function AoiComponent:exportMethods()
     	"aoiSearchByRadius",
     	"aoiGetById",
     	"aoiClear",
+    	"getGameUnits",
     	"findNearestInRange",
     	"findNearestInAll",
     })
@@ -76,6 +77,14 @@ function AoiComponent:aoiClear()
 
 	collectgarbage("collect")
 	collectgarbage("collect")
+end
+
+function AoiComponent:getGameUnits(units)
+	local gameUnits = {}
+	for k,v in pairs(units) do
+		table.insert(gameUnits, self.gameObject:getById(v:get_id()))
+	end
+	return gameUnits
 end
 
 local function getMinimumUnit(pos, units, checkFunc)

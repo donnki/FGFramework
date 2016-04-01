@@ -23,6 +23,9 @@ function SoldierModel:initConfigData()
 		beforeAttackDelay = 0.5,
 		moveSpeed = 400,
 		unitType = UNIT_TYPE.movable,
+		skills = {
+			"skill001",
+		}
 	}
 end
 
@@ -34,8 +37,17 @@ end
 
 
 function SoldierModel:isUsingSkill()
-	return false
+	return self.usingSkill
 end
 
+function SoldierModel:useSkill()
+	
+	self.usingSkill = true
+	return true
+end
+
+function SoldierModel:onSkillFinished()
+	self.usingSkill = false
+end
 
 return SoldierModel

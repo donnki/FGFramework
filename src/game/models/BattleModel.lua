@@ -13,6 +13,7 @@ function BattleModel:ctor()
 
 	--初始化技能管理器
 	self.skillAgent = BattleSkillAgent:sharedInstance()
+	self.skillAgent:init()
 end
 
 function BattleModel:init(attacker, defender)
@@ -37,6 +38,12 @@ function BattleModel:addUnit(unit)
 	
 	self.units[unit.bid] = unit
 	
+	--注册单位特殊技能
+	if unit.config.skills then
+		for i,v in ipairs(unit.config.skills) do
+			self.skillAgent:registerSkill(v, unit)
+		end
+	end
 end
 
 function BattleModel:getById(id)
@@ -44,6 +51,7 @@ function BattleModel:getById(id)
 end
 
 function BattleModel:update()
+	self.skillAgent:update()
 	for i,v in pairs(self.units) do
 		v:update(Time.delta)
 	end

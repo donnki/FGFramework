@@ -64,7 +64,7 @@ function UnitModel:doFire()
 end
 
 function UnitModel:hurt(damage)
-	-- print("TODO: on hurt", self.__cname)
+	print("TODO: on hurt", self.__cname)
 end
 
 function UnitModel:update(dt)

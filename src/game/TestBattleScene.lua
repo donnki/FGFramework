@@ -38,19 +38,28 @@ function TestBattleScene:onEnter()
     local label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("test", "Helvetica", 30))
     label:setAnchorPoint(cc.p(0.5, 0.5))
     label:registerScriptTapHandler(function()
+        self.battle.skillAgent:onEvent(BattleEvents.onPlayerUseSkill, "skill001")
     end)
     menu:addChild(label)
 
     menu:alignItemsVertically()
     menu:setPosition(display.width*0.9, 150)
 
+    local box = cc.LayerColor:create(cc.c4b(100,100,100,100));
+    box:setContentSize( cc.size(display.width*0.2, display.height*0.3) );
+    box:setPosition(display.width*0.8, display.height*0.04)
+    self:addChild(box)
 
     self.touchListener = cc.EventListenerTouchOneByOne:create()
     self.touchListener:registerScriptHandler(function(touch, event)
+        local pos = touch:getLocation()
+        if cc.rectContainsPoint(box:getBoundingBox(), pos) then
+            return 
+        end
+
         if self.soldier == nil then
-            local pos = touch:getLocation()
             for i=1,TEST_SOLDIER_COUNT do
-                pos = cc.p(math.random(0, display.width),math.random(0, display.height))
+                -- pos = cc.p(math.random(0, display.width),math.random(0, display.height))
                 self.soldier = self.attacker.teams[i]
                 self.soldier:setPosition(pos.x, pos.y)
                 self.battle:addUnit(self.soldier)

@@ -12,21 +12,53 @@ skill.condition = function(skillID)
     return skillID == skill.id
 end
 
+-- 技能施法总时间
+skill.totalTime = 1
+
 -- 技能
-skill.action = function(sender)
-    print("TODO: 播放技能音效")
-    print("TODO: 定义：局部变量p = 施放者朝向的正前方200的坐标点")
-    print("TODO: 在p点位置播放“烈焰”的动画特效")
-    print("TODO: 选取以P为圆心，半径为200内的所有的“敌方”单位，执行循环：")
-    print("TODO: 对每一个单位瞬间造成100点伤害")
+skill.action = function(p)
+    -- 播放技能音效
+    ss.PlayAudio(p, "res/JasonSkill.mp3")
+
+    -- 当前施放者播放动画
+    ss.PlayAnimation(p, "use_skill_animation")
+
+    -- 定义：局部变量p = 施放者朝向的正前方200的坐标点
+    local pos = ss.GetFrontPos(p, 200)
+
+    -- 延时0.2秒
+    while not ss.WaitForSeconds(p, 0.5) do coroutine.yield() end
+
+    -- 在p点位置播放“烈焰”的动画特效
+    local effect = ss.PlayEffect(p, "firework", pos)
+    
+    -- 定义局部变量：units=以P为圆心，半径为200内的所有的“敌方”“全部”单位：
+    local units = ss.GetCircleArea(p, pos, 50, ss.Team.enemy, ss.Type.all)
+    
+    -- 对每一个单位瞬间造成100点伤害
+    for i,v in ipairs(units) do
+        v:hurt(100)
+    end
+
     for i=1,4 do
-        while not WaitForSeconds(sender, 0.1) do coroutine.yield() end
-        print("TODO: 选取以P为圆心，半径为200内的所有的敌方单位，执行循环：")
-        print("TODO: 对每一个单位造成50点伤害")
+        -- 延时0.3秒
+        while not ss.WaitForSeconds(p, 0.3) do coroutine.yield() end
+
+        -- 重新获取同样区域内的敌方全部单位
+        local units = ss.GetCircleArea(p, pos, 50, ss.Team.enemy, ss.Type.all)
+        
+        -- 瞬间造成100点伤害
+        for i,v in ipairs(units) do
+            v:hurt(50)
+        end
          
     end
-    while not WaitForSeconds(sender, 0.5) do coroutine.yield() end
-    print("TODO: 移除“烈焰”特效")
+    -- 延时0.5秒
+    while not ss.WaitForSeconds(p, 0.5) do coroutine.yield() end
+    
+    -- 移除“烈焰”特效"
+    effect:removeFromParent()
+
     return true
 end
 

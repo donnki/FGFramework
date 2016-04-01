@@ -164,40 +164,11 @@
       },
       "display": {
         "x": -132,
-        "y": -420
+        "y": -432
       },
       "children": [
-        "a1345f8e-a806-413a-8460-5214d7980715",
-        "c9b3cc8d-2be9-4a1c-8094-c04ca443b407"
+        "80f904a2-bcff-4596-87bf-bdc95fb16871"
       ]
-    },
-    "a1345f8e-a806-413a-8460-5214d7980715": {
-      "id": "a1345f8e-a806-413a-8460-5214d7980715",
-      "name": "BTRunAction",
-      "title": "执行<operation>函数",
-      "description": "",
-      "properties": {
-        "operation": "useSkill",
-        "precondition": ""
-      },
-      "display": {
-        "x": 384,
-        "y": -468
-      }
-    },
-    "c9b3cc8d-2be9-4a1c-8094-c04ca443b407": {
-      "id": "c9b3cc8d-2be9-4a1c-8094-c04ca443b407",
-      "name": "BTWaitAction",
-      "title": "等待<key>时间",
-      "description": "",
-      "properties": {
-        "key": "skillDuration",
-        "precondition": ""
-      },
-      "display": {
-        "x": 420,
-        "y": -396
-      }
     },
     "95e967e8-8211-4688-8ca9-e8d568534833": {
       "id": "95e967e8-8211-4688-8ca9-e8d568534833",
@@ -772,6 +743,20 @@
         "59a4b2d7-b229-4a41-bc79-17a27dd180ca",
         "b209fa00-9d1b-4951-81c4-e219d505cc2c"
       ]
+    },
+    "80f904a2-bcff-4596-87bf-bdc95fb16871": {
+      "id": "80f904a2-bcff-4596-87bf-bdc95fb16871",
+      "name": "BTRunAction",
+      "title": "执行<operation>函数",
+      "description": "",
+      "properties": {
+        "operation": "idle",
+        "precondition": ""
+      },
+      "display": {
+        "x": 108,
+        "y": -444
+      }
     }
   },
   "display": {

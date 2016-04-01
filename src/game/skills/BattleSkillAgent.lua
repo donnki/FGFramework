@@ -41,6 +41,7 @@ function BattleSkillAgent:onEvent(eventID, ...)
 		for i,v in ipairs(self.coroutines) do
 			if v[2].sender == relateObject and v[2].skill.id == skillID then
 				table.remove(self.coroutines, i)
+				v[2].sender:onSkillFinished()
 			end
 		end
 	else
@@ -48,8 +49,9 @@ function BattleSkillAgent:onEvent(eventID, ...)
 		if registeredSkills and #registeredSkills > 0 then
 			for i,v in ipairs(registeredSkills) do
 				if v[1].condition(...) then
+					v[2]:useSkill()
 					local co = coroutine.create(v[1].action)
-					table.insert(self.coroutines, {co, {timer=0, skill=v[1], sender=v[2]}})
+					table.insert(self.coroutines, {co, {timer=0, duration=0, skill=v[1], sender=v[2]}})
 				end
 			end
 		end
@@ -60,6 +62,15 @@ end
 
 function BattleSkillAgent:update(dt)
 	for i,co in ipairs(self.coroutines) do
+		-- 计算技能施放时间
+		if co[2].skill.totalTime then
+			co[2].duration = co[2].duration + Time.delta
+			if co[2].sender:isUsingSkill() and co[2].duration > co[2].skill.totalTime then
+				co[2].sender:onSkillFinished()
+			end
+		end
+
+		-- 播放技能action事件及计算伤害等
 		local status, ret = coroutine.resume(co[1], co[2])
 		if status and ret then
 			table.remove(self.coroutines, i)

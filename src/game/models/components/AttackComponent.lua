@@ -289,7 +289,7 @@ end
 --------------
 -- 等待CD结束的同时调整角度，使面向当前单位
 function AttackComponent:idle()
-	if self.aimed or self.gameObject.config.unitType == UNIT_TYPE.movable then
+	if self.target and (self.aimed or self.gameObject.config.unitType == UNIT_TYPE.movable) then
 		self:ajustRotation()
 	end
 	return false
