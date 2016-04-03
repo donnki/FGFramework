@@ -22,7 +22,7 @@ ss = {
 	},
 }
 
-function ss.WaitForSeconds(p, delayTime)
+local function WaitForSeconds(p, delayTime)
     p.timer = p.timer + Time.delta
     if p.timer > delayTime then
         p.timer = 0
@@ -30,6 +30,10 @@ function ss.WaitForSeconds(p, delayTime)
     else
         return false
     end
+end
+
+function ss.WaitForSeconds(p, time)
+	while not WaitForSeconds(p, time) do coroutine.yield() end
 end
 
 function ss.PlayAudio(p, audiopath)

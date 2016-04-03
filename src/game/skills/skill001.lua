@@ -27,7 +27,7 @@ skill.action = function(p)
     local pos = ss.GetFrontPos(p, 200)
 
     -- 延时0.2秒
-    while not ss.WaitForSeconds(p, 0.5) do coroutine.yield() end
+    ss.WaitForSeconds(p, 0.5)
 
     -- 在p点位置播放“烈焰”的动画特效
     local effect = ss.PlayEffect(p, "firework", pos)
@@ -42,7 +42,7 @@ skill.action = function(p)
 
     for i=1,4 do
         -- 延时0.3秒
-        while not ss.WaitForSeconds(p, 0.3) do coroutine.yield() end
+        ss.WaitForSeconds(p, 0.3) --while not ss.WaitForSeconds(p, 0.3) do coroutine.yield() end
 
         -- 重新获取同样区域内的敌方全部单位
         local units = ss.GetCircleArea(p, pos, 50, ss.Team.enemy, ss.Type.all)
@@ -54,7 +54,7 @@ skill.action = function(p)
          
     end
     -- 延时0.5秒
-    while not ss.WaitForSeconds(p, 0.5) do coroutine.yield() end
+    ss.WaitForSeconds(p, 0.5)
     
     -- 移除“烈焰”特效"
     effect:removeFromParent()
