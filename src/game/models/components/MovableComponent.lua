@@ -140,6 +140,8 @@ function MovableComponent:leadToBuilding(target)
 	self:findPath()
 end
 
+-----------
+-- 设置引导结束
 function MovableComponent:setLeafFinished()
 	self.leading = 0
 	self.gameObject:setForceTarget(false)

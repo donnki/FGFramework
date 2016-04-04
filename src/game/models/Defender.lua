@@ -21,7 +21,6 @@ end
 function Defender:addSoldier(s)
 	table.insert(self.soldiers, s)
 	self.battle:addUnit(s)
-	Engine:getEventManager():fire("EventAddSoldier", s)
 end
 
 return Defender

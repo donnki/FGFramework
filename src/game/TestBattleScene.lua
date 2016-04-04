@@ -9,7 +9,7 @@ local SoldierModel = require("game.models.SoldierModel")
 TestBattleScene.__index = TestBattleScene
 TestBattleScene.name = "TestBattleScene"
 
-TEST_SOLDIER_COUNT = 1
+TEST_SOLDIER_COUNT = 2
 local tmpbox = nil
 local count, timer = 0, 0
 function TestBattleScene:init(config)
@@ -35,19 +35,22 @@ function TestBattleScene:onEnter()
     local menu = cc.Menu:create()
     self:addChild(menu, 10)
     
-    local label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("test", "Helvetica", 30))
-    label:setAnchorPoint(cc.p(0.5, 0.5))
-    label:registerScriptTapHandler(function()
-        self.battle.skillAgent:onEvent(BattleEvents.onPlayerUseSkill, "skill001")
-    end)
-    menu:addChild(label)
-
-    menu:alignItemsVertically()
-    menu:setPosition(display.width*0.9, 150)
+    local selectedIndex = 1
+    for k,v in pairs(self.attacker.reserveArmy) do
+        local label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("Army"..k, "Helvetica", 30))
+        label:setTag(k)
+        label:setAnchorPoint(cc.p(0.5, 0.5))
+        label:registerScriptTapHandler(function()
+            selectedIndex = k
+        end)
+        menu:addChild(label)
+    end
+    menu:alignItemsHorizontallyWithPadding(60)
+    menu:setPosition(150, 70)
 
     local box = cc.LayerColor:create(cc.c4b(100,100,100,100));
-    box:setContentSize( cc.size(display.width*0.2, display.height*0.3) );
-    box:setPosition(display.width*0.8, display.height*0.04)
+    box:setContentSize( cc.size(display.width, display.height*0.2) );
+    box:setPosition(0, 0)
     self:addChild(box)
 
     self.touchListener = cc.EventListenerTouchOneByOne:create()
@@ -57,23 +60,17 @@ function TestBattleScene:onEnter()
             return 
         end
 
-        if self.soldier == nil then
-            for i=1,TEST_SOLDIER_COUNT do
-                -- pos = cc.p(math.random(0, display.width),math.random(0, display.height))
-                self.soldier = self.attacker.teams[i]
-                self.soldier:setPosition(pos.x, pos.y)
-                self.battle:addUnit(self.soldier)
-                self:addChild(self.soldier:genTestRender())
-            end
-            
+        if selectedIndex ~= -1 then
+            menu:getChildByTag(selectedIndex):setEnabled(false)
+            self.attacker:armyToBattle(selectedIndex, pos)
 
-            self.btNode = bt.debugDisplayTree(self.soldier.ai)
-            self.btNode:setPosition(500, 400):scale(0.55)
-            self:addChild(self.btNode,1000)
+            -- self.btNode = bt.debugDisplayTree(self.soldier.ai)
+            -- self.btNode:setPosition(500, 400):scale(0.55)
+            -- self:addChild(self.btNode,1000)
         else
-            for i=1,TEST_SOLDIER_COUNT do
-                self.attacker.teams[i]:leadToPosition(touch:getLocation())
-            end
+            -- for i=1,TEST_SOLDIER_COUNT do
+            --     self.attacker.teams[i]:leadToPosition(touch:getLocation())
+            -- end
             
         end
     end ,cc.Handler.EVENT_TOUCH_BEGAN )
