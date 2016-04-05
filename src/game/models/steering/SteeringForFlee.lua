@@ -30,7 +30,6 @@ function SteeringForFlee:force()
 			return cc.pSub(self.desiredVelocity, self.m_vehicle.velocity)
 		end
 	end
-	print("~~~")
 	return cc.p(0,0)
 end
 return SteeringForFlee

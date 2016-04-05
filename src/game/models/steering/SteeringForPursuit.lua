@@ -22,7 +22,7 @@ function SteeringForPursuit:force()
 		local relativeDirection = cc.pDot(cc.pNormalize(self.m_vehicle.velocity), cc.pNormalize(targetVehicle.velocity))
 		local angle = cc.pDot(cc.pNormalize(toTarget), cc.pNormalize(self.m_vehicle.velocity))
 		local desiredVelocity = cc.p(0,0)
-		if angle > 0 then
+		if angle > 0 and relativeDirection < -0.95 then
 			desiredVelocity = cc.pMul(
 				cc.pNormalize(
 					cc.pSub(
@@ -31,10 +31,10 @@ function SteeringForPursuit:force()
 					)), self.m_vehicle.maxSpeed)
 		else
 			local lookaheadTime = cc.pGetLength(toTarget)/(self.m_vehicle.maxSpeed + cc.pGetLength(targetVehicle.velocity))
-			desiredVelocity = cc.pSub(
+			desiredVelocity = cc.pMul(cc.pNormalize(cc.pSub(
 				cc.pAdd(cc.p(self.target:getPosition()), cc.pMul(targetVehicle.velocity, lookaheadTime)), 
-				cc.pMul(cc.pNormalize(cc.p(self.gameObject:getPosition())), self.m_vehicle.maxSpeed)
-			)
+				cc.p(self.gameObject:getPosition()))), self.m_vehicle.maxSpeed)
+			
 		end
 		local ret = cc.pSub(desiredVelocity, self.m_vehicle.velocity)
 		-- print(dump(ret))
