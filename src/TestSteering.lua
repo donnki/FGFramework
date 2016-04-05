@@ -10,25 +10,37 @@ function TestSteering:init(config)
     SceneBase.init(self)
     Log.d("TestSteering初始化临时测试场景")
 
-    local target = newNode()
-    target:setPosition(display.cx, display.cy)
-    self:addChild(target)
+    local t = newNode()
+    t:setPosition( display.cx, 100)
+    self:addChild(t)
 
-    local node = newNode()
-    node:setPosition(100, 100)
-    self:addChild(node)
+    self.target = newNode()
+    self.target:setPosition(display.cx, display.height)
+    cc(self.target)
+    self.target:addComponent("game.models.steering.SteeringForSeek"):exportMethods():seek(t)
+    self.target:addComponent("game.models.steering.AILocomotion"):exportMethods()
+    self:addChild(self.target)
 
-    local AILocomotion = require("game.models.steering.AILocomotion")
-    self.vehicle = AILocomotion.new()
+    self.vehicle = newNode()
+    cc(self.vehicle)
+    -- self.vehicle:addComponent("game.models.steering.SteeringForSeek"):exportMethods()
+    self.vehicle:addComponent("game.models.steering.SteeringForPursuit"):exportMethods()
+    self.vehicle:addComponent("game.models.steering.AILocomotion"):exportMethods()
+    self.vehicle:setPosition(100, 100)
+    self:addChild(self.vehicle)
 
-    local SteeringForSeek = require("game.models.steering.SteeringForSeek")
-    local steer = SteeringForSeek.new(target, self.vehicle)
+    -- local AILocomotion = require("game.models.steering.AILocomotion")
+    -- self.vehicle = AILocomotion.new()
+
+    -- local SteeringForSeek = require("game.models.steering.SteeringForSeek")
+    -- local steer = SteeringForSeek.new(target, self.vehicle)
     
-    self.vehicle:init({steer}, node)
+    -- self.vehicle:init({steer}, node)
 end
 
 function TestSteering:update(dt)
-    self.vehicle:update()
+    self.target:aiTick()
+    self.vehicle:aiTick()
 end
 
 function TestSteering:onEnter()
@@ -38,6 +50,9 @@ function TestSteering:onEnter()
     local label = cc.MenuItemLabel:create(cc.Label:createWithSystemFont("test", "Helvetica", 30))
     label:setAnchorPoint(cc.p(0.5, 0.5))
     label:registerScriptTapHandler(function()
+        -- self.target:runAction(cc.MoveBy:create(2, cc.p(-100,50)))
+
+        self.vehicle:pursuit(self.target)
     end)
     menu:addChild(label)
 

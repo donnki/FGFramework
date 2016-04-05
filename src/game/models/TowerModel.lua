@@ -17,7 +17,7 @@ end
 
 function TowerModel:initComponents()
 	TowerModel.super.initComponents(self)
-	cc(self):addComponent("game.models.components.AttackComponent"):init(self.battle):exportMethods()
+	self:addComponent("game.models.components.AttackComponent"):init(self.battle):exportMethods()
 end
 
 return TowerModel

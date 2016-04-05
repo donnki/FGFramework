@@ -2,12 +2,18 @@ local Vehicle = import(".Vehicle")
 
 local AILocomotion = class("AILocomotion", Vehicle)
 
-function AILocomotion:init(steerings, gameObject)
+function AILocomotion:exportMethods()
+    self:exportMethods_({
+    	"aiTick",
+    })
+    return self.target_
+end
+function AILocomotion:onBind_()
+	AILocomotion.super.onBind_(self)
 	self.moveDistance = cc.p(0,0)
-	AILocomotion.super.init(self, steerings, gameObject)
 end
 
-function AILocomotion:update()
+function AILocomotion:aiTick()
 	AILocomotion.super.update(self)
 	self.velocity = cc.pAdd(self.velocity, cc.pMul(self.acceleration, Time.delta))
 

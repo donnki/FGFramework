@@ -32,6 +32,7 @@ function UnitModel:ctor(proto, team, battle)
 	if self.proto.x and self.proto.y then
 		self:setPosition(self.proto.x, self.proto.y)
 	end
+	
 end
 
 ------------
@@ -43,11 +44,13 @@ end
 ------------
 -- 初始化单位的各个组件
 function UnitModel:initComponents()
+	cc(self)
+	
 	--位置组件
-	cc(self):addComponent("game.models.components.TransformComponent"):exportMethods()
+	self:addComponent("game.models.components.TransformComponent"):exportMethods()
 
 	--渲染组件
-	cc(self):addComponent("game.models.components.RenderComponent"):exportMethods()
+	self:addComponent("game.models.components.RenderComponent"):exportMethods()
 end
 
 ------------

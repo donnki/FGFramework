@@ -24,7 +24,28 @@ function GameObject.extend(target)
     end
 
     function target:getComponent(name)
-        return self.components_[name]
+        for k,v in pairs(self.components_) do
+            if k:ends(name) or v.super.__cname == name then
+                return v
+            end
+        end
+        -- return self.components_[name]
+    end
+
+    function target:getComponents(name)
+        local tb = {}
+        for k,v in pairs(self.components_) do
+            if k:ends(name) or v.super.__cname == name then
+                table.insert(tb, v)
+            end
+        end
+        return tb
+    end
+
+    function target:dumpComponents()
+        for k,v in pairs(self.components_) do
+            print(k, v.super.__cname)
+        end
     end
 
     return target

@@ -5,8 +5,8 @@ local SoldierModel = class("SoldierModel", UnitModel)
 
 function SoldierModel:initComponents()
 	SoldierModel.super.initComponents(self)
-	cc(self):addComponent("game.models.components.AttackComponent"):init(self.battle):exportMethods()
-	cc(self):addComponent("game.models.components.MovableComponent"):init(self.battle):exportMethods()
+	self:addComponent("game.models.components.AttackComponent"):init(self.battle):exportMethods()
+	self:addComponent("game.models.components.MovableComponent"):init(self.battle):exportMethods()
 
 end
 

@@ -1,9 +1,9 @@
-local Vehicle = class("Vehicle")
+local Component = cc.Component
+local Vehicle = class("Vehicle", Component)
 
-function Vehicle:init(steerings, gameObject)
-	self.steerings = steerings
-	self.gameObject = gameObject
-	self.maxSpeed = 100
+function Vehicle:onBind_()
+	self.steerings = self.gameObject:getComponents("Steering")
+	self.maxSpeed = 300
 	self.maxForce = 100
 	self.sqrMaxSpeed = self.maxSpeed * self.maxSpeed 
 	self.mass = 0.1
@@ -27,6 +27,7 @@ function Vehicle:update()
 			local angle = cc.pToAngleSelf(self.steeringForce_)
 			self.steeringForce_ = cc.p(self.maxForce*math.cos(angle), self.maxForce*math.sin(angle))
 		end
+		
 		self.acceleration = cc.pMul(self.steeringForce_, 1/self.mass)
 		self.timer = 0
 	end

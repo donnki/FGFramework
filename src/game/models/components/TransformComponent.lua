@@ -21,6 +21,7 @@ function TransformComponent:exportMethods()
         "setRotation",
         "getPosition",
         "getRotation",
+        "translate",
         "getViewPosition",
         "setByViewPosition",
     })
@@ -52,5 +53,9 @@ function TransformComponent:setByViewPosition(x, y)
     local pos = cc.p(iso.convertRelativeToISOPixel(x, y))
     self:setPosition(pos.x, pos.y)
 end
+
+function TransformComponent:translate(x, y)
+    self.position.x = self.position.x + x
+    self.position.y = self.position.y + y 
 
 return TransformComponent

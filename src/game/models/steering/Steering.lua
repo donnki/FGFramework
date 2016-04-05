@@ -1,6 +1,12 @@
-local Steering = class("Steering")
+local Component = cc.Component
+local Steering = class("Steering", Component)
 
 function Steering:ctor()
+	Steering.super.ctor(self, "Steering")
+	
+end
+
+function Steering:onBind_()
 	self.weight = 1
 end
 
