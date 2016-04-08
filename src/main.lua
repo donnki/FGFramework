@@ -24,8 +24,10 @@ local function main()
     -- Engine:changeScene(DemoScene.create())
 
 	-- local TestScene = require("game.TestBattleScene")
-    local TestScene = require("TestSteering")
+    -- local TestScene = require("TestSteering")
+    local TestScene = require("TestMissile")
     Engine:changeScene(TestScene.createWithData())
+
 
     -- local TestRecorderScene = require("TestRecorderScene")
     -- Engine:changeScene(TestRecorderScene.create())

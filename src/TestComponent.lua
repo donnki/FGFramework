@@ -1,6 +1,6 @@
 local TestComponent = class("TestComponent" , SceneBase)
-local TowerModel = require("game.models.TowerModel")
-local SoldierModel = require("game.models.SoldierModel")
+local BSTowerModel = require("game.models.BSTowerModel")
+local BSSoldierModel = require("game.models.BSSoldierModel")
 local BattleModel = require("game.models.BattleModel")
 local SoldierNode = require("game.scenes.battle.view.SoldierNode")
 local BuildingNode = require("game.scenes.battle.view.BuildingNode")

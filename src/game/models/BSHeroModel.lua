@@ -1,7 +1,7 @@
-local SoldierModel = require("game.models.SoldierModel")
-local HeroModel = class("HeroModel", SoldierModel)
+local BSSoldierModel = require("game.models.BSSoldierModel")
+local BSHeroModel = class("BSHeroModel", BSSoldierModel)
 
-function HeroModel:initConfigData()
+function BSHeroModel:initConfigData()
 	self.config = {
 		ai = "src/game/test/ai_attack_unit.json",
 		size = 20,
@@ -20,4 +20,4 @@ function HeroModel:initConfigData()
 	}
 end
 
-return HeroModel
+return BSHeroModel

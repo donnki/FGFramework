@@ -1,16 +1,16 @@
-local UnitModel = require("game.models.UnitModel")
+local BSUnitModel = require("game.models.BSUnitModel")
 local SoldierNode = require("game.scenes.battle.view.SoldierNode")
-local SoldierModel = class("SoldierModel", UnitModel)
+local BSSoldierModel = class("BSSoldierModel", BSUnitModel)
 
 
-function SoldierModel:initComponents()
-	SoldierModel.super.initComponents(self)
+function BSSoldierModel:initComponents()
+	BSSoldierModel.super.initComponents(self)
 	self:addComponent("game.models.components.AttackComponent"):init(self.battle):exportMethods()
 	self:addComponent("game.models.components.MovableComponent"):init(self.battle):exportMethods()
 
 end
 
-function SoldierModel:initConfigData()
+function BSSoldierModel:initConfigData()
 	self.config = {
 		ai = "src/game/test/ai_attack_unit.json",
 		size = 20,
@@ -26,24 +26,24 @@ function SoldierModel:initConfigData()
 	}
 end
 
-function SoldierModel:genTestRender()
+function BSSoldierModel:genTestRender()
 	local render = SoldierNode.new(self)
 	self:bindRenderer(render)
 	return render
 end
 
 
-function SoldierModel:isUsingSkill()
+function BSSoldierModel:isUsingSkill()
 	return self.usingSkill
 end
 
-function SoldierModel:useSkill()
+function BSSoldierModel:useSkill()
 	self.usingSkill = true
 	return true
 end
 
-function SoldierModel:onSkillFinished()
+function BSSoldierModel:onSkillFinished()
 	self.usingSkill = false
 end
 
-return SoldierModel
+return BSSoldierModel

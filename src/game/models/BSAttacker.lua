@@ -1,9 +1,9 @@
-local ArmyModel = require("game.models.ArmyModel")
+local BSArmyModel = require("game.models.BSArmyModel")
 
 -- 攻击方
-local Attacker = class("Attacker")
+local BSAttacker = class("BSAttacker")
 
-function Attacker:ctor(battle)
+function BSAttacker:ctor(battle)
 	self.battle = battle
 	self.reserveArmy = {} 		--备用军队
 	self.battleUnitCount = 0 	--战场上的所属单位数目
@@ -16,14 +16,14 @@ end
 
 ----------
 -- 增加备用军队
-function Attacker:addReserveArmy(key)
-	local army = ArmyModel.new({}, TEAM.attacker, self.battle)
+function BSAttacker:addReserveArmy(key)
+	local army = BSArmyModel.new({}, TEAM.attacker, self.battle)
 	self.reserveArmy[key] = army
 end
 
 ----------
 -- 将指定备用军队加入战场
-function Attacker:armyToBattle(armyKey, pos)
+function BSAttacker:armyToBattle(armyKey, pos)
 	local army = self.reserveArmy[armyKey]
 	if army then
 		local unitNum = army:sendToBattle(pos)
@@ -38,7 +38,7 @@ end
 
 ----------
 -- 当有单位死亡
-function Attacker:onUnitDead()
+function BSAttacker:onUnitDead()
 	self.battleUnitCount = self.battleUnitCount - 1
 end
-return Attacker
+return BSAttacker

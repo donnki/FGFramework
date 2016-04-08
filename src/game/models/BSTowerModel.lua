@@ -1,7 +1,7 @@
-local BuildingModel = require("game.models.BuildingModel")
-local TowerModel = class("TowerModel", BuildingModel)
+local BSBuildingModel = require("game.models.BSBuildingModel")
+local BSTowerModel = class("BSTowerModel", BSBuildingModel)
 
-function TowerModel:initConfigData()
+function BSTowerModel:initConfigData()
 	self.config = {
 		ai = "src/game/test/ai_tower.json",
 		size = 50,
@@ -15,9 +15,9 @@ function TowerModel:initConfigData()
 	}
 end
 
-function TowerModel:initComponents()
-	TowerModel.super.initComponents(self)
+function BSTowerModel:initComponents()
+	BSTowerModel.super.initComponents(self)
 	self:addComponent("game.models.components.AttackComponent"):init(self.battle):exportMethods()
 end
 
-return TowerModel
+return BSTowerModel

@@ -8,6 +8,16 @@ function lerp(t, from, to)
     return (1 - t) * from + t * to
 end
 
+--(1-t)2+2t(1-t)+t2 = 1
+function squarebezierat(a,b,c,t)
+    return (1-t)*(1-t)*a + 2*t*(1-t)*b + t*t*c
+end
+
+--(1 - t)3 + 3t(1-t)2 + 3t2(1 - t) + t3 = 1 
+function cubebezierat(a,b,c,d,t)
+    return (1-t)*(1-t)*(1-t)*a + 3*t*(1-t)*(1-t)*b + 3*t*t*(1-t)*c + t*t*t*d
+end
+
 function pGetDirection(from, to)
     local x, y = from.x, from.y
     local tx, ty = to.x, to.y

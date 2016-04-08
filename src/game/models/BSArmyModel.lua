@@ -1,31 +1,31 @@
-local SoldierModel = require("game.models.SoldierModel")
-local HeroModel = require("game.models.HeroModel")
+local BSSoldierModel = require("game.models.BSSoldierModel")
+local BSHeroModel = require("game.models.BSHeroModel")
 
 -- 战斗部队模型
-local ArmyModel = class("ArmyModel")
+local BSArmyModel = class("BSArmyModel")
 
-function ArmyModel:ctor(params, team, battle)
+function BSArmyModel:ctor(params, team, battle)
 	self.battle = battle
-	self.hero = HeroModel.new({}, team, battle)
+	self.hero = BSHeroModel.new({}, team, battle)
 	
 	self.soldiers = {}
 
 	for i=1,0 do
-		local soldier = SoldierModel.new({}, team, battle)
+		local soldier = BSSoldierModel.new({}, team, battle)
 		table.insert(self.soldiers, soldier)
 	end
 end
 
 -----------
 -- 重新设置部队里每个单位的队形位置
-function ArmyModel:lineUp(pos)
+function BSArmyModel:lineUp(pos)
 	self.hero:setPosition(pos.x, pos.y)
 end
 
 -----------
 -- 部队队单位加入战场
 -- 返回加入战场的单位数目
-function ArmyModel:sendToBattle(pos)
+function BSArmyModel:sendToBattle(pos)
 	self:lineUp(pos)
 	local count = 0
 	if self.hero then
@@ -43,4 +43,4 @@ function ArmyModel:sendToBattle(pos)
 	return count
 end
 
-return ArmyModel
+return BSArmyModel
