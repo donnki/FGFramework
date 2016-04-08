@@ -13,6 +13,7 @@ function RenderComponent:exportMethods()
     self:exportMethods_({
     	"getRenderer",
     	"bindRenderer",
+    	"unbindRenderer",
     })
     return self.target_
 end
@@ -29,4 +30,7 @@ function RenderComponent:getRenderer()
 	return self.renderer
 end
 
+function RenderComponent:unbindRenderer()
+	self.renderer = nil
+end
 return RenderComponent
